@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "incolume-py-fastapi-crud0"
+version = "0.1.0"
+description = ""
+authors = ["britodfbr <britodfbr@gmail.com>"]
+license = "LICENSE"
+readme = "README.md"
+packages = [{include = "incolume"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.95.0"}
+fastapi-pagination = "^0.12.1"
+uvicorn = "^0.21.1"
+sqlalchemy = "^2.0.9"
+psycopg2-binary = "^2.9.6"
+dynaconf = "^3.1.12"
+passlib = "^1.7.4"
+python-jose = "^3.3.0"
+python-multipart = "^0.0.6"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.0"
+pytest-cov = "^4.0.0"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
