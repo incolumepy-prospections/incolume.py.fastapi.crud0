@@ -1,9 +1,2 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+from incolume.py.fastapi.crud0.server import app
 
