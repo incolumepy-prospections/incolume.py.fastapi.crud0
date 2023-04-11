@@ -32,3 +32,9 @@ mkdocs = "^1.4.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+prerelease={cmd='v=$(poetry version prerelease) && git ci -m "$v" pyproject.toml $(find incolume* -name version.txt)', help='poetry version prerelease'}
+patch={cmd='v=$(poetry version patch) && git ci -m "$v" pyproject.toml $(find incolume* -name version.txt)', help='poetry version patch'}
+preminor={cmd='v=$(poetry version preminor) && git ci -m "$v" pyproject.toml $(find incolume* -name version.txt)', help='poetry version preminor'}
+premajor={cmd='v=$(poetry version premajor) && git ci -m "$v" pyproject.toml $(find incolume* -name version.txt)', help='poetry version premajor'}
