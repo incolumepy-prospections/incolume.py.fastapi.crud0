@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer
-from incolume.py.fastapi.crud0.db.database import Base
+from incolume.py.fastapi.crud0.db.connections import Base
 
 
 class UserModel(Base):
