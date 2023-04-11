@@ -23,6 +23,7 @@ python-multipart = "^0.0.6"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.0"
 pytest-cov = "^4.0.0"
+taskipy = "^1.10.4"
 
 
 [tool.poetry.group.docs.dependencies]
