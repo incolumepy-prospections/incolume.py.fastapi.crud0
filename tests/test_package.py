@@ -1,7 +1,7 @@
 import re
 
 import pytest
-from incolume.py.fastapi.crud0 import configfile, versionfile, __version__
+from incolume.py.fastapi.crud0 import load, configfile, versionfile, __version__
 
 
 __author__ = '@britodfbr'  # pragma: no cover
@@ -36,7 +36,13 @@ class TestCase:
         ),
     )
     def test_same_version(self, entrance):
-        assert entrance == __version__
+        try:
+            with entrance.open('rb') as f:
+                version = load(f)['tool']['poetry']['version']
+
+        except Exception:
+            version = entrance.read_text().strip()
+        assert version == __version__
     
 
     @pytest.mark.parametrize(
@@ -72,6 +78,6 @@ class TestCase:
     )
     def test_semantic_version(self, entrance, expected):
         assert bool(
-            re.fullmatch(r"\d+\.\d+\.\d+(-\w+\.\d+)?", entrance, flags=re.I)
+            re.fullmatch(r"^\d+(\.\d+){2}((-\w+\.\d+)|(\w+\d+))?$", entrance, flags=re.I)
         ) == expected
 
