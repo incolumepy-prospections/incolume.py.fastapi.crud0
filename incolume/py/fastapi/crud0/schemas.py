@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr
+import re
+from pydantic import BaseModel, EmailStr, validator
 from config import settings
 
 
@@ -6,6 +7,7 @@ class UserBase(BaseModel):
     username: str
     email: EmailStr
     full_name: str | None = None
+
     @validator('username')
     def check_username(cls, value):
         if not re.match(settings.REGEX_USERNAME, value):
