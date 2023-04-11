@@ -2,7 +2,7 @@
 ALGORITHM='HS256'
 MSG='Ambiente default'
 REGEX_USERNAME='^([a-z]|[0-9]|_){8,15}$'
-REGEX_PASSWORD=''
+REGEX_PASSWORD='.{8}'
 # openssl rand -hex 64
 SECRET_KEY='0bc92d4f31500f1cf8fa53cf3c44dac5a804cc3a9534bf65aaf6db6ce8ba26c34d1da5c95a148b05595ef8127e78494ab2a451aefb812dd86ed5d90831d40c41'
 
