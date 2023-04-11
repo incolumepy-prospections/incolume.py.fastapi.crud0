@@ -21,6 +21,11 @@ class UserBase(BaseModel):
 class UserIn(UserBase):
     password: str
 
+    @validator('password')
+    def check_password(cls, value):
+        if not re.match(settings.REGEX_PASSWORD, value):
+            raise ValueError('Invalide format for password')
+        return value
 
 class UserOut(UserBase):
     pass
