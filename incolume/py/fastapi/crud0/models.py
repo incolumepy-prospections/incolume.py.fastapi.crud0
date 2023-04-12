@@ -8,3 +8,4 @@ class UserModel(Base):
     username = Column('username', String, nullable=False, unique=True)
     pw_hash = Column('pw_hash', String, nullable=False)
     email = Column('email', String, nullable=False, unique=True)
+    full_name = Column('full_name', String, nullable=False)
