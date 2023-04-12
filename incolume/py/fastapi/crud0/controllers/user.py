@@ -1,3 +1,5 @@
+import logging
+from sqlalchemy import select, delete, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
@@ -23,15 +25,24 @@ class User:
         try:
             self.db_session.add(user_model)
             self.db_session.commit()
+            self.db_session.refresh(user_model)
         except IntegrityError:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='User already exists.')
         return user_model
         
-    def update(self, user_id: int) -> UserModel:
-        pass
+    def update(self, user_id: int, user: UserIn) -> UserModel:
+        user_db = self.one(user_id)
+        stmt = update(UserModel).where(user_db.id == user_id).values(**user)
+        self.db_session.execute(stmt)
+        self.db_session.commit()
+        self.db_session.refresh(user_db)
+        return user_db
 
-    def delete(self) -> UserModel:
-        pass
+    def delete(self, user_id: int) -> UserModel:
+        user = self.one(user_id)
+        stmt = delete(user)
+        self.db_session.execute(stmt)
+        return user
 
     def all(self) -> list[UserModel]:
         users = self.db_session.query(UserModel).all()
@@ -39,5 +50,6 @@ class User:
 
     def one(self, user_id: int) -> UserModel:
         stmt = select(UserModel).filter_by(id=user_id)
-        user = self.db.execute(stmt).one()
+        user = self.db_session.execute(stmt).first()
+        logging.debug(f'{user=}')
         return user
