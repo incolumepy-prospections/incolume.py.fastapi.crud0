@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from config import settings
 from incolume.py.fastapi.crud0.routers import auth, user
-from incolume.py.fastapi.crud0.db.connections import recreate_db
+from incolume.py.fastapi.crud0.db.persistence import recreate_db
+from config import settings
 
 
-recreate_db()
 app = FastAPI()
 
 
