@@ -1,14 +1,36 @@
 from fastapi import APIRouter, Depends, status
+from sqlalchemy.orm import Session
+from incolume.py.fastapi.crud0.db.connections import get_db_session
+from incolume.py.fastapi.crud0 import schemas
+from incolume.py.fastapi.crud0.controllers.user import User
 
-@user_router.post('/register')
-def user_register(
-    user: User,
-    db_session: Session = Depends(get_db_session),
-):
-    uc = UserUseCases(db_session=db_session)
-    uc.user_register(user=user)
-    return JSONResponse(
-        content={'msg': 'success'},
-        status_code=status.HTTP_201_CREATED
-    )
+router = APIRouter(prefix='/users')
 
+
+@router.post('/', status_code=status.HTTP_201_CREATED)
+def signin(user: schemas.UserIn, session: Session = Depends(get_db_session)):
+    new_user = User(session).create(user)
+    return new_user
+
+
+@router.get('/', status_code=status.HTTP_202_ACCEPTED)
+def list_users(session: Session = Depends(get_db_session)):
+    return User(session).all()
+
+
+@router.get('/{user_id}', status_code=status.HTTP_202_ACCEPTED)
+def get_user(user_id: int, db: Session = Depends(get_db_session)):
+    user = User(db).one(user_id)
+    return user
+
+
+@router.put('/{user_id}', status_code=status.HTTP_202_ACCEPTED)
+def get_user(user_id: int, db: Session = Depends(get_db_session)):
+    user = User(db).update(user_id)
+    return user
+
+
+@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db: Session = Depends(get_db_session)):
+    user = User(db).delete(user_id)
+    return user
