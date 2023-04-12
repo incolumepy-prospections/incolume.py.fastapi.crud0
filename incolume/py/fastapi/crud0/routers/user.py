@@ -7,7 +7,7 @@ from incolume.py.fastapi.crud0.controllers.user import User
 router = APIRouter(prefix='/users')
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 def signin(user: schemas.UserIn, session: Session = Depends(get_db_session)):
     new_user = User(session).create(user)
     return new_user
@@ -25,7 +25,7 @@ def get_user(user_id: int, db: Session = Depends(get_db_session)):
 
 
 @router.put('/{user_id}', status_code=status.HTTP_202_ACCEPTED)
-def get_user(user_id: int, db: Session = Depends(get_db_session)):
+def update_user(user_id: int, db: Session = Depends(get_db_session)):
     user = User(db).update(user_id)
     return user
 
