@@ -11,6 +11,7 @@ class UserModel(Base):
     email = Column('email', String, nullable=False, unique=True, index=True)
     full_name = Column('full_name', String, nullable=False)
     is_active = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=False)
     items = relationship("ItemModel", back_populates="owner")
 
 
