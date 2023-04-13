@@ -36,22 +36,16 @@ def list_users(skip:int = 0, limit=10, session: Session = Depends(get_db_session
 
 
 @router.get('/{id_username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
-@singledispatch
 def get_user(id_username_or_email, db: Session = Depends(get_db_session)):
-    pass
+    if isinstance(id_username_or_email, int):
+        user = User(db).one(id_username_or_email)
 
-@get_user.register(int)
-def get_user_by_id(id_username_or_email: int, db: Session = Depends(get_db_session)):
-    user = User(db).one(id_username_or_email)
-    return user
-
-@get_user.register(str)
-def get_user_by_username_or_email(id_username_or_email: str, db: Session = Depends(get_db_session)):
-    try:
-        user = User(db).by_username(id_username_or_email)
-    except Exception as e:
-        print(e)
-        user = User(db).by_email(id_username_or_email)
+    elif isinstance(id_username_or_email, str):
+        try:
+            user = User(db).by_username(id_username_or_email)
+        except Exception as e:
+            print(e)
+            user = User(db).by_email(id_username_or_email)
     return user
 
 

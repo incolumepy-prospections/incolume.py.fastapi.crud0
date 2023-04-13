@@ -1,4 +1,5 @@
 import logging
+
 from sqlalchemy import select, delete, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
