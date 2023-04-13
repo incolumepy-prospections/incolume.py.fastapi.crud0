@@ -5,7 +5,7 @@ from incolume.py.fastapi.crud0.db.persistence import create_db, recreate_db, pop
 from config import settings
 
 recreate_db()
-populate_db(1000)
+populate_db(100)
 
 app = FastAPI()
 
