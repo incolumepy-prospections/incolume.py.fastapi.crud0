@@ -37,7 +37,7 @@ def populate_db(quantia: int = 10):
             username=f'user{x:04}',
             email=f"user{x:04}@example.com",
             full_name=f"string {x:04}",
-            pw_hash=crypt_context.hash("string00")
+            pw_hash=crypt_context.hash("aaQQ!!11")
         )
         for x in range(1, quantia + 1)
     ]
