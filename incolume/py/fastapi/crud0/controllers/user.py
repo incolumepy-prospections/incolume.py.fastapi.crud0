@@ -31,36 +31,50 @@ class User:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='User already exists.')
         return user_model
         
-    def update(self, user_id: int, user: UserIn) -> UserModel:
-        user_db = self.one(user_id)
-        stmt = update(UserModel).where(user_db.id == user_id).values(**user)
-        self.db_session.execute(stmt)
-        self.db_session.commit()
-        self.db_session.refresh(user_db)
-        return user_db
-
-    def delete(self, user_id: int) -> UserModel:
-        user = self.one(user_id)
-        stmt = delete(user)
-        self.db_session.execute(stmt)
-        return user
-
     def all(self, skip: int = 0, limit: int = 100) -> list[UserModel]:
         users = self.db_session.query(UserModel).offset(skip).limit(limit).all()
         return users
 
     def one(self, user_id: int) -> UserModel:
-        stmt = select(UserModel).filter_by(id=user_id)
-        user = self.db_session.execute(stmt).first()
-        print(f'{user=}')
+        user = self.db_session.query(UserModel).filter(UserModel.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+
+        logging.debug(f'{user=}')
         return user
     
     def by_username(self, username: str) -> UserModel:
         user = self.db_session.query(UserModel).filter(UserModel.username == username).first()
-        print(f'{user=}')
+        logging.debug(f'{user=}')
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
         return user
 
     def by_email(self, email: str) -> UserModel:
         user = self.db_session.query(UserModel).filter(UserModel.email == email).first()
-        print(f'{user=}')
+        logging.debug(f'{user=}')
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
         return user
+    
+    def update(self, user_id: int, user: UserIn) -> UserModel:
+        user = self.one(user_id)
+        logging.debug(f'{user=}')
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+        stmt = update(UserModel).where(user_db.id == user_id).values(**user)
+        self.db_session.execute(stmt)
+        self.db_session.commit()
+        self.db_session.refresh(user_db)
+        return user_db
+    
+    def delete(self, user_id: int) -> UserModel:
+        user = self.db_session.query(UserModel).where(UserModel.id == user_id)
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+        
+        logging.debug(f'{user=}')
+        user.delete()
+        self.db_session.commit()
+        return {'message': 'Success!'}
+
