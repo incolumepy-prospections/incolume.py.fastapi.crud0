@@ -14,8 +14,8 @@ def signin(user: schemas.UserIn, session: Session = Depends(get_db_session)):
 
 
 @router.get('/', status_code=status.HTTP_202_ACCEPTED)
-def list_users(session: Session = Depends(get_db_session)):
-    return User(session).all()
+def list_users(skip:int = 0, limit=10, session: Session = Depends(get_db_session)):
+    return User(session).all(skip=skip, limit=limit)
 
 
 @router.get('/{user_id}', status_code=status.HTTP_202_ACCEPTED)

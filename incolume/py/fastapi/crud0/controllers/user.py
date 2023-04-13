@@ -44,8 +44,8 @@ class User:
         self.db_session.execute(stmt)
         return user
 
-    def all(self) -> list[UserModel]:
-        users = self.db_session.query(UserModel).all()
+    def all(self, skip: int = 0, limit: int = 100) -> list[UserModel]:
+        users = self.db_session.query(UserModel).offset(skip).limit(limit).all()
         return users
 
     def one(self, user_id: int) -> UserModel:
