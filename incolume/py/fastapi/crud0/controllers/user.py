@@ -53,3 +53,9 @@ class User:
         user = self.db_session.execute(stmt).first()
         logging.debug(f'{user=}')
         return user
+    
+    def by_username(self, username: str) -> UserModel:
+        return self.db_session.query(UserModel).filter(UserModel.username == username).first()
+
+    def by_email(self, email: str) -> UserModel:
+        return self.db_session.query(UserModel).filter(UserModel.email == email).first()
