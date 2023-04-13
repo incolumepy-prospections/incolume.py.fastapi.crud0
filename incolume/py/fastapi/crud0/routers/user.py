@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
+from functools import singledispatch
+
 
 router = APIRouter(prefix='/users')
 
@@ -18,18 +20,38 @@ def list_users(skip:int = 0, limit=10, session: Session = Depends(get_db_session
     return User(session).all(skip=skip, limit=limit)
 
 
-@router.get('/{user_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
-def get_user(user_id: int, db: Session = Depends(get_db_session)):
-    user = User(db).one(user_id)
+# @router.get('/{user_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
+# def get_user(user_id: int, db: Session = Depends(get_db_session)):
+#     user = User(db).one(user_id)
+#     return user
+# 
+# @router.get('/{username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
+# def get_user_by_username_or_email(username_or_email: str, db: Session = Depends(get_db_session)):
+#     try:
+#         user = User(db).by_username(username_or_email)
+#     except Exception as e:
+#         print(e)
+#         user = User(db).by_email(username_or_email)
+#     return user
+
+
+@router.get('/{id_username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
+@singledispatch
+def get_user(id_username_or_email, db: Session = Depends(get_db_session)):
+    pass
+
+@get_user.register(int)
+def get_user_by_id(id_username_or_email: int, db: Session = Depends(get_db_session)):
+    user = User(db).one(id_username_or_email)
     return user
 
-@router.get('/{username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut)
-def get_user_by_username_or_email(username_or_email: str, db: Session = Depends(get_db_session)):
+@get_user.register(str)
+def get_user_by_username_or_email(id_username_or_email: str, db: Session = Depends(get_db_session)):
     try:
-        user = User(db).by_username(username_or_email)
+        user = User(db).by_username(id_username_or_email)
     except Exception as e:
         print(e)
-        user = User(db).by_email(username_or_email)
+        user = User(db).by_email(id_username_or_email)
     return user
 
 
