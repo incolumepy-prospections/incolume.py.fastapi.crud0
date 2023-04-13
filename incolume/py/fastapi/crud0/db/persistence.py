@@ -20,7 +20,7 @@ def recreate_db(engine: engine = engine):
     create_db(engine)
 
 
-def populate_db():
+def populate_db(quantia: int = 10):
     db = Session()
     #fake_UserIn_list = [
     #        schemas.UserIn(
@@ -37,9 +37,9 @@ def populate_db():
             username=f'user{x:04}',
             email=f"user{x:04}@example.com",
             full_name=f"string {x:04}",
-            pw_hash=crypt_context.hash("string00")
+            pw_hash=crypt_context.hash("aaQQ!!11")
         )
-        for x in range(1, 11)
+        for x in range(1, quantia + 1)
     ]
 
     db.add_all(fake_user_list)
