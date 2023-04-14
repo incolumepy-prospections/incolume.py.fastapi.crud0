@@ -1,5 +1,5 @@
 [default]
-ALGORITHM='HS256'
+ALGORITHM='HS512'
 MSG='Ambiente default'
 REGEX_USERNAME='^([a-z]_\d){8,15}$'
 # https://regex101.com/r/lvGxeH/1
