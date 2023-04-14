@@ -58,8 +58,9 @@ class User:
         return user
     
     def update(self, user_id: int, user: UserIn) -> UserModel:
-        user = self.one(user_id)
         logging.debug(f'{user=}')
+        user_db = self.one(user_id)
+        logging.debug(f'{user_db=}')
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
         stmt = update(UserModel).where(user_db.id == user_id).values(**user)
@@ -70,10 +71,10 @@ class User:
     
     def delete(self, user_id: int) -> UserModel:
         user = self.db_session.query(UserModel).where(UserModel.id == user_id)
+        logging.debug(f'{user=}')
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
         
-        logging.debug(f'{user=}')
         user.delete()
         self.db_session.commit()
         return {'message': 'Success!'}
