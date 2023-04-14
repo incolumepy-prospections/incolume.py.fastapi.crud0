@@ -1,5 +1,6 @@
 [default]
 ALGORITHM='HS512'
+LOG_FORMAT='%(asctime)s; %(levelname)-8s; %(name)s; %(module)s; %(funcName)s; %(threadName)s; %(thread)d; %(message)s'
 MSG='Ambiente default'
 REGEX_USERNAME='^(?=.{8}$)(?=.*\d.*\d)[a-z_\d]+$'
 # https://regex101.com/r/lvGxeH/1
