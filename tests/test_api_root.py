@@ -1,13 +1,15 @@
 import pytest 
 from fastapi.testclient import TestClient
 
+
+class TestAPI:
 @pytest.mark.parametrize(
     ['entrance', 'expected'],
     (
         ('/', 200),
     ),
 )
-def test_endpoint_status_code(entrance, expected , client: TestClient) -> None:
+def test_endpoint_status_code(self, entrance, expected , client: TestClient) -> None:
     response = client.get(entrance)
     assert response.status_code == expected
 
@@ -17,7 +19,7 @@ def test_endpoint_status_code(entrance, expected , client: TestClient) -> None:
         ('/', 'Ambiente de testting!'),
     ),
 )
-def test_endpoint_result(entrance, expected, client: TestClient) -> None:
+def test_endpoint_result(self, entrance, expected, client: TestClient) -> None:
     response = client.get(entrance)
     body = response.json()
-    assert body["mensagem"] == expected 
+    assert body["message"] == expected 
