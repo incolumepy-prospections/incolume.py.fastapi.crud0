@@ -4,11 +4,15 @@ from typing import Generator
 from fastapi.testclient import TestClient
 from config import settings 
 
-from incolume.py.fastapi.crud0.server import app 
-from incolume.py.fastapi.crud0.db.persistence import recreate_db 
+settings.setenv('testing')
+
 
 @pytest.fixture(scope="function")
 def client() -> Generator:
-    recreate_db()
-    with TestClient(app) as cliente:
-        yield cliente
+    with settings.using_env('testing'):
+        from incolume.py.fastapi.crud0.server import app 
+        from incolume.py.fastapi.crud0.db.persistence import recreate_db 
+
+        recreate_db()
+        with TestClient(app) as cliente:
+            yield cliente
