@@ -8,7 +8,9 @@ class TestAPI:
         (
             ('/', 200),
             ('/users', 202),
-            # ('/users/user0001', 202),
+            pytest.param('/users/{username_or_email: str}?username_or_email=user0001', 202, marks=pytest.mark.skip(reason='Error on input data ..')),
+            pytest.param('/users/{username_or_email: str}?username_or_email=user0001%40example.com', 202, marks=pytest.mark.skip(reason='Error on input data ..')),
+            ('/users/{username_or_email: str}?username_or_email=user0101%40example.com', 404),
         ),
     )
     def test_endpoint_status_code(self, entrance, expected , client: TestClient) -> None:
