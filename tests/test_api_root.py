@@ -1,7 +1,7 @@
 import pytest 
 from fastapi.testclient import TestClient
 
-@pytest.mark.reuse(
+@pytest.mark.parametrize(
     ['entrance', 'expected'],
     (
         ('/', 200),
@@ -11,7 +11,7 @@ def test_endpoint_status_code(entrance, expected , client: TestClient) -> None:
     response = client.get(entrance)
     assert response.status_code == expected
 
-@pytest.mark.reuse(
+@pytest.mark.parametrize(
     ['entrance', 'expected'],
     (
         ('/', 'Ambiente de testting!'),
