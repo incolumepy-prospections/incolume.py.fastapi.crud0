@@ -13,7 +13,7 @@ class TestAPI:
             ('/users/{username_or_email: str}?username_or_email=user0101%40example.com', 404),
         ),
     )
-    def test_endpoint_status_code(self, entrance, expected , client: TestClient) -> None:
+    def test_get_endpoint_status_code(self, entrance, expected , client: TestClient) -> None:
         response = client.get(entrance)
         print(entrance)
         assert response.status_code == expected
