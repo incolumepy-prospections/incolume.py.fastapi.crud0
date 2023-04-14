@@ -1,7 +1,7 @@
 [default]
 ALGORITHM='HS256'
 MSG='Ambiente default'
-REGEX_USERNAME='^([a-z]|[0-9]|_){8,15}$'
+REGEX_USERNAME='^([a-z]_\d){8,15}$'
 # https://regex101.com/r/lvGxeH/1
 REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!%*?&]){2})[A-Za-z\d@$!%*?&]{8,}$'
 # openssl rand -hex 64
