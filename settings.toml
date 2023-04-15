@@ -1,5 +1,10 @@
 [default]
 ALGORITHM='HS512'
+API_TITLE='PROTOTIPO'
+API_DESCRIPTION='Protótipo de API com Python FastAPI, incluindo autenticação, credenciamento e Token de sessão.'
+API_DOCS_URL='/docs'   
+API_REDOC_URL='/redoc'
+API_CONTACT={name='JEDI', email='contato@incolume.com.br'}
 LOG_FORMAT='%(asctime)s; %(levelname)-8s; %(name)s; %(module)s; %(funcName)s; %(threadName)s; %(thread)d; %(message)s'
 MSG='Ambiente default'
 REGEX_USERNAME='^(?=.{8}$)(?=.*\d.*\d)[a-z_\d]+$'
@@ -7,6 +12,14 @@ REGEX_USERNAME='^(?=.{8}$)(?=.*\d.*\d)[a-z_\d]+$'
 REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!%*?&]){2})[A-Za-z\d@$!%*?&]{8,}$'
 # openssl rand -hex 64
 SECRET_KEY='0bc92d4f31500f1cf8fa53cf3c44dac5a804cc3a9534bf65aaf6db6ce8ba26c34d1da5c95a148b05595ef8127e78494ab2a451aefb812dd86ed5d90831d40c41'
+
+[[default.API_OPENAPI_TAGS]]
+name = 'Users'
+description = 'Endpoints referentes a Autenticação'
+
+[[default.API_OPENAPI_TAGS]]
+name = 'Ahth'
+description = 'Endpoints referentes a Permissões'
 
 [dev0]
 MSG='Ambiente de desenvolvimento com Postgresql'
