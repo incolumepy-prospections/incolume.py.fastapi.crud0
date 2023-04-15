@@ -24,7 +24,7 @@ class TestAPI:
             ('/', 'Ambiente de testes'),
         ),
     )
-    def test_endpoint_result(self, entrance, expected, client: TestClient) -> None:
+    def test_get_endpoint_result(self, entrance, expected, client: TestClient) -> None:
         response = client.get(entrance)
         body = response.json()
         assert body["message"] == expected 
