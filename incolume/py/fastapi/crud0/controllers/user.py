@@ -17,11 +17,16 @@ crypt_context = CryptContext(schemes=['sha256_crypt'])
 class User:
     def __init__(self, db_session: Session):
         self.db_session = db_session
-
-    def create(self, user: UserIn) -> UserModel:
-        hash=crypt_context.hash(user.password)
+    
+    def __user_in_to_user_in_db(self, user: UserIn) -> UserInDB:
+        hash = crypt_context.hash(user.password)
         del user.password
         new_user = UserInDB(**user.dict(), pw_hash=hash)
+        logging.debug(f'{usar=}>{new_user=}')
+        return new_user
+        
+    def create(self, user: UserIn) -> UserModel:
+        new_user: UserInDB = self.__user_in_to_user_in_db(user)
         user_model = UserModel(**new_user.dict())
         try:
             self.db_session.add(user_model)
@@ -65,7 +70,8 @@ class User:
         if not user_db:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
         #TODO: Não permitir que id seja alterado.
-        stmt = update(UserModel).where(user_db.id == user_id).values(**user)
+        new_user: UserInDB = self.__user_in_to_user_in_db(user)
+        stmt = update(UserModel).where(user_db.id == user_id).values(**new_user)
         self.db_session.execute(stmt)
         self.db_session.commit()
         self.db_session.refresh(user_db)
