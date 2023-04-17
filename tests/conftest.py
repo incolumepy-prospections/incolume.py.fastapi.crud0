@@ -13,6 +13,6 @@ def client() -> Generator:
         from incolume.py.fastapi.crud0.server import app 
         from incolume.py.fastapi.crud0.db.persistence import recreate_db 
 
-        recreate_db()
+        # recreate_db()
         with TestClient(app) as cliente:
             yield cliente
