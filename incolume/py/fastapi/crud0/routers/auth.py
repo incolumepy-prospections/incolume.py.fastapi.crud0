@@ -9,7 +9,7 @@ from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserIn, UserOut
 
 
-router = APIRouter(prefix='/auth')
+router = APIRouter(prefix='')
 
 
 @router.post('/login')
