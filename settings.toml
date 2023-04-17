@@ -14,12 +14,12 @@ REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!
 SECRET_KEY='0bc92d4f31500f1cf8fa53cf3c44dac5a804cc3a9534bf65aaf6db6ce8ba26c34d1da5c95a148b05595ef8127e78494ab2a451aefb812dd86ed5d90831d40c41'
 
 [[default.API_OPENAPI_TAGS]]
-name = 'Users'
-description = 'Endpoints referentes a Autenticação'
+name = 'Auth'
+description = 'Endpoints referentes a Autenticação.'
 
 [[default.API_OPENAPI_TAGS]]
-name = 'Ahth'
-description = 'Endpoints referentes a Permissões'
+name = 'Users'
+description = 'Endpoints referentes a gestão de usuários.'
 
 [dev0]
 MSG='Ambiente de desenvolvimento com Postgresql'
