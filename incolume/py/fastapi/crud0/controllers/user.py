@@ -22,7 +22,7 @@ class User:
         hash = crypt_context.hash(user.password)
         del user.password
         new_user = UserInDB(**user.dict(), pw_hash=hash)
-        logging.debug(f'{usar=}>{new_user=}')
+        logging.debug(f'{user=}>{new_user=}')
         return new_user
         
     def create(self, user: UserIn) -> UserModel:
