@@ -25,12 +25,6 @@ class UserBase(BaseModel):
     email: EmailStr
     full_name: str | None = None
 
-    @validator('username')
-    def check_username(cls, value):
-        if not re.match(settings.REGEX_USERNAME, value):
-            raise ValueError('Invalide format for username')
-        return value
-    
     class Config:
         orm_mode = True
 
@@ -38,6 +32,12 @@ class UserBase(BaseModel):
 class UserIn(UserBase):
     password: str
 
+    @validator('username')
+    def check_username(cls, value):
+        if not re.match(settings.REGEX_USERNAME, value):
+            raise ValueError('Invalide format for username')
+        return value
+    
     @validator('password')
     def check_password(cls, value):
         if not re.match(settings.REGEX_PASSWORD, value):

@@ -1,7 +1,7 @@
 [default]
 ALGORITHM='HS512'
 API_TITLE='PROTOTIPO'
-API_DESCRIPTION='Protótipo de API com Python FastAPI, incluindo autenticação, credenciamento e Token de sessão.'
+API_DESCRIPTION='Protótipo de API Restfull com Python FastAPI, incluindo autenticação, credenciamento e Token de sessão.'
 API_DOCS_URL='/docs'   
 API_REDOC_URL='/redoc'
 API_CONTACT={name='JEDI', email='contato@incolume.com.br'}
