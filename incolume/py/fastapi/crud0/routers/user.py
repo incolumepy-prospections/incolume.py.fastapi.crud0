@@ -6,7 +6,7 @@ from incolume.py.fastapi.crud0.controllers.user import User
 from functools import singledispatch
 
 
-router = APIRouter(prefix='/users')
+router = APIRouter()
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
