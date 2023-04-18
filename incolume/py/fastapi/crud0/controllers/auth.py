@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 
-from incolume.py.fastapi.crud0.schemas import UserIn
+from incolume.py.fastapi.crud0.schemas import UserLogin
 from incolume.py.fastapi.crud0.models import UserModel
 from config import settings
 
