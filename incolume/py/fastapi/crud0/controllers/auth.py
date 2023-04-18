@@ -16,10 +16,12 @@ crypt_context = CryptContext(schemes=['sha256_crypt'])
 
 
 class Auth:
-    def login(self, user:UserIn, seconds: int = 30, minutes: int = 0, hours: int = 0, days: int = 0, weeks: int = 0):
-        user_login = self.db_session.query(UserModel).filter_by(username=user.username)
-        logging.debug(f"{user_login=}")
+    def __init__(self, db_session: Session) -> None:
+        self.db_session = db_session
+        
+    def login(self, user:UserLogin, seconds: int = 30, minutes: int = 0, hours: int = 0, days: int = 0, weeks: int = 0):
 
+        user_login = self.db_session.query(UserModel).filter_by(username=user.username).first()
         if not user_login or not crypt_context.verify(secret=user.password, hash=user_login.pw_hash):
             raise HTTPException(status_code=status.HTTP_401_UNAUTORIZED, detail='Invalid username or password')
         
