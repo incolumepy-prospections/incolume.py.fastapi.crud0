@@ -22,15 +22,17 @@ class Item(ItemBase):
         
 class UserBase(BaseModel):
     username: str
-    email: EmailStr
+    email: EmailStr | None = None
     full_name: str | None = None
 
     class Config:
         orm_mode = True
 
 
-class UserIn(UserBase):
+class UserLogin(UserBase):
     password: str
+
+class UserIn(UserLogin):
 
     @validator('username')
     def check_username(cls, value):
