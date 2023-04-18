@@ -24,7 +24,7 @@ class Auth:
 
         user_login = self.db_session.query(UserModel).filter_by(username=user.username).first()
         if not user_login or not crypt_context.verify(secret=user.password, hash=user_login.pw_hash):
-            raise HTTPException(status_code=status.HTTP_401_UNAUTORIZED, detail='Invalid username or password')
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid username or password')
         
         logging.debug(f"{user_login.__dict__=}")
         
@@ -40,7 +40,7 @@ class Auth:
 
         return {
             'access_token': access_token,
-            'expiration': exp
+            'expiration': exp.isoformat()
         }
 
     def logout(self):
