@@ -1,18 +1,21 @@
 import logging
 from datetime import datetime, timedelta
-from fastapi import status
+from fastapi import status, Depends
 from fastapi.exceptions import HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
-from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+from passlib.context import CryptContext
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
+from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserLogin
 from incolume.py.fastapi.crud0.models import UserModel
 from config import settings
 
 
 crypt_context = CryptContext(schemes=['sha256_crypt'])
+oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 
 class Auth:
@@ -43,10 +46,21 @@ class Auth:
             'expiration': exp.isoformat()
         }
 
-    def logout(self):
-        pass
+    def is_valid_token(self, access_token: str):
+        try:
+            data = jwt.decode(access_token, settings.secret_key, algorithms=[settings.algorithm])
+        except JWTError as e:
+            logging.error(e)
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid access token')
+        
+        user_logged = self.db_session.query(UserModel).filter_by(username=data['sub']).first()
+        if not user_logged:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid access token')
+        
+        return True
+        
 
-    def verify_token(self):
+    def logout(self):
         pass
 
     def generate_token(self):
