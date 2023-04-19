@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0.db.connections import get_db_session
-from incolume.py.fastapi.crud0.schemas import UserLogin
+from incolume.py.fastapi.crud0.schemas import UserLogin, AccessToken
 from incolume.py.fastapi.crud0.models import UserModel
 from config import settings
 
@@ -45,11 +45,7 @@ class Auth:
         access_token = jwt.encode(payload, settings.secret_key, algorithm=settings.ALGORITHM)
         logging.debug(f'{access_token=}')
 
-        return {
-            'access_token': access_token,
-            'expiration': exp.isoformat(),
-            'type': 'bearer'
-        }
+        return AccessToken(access_token=access_token, expiration=exp.isoformat(), type='bearer')
 
     def is_valid_token(self, access_token: str):
         try:
