@@ -47,7 +47,8 @@ class Auth:
 
         return {
             'access_token': access_token,
-            'expiration': exp.isoformat()
+            'expiration': exp.isoformat(),
+            'type': 'bearer'
         }
 
     def is_valid_token(self, access_token: str):
