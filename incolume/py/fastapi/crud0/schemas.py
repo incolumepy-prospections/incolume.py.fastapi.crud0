@@ -3,6 +3,12 @@ from pydantic import BaseModel, EmailStr, validator
 from config import settings
 
 
+class AccessToken(BaseModel):
+    access_token: str
+    expiration: str
+    type: str
+    
+
 class ItemBase(BaseModel):
     title: str
     description: str | None = None
