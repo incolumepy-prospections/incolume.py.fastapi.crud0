@@ -18,6 +18,10 @@ crypt_context = CryptContext(schemes=['sha256_crypt'])
 oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 
+def token_verifier(db: Session = Depends(get_db_session), token = Depends(oauth)):
+    Auth(db).is_valid_token(access_token=token)
+
+
 class Auth:
     def __init__(self, db_session: Session) -> None:
         self.db_session = db_session
