@@ -19,6 +19,10 @@ name = 'Auth'
 description = 'Endpoints referentes a Autenticação.'
 
 [[default.API_OPENAPI_TAGS]]
+name = 'Auth OTP'
+description = 'Endpoints referentes a Autenticação OTP (One True Pairing).'
+
+[[default.API_OPENAPI_TAGS]]
 name = 'Users'
 description = 'Endpoints referentes a gestão de usuários.'
 
