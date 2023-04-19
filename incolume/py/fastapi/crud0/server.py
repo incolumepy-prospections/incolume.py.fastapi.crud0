@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
 from incolume.py.fastapi.crud0.routers import auth, user
@@ -21,6 +22,11 @@ app = FastAPI(
 @app.get("/", include_in_schema=False)
 async def root():
     return {"message": settings.msg}
+
+
+@app.get("/doc", response_class=RedirectResponse, status_code=308, include_in_schema=False)
+async def redirect_pydantic():
+    return "/docs"
 
 
 app.include_router(user.router, prefix="/users", tags=["Users"],)
