@@ -29,7 +29,7 @@ async def redirect_pydantic():
     return "/docs"
 
 
-@app.get("/favicon", response_class=RedirectResponse, status_code=308, include_in_schema=False)
+@app.get("/favicon.ico", response_class=RedirectResponse, status_code=308, include_in_schema=False)
 async def redirect_pydantic():
     return "/auth/otp/favicon"
 
