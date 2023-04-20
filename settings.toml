@@ -13,6 +13,7 @@ REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!
 # openssl rand -hex 64
 SECRET_KEY='0bc92d4f31500f1cf8fa53cf3c44dac5a804cc3a9534bf65aaf6db6ce8ba26c34d1da5c95a148b05595ef8127e78494ab2a451aefb812dd86ed5d90831d40c41'
 OTP_KEY='3F9FA81EEDCDD34036A8A8FB39DE7D2681279DCF'
+OTP_TITLE='Security Level'
 
 [[default.API_OPENAPI_TAGS]]
 name = 'Auth'
