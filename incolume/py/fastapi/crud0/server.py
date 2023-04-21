@@ -1,4 +1,6 @@
+from pathlib import Path
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
@@ -19,6 +21,9 @@ app = FastAPI(
     license_info=settings.api_license,
 )
 
+static = Path(__file__).parents[0]/'static'
+
+app.mount("/static", StaticFiles(directory=static), name="static")
 
 @app.get("/", include_in_schema=False)
 async def root():
