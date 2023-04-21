@@ -16,6 +16,7 @@ app = FastAPI(
     contact=settings.api_contact,
     docs_url=settings.api_docs_url,
     redoc_url=settings.api_redoc_url,
+    license_info=settings.api_license,
 )
 
 
