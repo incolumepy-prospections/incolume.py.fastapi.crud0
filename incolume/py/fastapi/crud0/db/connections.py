@@ -10,8 +10,7 @@ Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 def get_db_session():
     try:
-        session = Session()
-        yield session
+        yield session:=Session()
     finally:
         session.close()
 
