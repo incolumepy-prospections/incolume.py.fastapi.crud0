@@ -1,4 +1,6 @@
+from pathlib import Path
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
@@ -16,8 +18,12 @@ app = FastAPI(
     contact=settings.api_contact,
     docs_url=settings.api_docs_url,
     redoc_url=settings.api_redoc_url,
+    license_info=settings.api_license,
 )
 
+static = Path(__file__).parents[4]/'static'
+
+app.mount("/static", StaticFiles(directory=static), name="static")
 
 @app.get("/", include_in_schema=False)
 async def root():
@@ -29,9 +35,9 @@ async def redirect_pydantic():
     return "/docs"
 
 
-@app.get("/favicon.ico", response_class=RedirectResponse, status_code=308, include_in_schema=False)
+@app.get("/favicon.ico", response_class=RedirectResponse, status_code=307, include_in_schema=False)
 async def redirect_pydantic():
-    return "/auth/otp/favicon"
+    return "/img/favicon.png"
 
 
 app.include_router(user.router, prefix="/users", tags=["Users"],)

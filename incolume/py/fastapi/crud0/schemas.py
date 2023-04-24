@@ -1,5 +1,5 @@
 import re
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel, EmailStr, Field, validator
 from config import settings
 
 
@@ -51,10 +51,15 @@ class UserIn(UserLogin):
         if not re.match(settings.REGEX_PASSWORD, value):
             raise ValueError('Invalide format for password')
         return value
+    
 
 class UserOut(UserBase):
     pass
 
 
 class UserInDB(UserBase):
-    pw_hash: str
+    pw_hash: str = Field(alias='password')
+
+    @validator('pw_hash')
+    def gen_pw_hash(cls, value):
+        pass 
