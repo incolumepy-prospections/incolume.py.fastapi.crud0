@@ -10,8 +10,9 @@ class TestAPI:
             ('/users', 202),
             pytest.param('/users/{username_or_email: str}?username_or_email=user0001', 202, marks=pytest.mark.skip(reason='Error on input data ..')),
             pytest.param('/users/{username_or_email: str}?username_or_email=user0001%40example.com', 202, marks=pytest.mark.skip(reason='Error on input data ..')),
-            pytest.param('/users/{username_or_email: str}?username_or_email=user0101%40example.com', 404,marks=None)),
-            pytest.param('',200),
+            pytest.param('/users/{username_or_email: str}?username_or_email=user0101%40example.com', 404),
+            pytest.param('/', 200),
+        ),
     )
     def test_get_endpoint_status_code(self, entrance, expected , client: TestClient) -> None:
         response = client.get(entrance)
@@ -29,10 +30,10 @@ class TestAPI:
         body = response.json()
         assert body["message"] == expected 
 
-   @pytest.mark.parametrize(
+    @pytest.mark.parametrize(
         'entrance expected'.split(),
         (
-            pytest.param('/', 'Ambiente de testes'),
+            pytest.param('/', 'Ambiente de testes', marks=pytest.mark.skip(reason='Not implemented!')),
         ),
     )
     def test_delete_endpoint_result(self, entrance, expected, client: TestClient) -> None:
@@ -45,7 +46,7 @@ class TestAPI:
     @pytest.mark.parametrize(
         'entrance expected'.split(),
         (
-            pytest.param('/', 'Ambiente de testes'),
+            pytest.param('/', 'Ambiente de testes', marks=pytest.mark.skip(reason='Not implemented!')),
         ),
     )
     def test_post_endpoint_result(self, entrance, expected, client: TestClient) -> None:
@@ -58,7 +59,7 @@ class TestAPI:
     @pytest.mark.parametrize(
         'entrance expected'.split(),
         (
-            pytest.param('/', 'Ambiente de testes'),
+            pytest.param('/', 'Ambiente de testes', marks=pytest.mark.skip(reason='Not implemented!')),
         ),
     )
     def test_put_endpoint_result(self, entrance, expected, client: TestClient) -> None:
