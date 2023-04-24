@@ -21,7 +21,7 @@ app = FastAPI(
     license_info=settings.api_license,
 )
 
-static = Path(__file__).parents[0]/'static'
+static = Path(__file__).parents[4]/'static'
 
 app.mount("/static", StaticFiles(directory=static), name="static")
 
@@ -35,9 +35,9 @@ async def redirect_pydantic():
     return "/docs"
 
 
-@app.get("/favicon.ico", response_class=RedirectResponse, status_code=308, include_in_schema=False)
+@app.get("/favicon.ico", response_class=RedirectResponse, status_code=307, include_in_schema=False)
 async def redirect_pydantic():
-    return "/auth/otp/favicon"
+    return "/img/favicon.png"
 
 
 app.include_router(user.router, prefix="/users", tags=["Users"],)

@@ -15,7 +15,7 @@ router = APIRouter(prefix='')
 
 @router.get('/favicon')
 async def get_favicon():
-    image: Path = Path(__file__).parents[5].joinpath('img', 'favicon.png')
+    image: Path = Path(__file__).parents[5].joinpath('static', 'img', 'favicon.png')
     logging.debug(f"{image=}")
     return FileResponse(image.as_posix(), media_type='image/png')
 
