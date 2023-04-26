@@ -1,4 +1,6 @@
 import re
+import uuid
+from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field, validator
 from config import settings
 
@@ -11,6 +13,7 @@ class AccessToken(BaseModel):
 
 class ItemBase(BaseModel):
     title: str
+    date: datetime
     description: str | None = None
 
 
@@ -19,7 +22,7 @@ class ItemCreate(ItemBase):
 
 
 class Item(ItemBase):
-    id: int
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     owner_id: int
 
     class Config:
