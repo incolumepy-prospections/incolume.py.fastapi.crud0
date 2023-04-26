@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
+from incolume.py.fastapi.crud0.models import UserModel
 from functools import singledispatch
 
 
@@ -11,7 +12,7 @@ router = APIRouter()
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut, summary="Create an User")
 def signin(user: schemas.UserIn, session: Session = Depends(get_db_session)):
-    new_user = User(session).create(user)
+    new_user: UserModel = User(session).create(user)
     return new_user
 
 

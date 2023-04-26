@@ -13,12 +13,14 @@ class AccessToken(BaseModel):
 
 class ItemBase(BaseModel):
     title: str
-    date: datetime
+    created: datetime = Field(default_factory=datetime.utcnow)
+    updated: list[datetime] | None = None
     description: str | None = None
 
 
 class ItemCreate(ItemBase):
-    pass
+    class Config:
+        orm_mode = True
 
 
 class Item(ItemBase):
@@ -66,3 +68,6 @@ class UserInDB(UserBase):
     @validator('pw_hash')
     def gen_pw_hash(cls, value):
         return value
+    
+    class Config:
+        allow_population_by_field_name = True
