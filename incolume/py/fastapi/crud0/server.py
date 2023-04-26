@@ -1,14 +1,17 @@
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
-from incolume.py.fastapi.crud0.routers import auth, user, auth_otp
-from incolume.py.fastapi.crud0.db.persistence import create_db, recreate_db, populate_db
+from incolume.py.fastapi.crud0.controllers.auth import token_verifier
+from incolume.py.fastapi.crud0.db.persistence import create_db, recreate_db, populate_db, create_admin
+from incolume.py.fastapi.crud0.routers import auth, user, auth_otp, items
 
 
 recreate_db()
+create_admin()
+
 
 app = FastAPI(
     title=settings.api_title,
@@ -40,6 +43,7 @@ async def redirect_pydantic():
     return "/img/favicon.png"
 
 
+app.include_router(items.router, prefix="/items", tags=["Items"], dependencies=[Depends(token_verifier), ])
 app.include_router(user.router, prefix="/users", tags=["Users"],)
 app.include_router(auth.router, prefix="/auth", tags=["Auth"],)
 app.include_router(auth_otp.router, prefix="/auth/otp", tags=["Auth OTP"],)

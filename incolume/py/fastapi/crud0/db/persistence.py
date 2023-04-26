@@ -20,18 +20,22 @@ def recreate_db(engine: engine = engine):
     create_db(engine)
 
 
+def create_admin(engine: engine = engine):
+    with Session() as db:
+        admin_user = UserModel(
+            username='admin', 
+            email='admin@example.com', 
+            full_name='Administrador do Sistema', 
+            is_admin=True,
+            pw_hash=crypt_context.hash("aaQQ!!11"),
+        )
+        db.add(admin_user)
+        db.commit()
+    return True
+
+
 def populate_db(quantia: int = 10):
     db = Session()
-    #fake_UserIn_list = [
-    #        schemas.UserIn(
-    #            username=f'user{x:04}',
-    #            email=f"user{x:04}@example.com",
-    #            full_name=f"string {x:04}",
-    #            password=f"string{x:04}"
-    #        )
-    #    for x in range(1, 11)
-    #]
-    #print(fake_UserIn_list)
     fake_user_list = [
         UserModel(
             username=f'user{x:04}',

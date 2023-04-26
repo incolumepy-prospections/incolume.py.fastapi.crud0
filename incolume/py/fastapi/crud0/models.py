@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey
+import datetime as dt
+from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from incolume.py.fastapi.crud0.db.connections import Base
 
@@ -18,8 +19,10 @@ class UserModel(Base):
 class ItemModel(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    id = Column('id', String, primary_key=True, index=True)
+    title = Column('title', String, index=True)
+    description = Column('description', String, index=True)
+    created = Column('created', DateTime(timezone=False), default=dt.datetime.utcnow)
+    updated = Column(DateTime(timezone=False), default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
+    owner_id = Column('owner_id', Integer, ForeignKey("users.id"))
     owner = relationship("UserModel", back_populates="items")

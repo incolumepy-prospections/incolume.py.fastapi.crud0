@@ -1,4 +1,6 @@
 import re
+import uuid
+from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field, validator
 from config import settings
 
@@ -11,15 +13,18 @@ class AccessToken(BaseModel):
 
 class ItemBase(BaseModel):
     title: str
+    created: datetime = Field(default_factory=datetime.utcnow)
+    updated: list[datetime] | None = None
     description: str | None = None
 
 
 class ItemCreate(ItemBase):
-    pass
+    class Config:
+        orm_mode = True
 
 
 class Item(ItemBase):
-    id: int
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     owner_id: int
 
     class Config:
@@ -63,3 +68,6 @@ class UserInDB(UserBase):
     @validator('pw_hash')
     def gen_pw_hash(cls, value):
         return value
+    
+    class Config:
+        allow_population_by_field_name = True
