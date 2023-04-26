@@ -62,4 +62,4 @@ class UserInDB(UserBase):
 
     @validator('pw_hash')
     def gen_pw_hash(cls, value):
-        pass 
+        return value

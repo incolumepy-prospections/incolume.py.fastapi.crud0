@@ -3,6 +3,7 @@ import pytest
 from typing import Generator
 from fastapi.testclient import TestClient
 from config import settings 
+from incolume.py.fastapi.crud0.db.connections import get_db_session, Session
 from incolume.py.fastapi.crud0.db.persistence import populate_db
 
 
@@ -18,3 +19,8 @@ def client() -> Generator:
         # populate_db(30)
         with TestClient(app) as cliente:
             yield cliente
+
+
+@pytest.fixture(scope="module")
+def db_session() -> Session:
+    return get_db_session()
