@@ -21,5 +21,14 @@ def user_login(login_request_form: OAuth2PasswordRequestForm = Depends(), db_ses
 
 
 @router.get('/check')
-def check_token(token_verified = Depends(token_verifier)):
+def check_token(token_verified=Depends(token_verifier)):
     return {'details': True}
+
+
+@router.post('/new-token-jwt')
+def get_new_token(
+    request_form: OAuth2PasswordRequestForm = Depends(),
+    token_verified=Depends(token_verifier),
+    db_session: Session = Depends(get_db_session)
+):
+    pass
