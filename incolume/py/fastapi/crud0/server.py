@@ -5,10 +5,12 @@ from fastapi.responses import RedirectResponse
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
 from incolume.py.fastapi.crud0.routers import auth, user, auth_otp
-from incolume.py.fastapi.crud0.db.persistence import create_db, recreate_db, populate_db
+from incolume.py.fastapi.crud0.db.persistence import create_db, recreate_db, populate_db, create_admin
 
 
 recreate_db()
+create_admin()
+
 
 app = FastAPI(
     title=settings.api_title,
