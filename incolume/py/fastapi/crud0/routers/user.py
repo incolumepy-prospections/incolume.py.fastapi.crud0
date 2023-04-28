@@ -1,8 +1,9 @@
+import logging
 from typing import Any
 
 from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, status, Query 
 from sqlalchemy.orm import Session
-
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0 import schemas
@@ -99,6 +100,13 @@ def toggle_active_user(
     status_code=status.HTTP_202_ACCEPTED,
     summary="Update data for user by id",
 )
+@router.get('/{id_username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut, summary="List an user by: id, email or username")
+def get_user(id_username_or_email: int|str, q:str=Query(default='id'), db: Session = Depends(get_db_session)):
+    user = User(db).one(id_username_or_email, q)
+    logging.debug(user)
+    return user
+
+@router.put('/{user_id}', status_code=status.HTTP_202_ACCEPTED, summary="Update data for user by id")
 def update_user(user_id: int, db: Session = Depends(get_db_session)):
     user = User(db).update(user_id)
     return user
