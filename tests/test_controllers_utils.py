@@ -19,13 +19,13 @@ class TestEnums:
     @pytest.mark.parametrize(
         'entrance expected'.split(),
         (
-            (QueryUser.USER_ID, 'ID'),
-            (QueryUser.ID, 'ID'),
-            (QueryUser.USER_EMAIL, 'EMAIL'),
-            (QueryUser.EMAIL, 'EMAIL'),
-            (QueryUser.NAME, 'USERNAME'),
-            (QueryUser.USERNAME, 'USERNAME'),
+            (QueryUser.USER_ID, 'id'),
+            (QueryUser.ID, 'id'),
+            (QueryUser.USER_EMAIL, 'email'),
+            (QueryUser.EMAIL, 'email'),
+            (QueryUser.NAME, 'username'),
+            (QueryUser.USERNAME, 'username'),
         ),
     )
     def test_query_user(self, entrance, expected):
-        assert entrance.name == expected
+        assert entrance.value == expected
