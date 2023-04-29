@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi import status
 from fastapi.exceptions import HTTPException
-from fastapi.responses import UJSONResponse
 
+from incolume.py.fastapi.crud0.controllers.utils import QueryUser
 from incolume.py.fastapi.crud0.models import UserModel
 from incolume.py.fastapi.crud0.schemas import UserIn, UserInDB
 
@@ -45,22 +45,27 @@ class User:
         )
         return users
 
-    def one(self, id_username_or_email: int | str, q: str = "") -> UserModel:
-        q = q or "id"
+    def one(self,
+            id_username_or_email: int | str, q: QueryUser = None) -> UserModel:
+        q = q or QueryUser.ID
         logging.debug(f"{id_username_or_email=}, {q=}")
         try:
             match q:
-                case "id":
+                case QueryUser.USER_ID:
+                    logging.debug('--- id ---')
                     user = self.by_id(int(id_username_or_email))
-                case "email":
+                case QueryUser.EMAIL:
+                    logging.debug('--- email ---')
                     user = self.by_email(id_username_or_email)
-                case "username":
+                case QueryUser.USERNAME:
+                    logging.debug('--- username ---')
                     user = self.by_username(id_username_or_email)
                 case _:
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
                         detail="Query parameter not exists.",
                     )
+            logging.debug(user)
             return user
         except ValueError as e:
             logging.error(e)
@@ -141,7 +146,7 @@ class User:
         self.db_session.commit()
         return user_db
 
-    def toggle_active(self, param: int | str, q: str = ""):
+    def toggle_active(self, param: int | str, q: QueryUser = None):
         user = self.one(param, q)
         user.is_active = not user.is_active
         self.db_session.commit()
