@@ -45,20 +45,21 @@ class User:
         )
         return users
 
-    def one(self,
-            id_username_or_email: int | str, q: QueryUser = None) -> UserModel:
+    def one(
+        self, id_username_or_email: int | str, q: QueryUser = None
+    ) -> UserModel:
         q = q or QueryUser.ID
         logging.debug(f"{id_username_or_email=}, {q=}")
         try:
             match q:
                 case QueryUser.USER_ID:
-                    logging.debug('--- id ---')
+                    logging.debug("--- id ---")
                     user = self.by_id(int(id_username_or_email))
                 case QueryUser.EMAIL:
-                    logging.debug('--- email ---')
+                    logging.debug("--- email ---")
                     user = self.by_email(id_username_or_email)
                 case QueryUser.USERNAME:
-                    logging.debug('--- username ---')
+                    logging.debug("--- username ---")
                     user = self.by_username(id_username_or_email)
                 case _:
                     raise HTTPException(

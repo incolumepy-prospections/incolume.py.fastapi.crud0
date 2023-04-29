@@ -1,5 +1,13 @@
 import datetime as dt
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, DateTime
+from sqlalchemy import (
+    Column,
+    String,
+    Integer,
+    Boolean,
+    ForeignKey,
+    DateTime,
+    JSON,
+)
 from sqlalchemy.orm import relationship
 from incolume.py.fastapi.crud0.db.connections import Base
 
