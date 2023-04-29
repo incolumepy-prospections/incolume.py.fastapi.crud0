@@ -6,12 +6,17 @@ from incolume.py.fastapi.crud0.schemas import UserIn
 
 
 class TestCrlUser:
-
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param(UserIn(username='user_001', password='AaQq!1!1'), '', marks=pytest.mark.skip),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param(
+                UserIn(username="user_001", password="AaQq!1!1"),
+                "",
+                marks=pytest.mark.skip,
+            ),
         ),
     )
     def test_create(self, entrance, expected, db_session: Session):
@@ -19,50 +24,60 @@ class TestCrlUser:
         assert isinstance(user, UserModel)
 
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param('', ''),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param("", ""),
         ),
     )
     def test_read_by_id(self, entrance, expected):
         pass
-    
+
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param('', ''),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param("", ""),
         ),
     )
     def test_read_by_username(self, entrance, expected):
         pass
-    
+
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param('', ''),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param("", ""),
         ),
     )
     def test_read_by_email(self, entrance, expected):
         pass
-    
+
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param('', ''),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param("", ""),
         ),
     )
     def test_update(self, entrance, expected):
         pass
-    
+
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
-            pytest.param('', ''),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
+            pytest.param("", ""),
         ),
     )
     def test_delete(self, entrance, expected):

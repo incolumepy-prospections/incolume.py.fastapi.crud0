@@ -4,9 +4,11 @@ from incolume.py.fastapi.crud0.routers.auth_otp import router
 
 class TestRouterAuthOTP:
     @pytest.mark.parametrize(
-        ['entrance', 'expected'],
+        ["entrance", "expected"],
         (
-            pytest.param('', '', marks=pytest.mark.skip(reason='Not implemented ..')),
+            pytest.param(
+                "", "", marks=pytest.mark.skip(reason="Not implemented ..")
+            ),
         ),
     )
     def test_case1(self, entrance, expected):

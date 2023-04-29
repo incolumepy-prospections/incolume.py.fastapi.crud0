@@ -8,7 +8,13 @@ from incolume.py.fastapi.crud0.models import ItemModel
 
 router = APIRouter()
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Item, summary="Create an Item")
-def create_item(item: schemas.Item, session = Depends(get_db_session)):
+
+@router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schemas.Item,
+    summary="Create an Item",
+)
+def create_item(item: schemas.Item, session=Depends(get_db_session)):
     new_item: ItemModel = Item(session).create(item=item)
     return new_item
