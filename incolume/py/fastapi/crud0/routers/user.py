@@ -86,7 +86,7 @@ def update_user(user_id: int, db: Session = Depends(get_db_session)):
 
 @router.delete(
     "/{user_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
+    status_code=status.HTTP_202_ACCEPTED,
     summary="Delete an user by id",
 )
 def delete_user(user_id: int, db: Session = Depends(get_db_session)):
