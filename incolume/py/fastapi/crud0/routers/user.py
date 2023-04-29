@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.db.connections import get_db_session
@@ -61,9 +63,9 @@ def list_users(
 
 @router.get(
     "/{id_username_or_email}",
+    summary="List an user by: id, email or username",
     status_code=status.HTTP_202_ACCEPTED,
     response_model=schemas.UserOut,
-    summary="List an user by: id, email or username",
 )
 def get_user(
     id_username_or_email: int | str,
@@ -71,6 +73,20 @@ def get_user(
     db: Session = Depends(get_db_session),
 ):
     user = User(db).one(id_username_or_email, q)
+    return user
+
+
+@router.post(
+    "/toggle_active/{user_param}",
+    summary="Toggle user status for is_active field",
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def toggle_active_user(
+    user_param: int | str,
+    q: Any = Query(default='id'),
+    db: Session = Depends(get_db_session),
+):
+    user = User(db).toggle_active(user_param, q)
     return user
 
 

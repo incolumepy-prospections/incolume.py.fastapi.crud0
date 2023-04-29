@@ -45,7 +45,8 @@ class User:
         )
         return users
 
-    def one(self, id_username_or_email: int | str, q: str = "id") -> UserModel:
+    def one(self, id_username_or_email: int | str, q: str = "") -> UserModel:
+        q = q or "id"
         logging.debug(f"{id_username_or_email=}, {q=}")
         try:
             match q:
@@ -139,3 +140,10 @@ class User:
         user.delete()
         self.db_session.commit()
         return user_db
+
+    def toggle_active(self, param: int | str, q: str = ""):
+        user = self.one(param, q)
+        user.is_active = not user.is_active
+        self.db_session.commit()
+        self.db_session.refresh(user)
+        return user
