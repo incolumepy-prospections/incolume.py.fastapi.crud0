@@ -2,6 +2,8 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
+
+from incolume.py.fastapi.crud0.controllers.utils import QueryUser
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
@@ -68,8 +70,8 @@ def list_users(
     response_model=schemas.UserOut,
 )
 def get_user(
-    id_username_or_email: int | str,
-    q: str = Query(default="id"),
+    id_username_or_email: str,
+    q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):
     user = User(db).one(id_username_or_email, q)
@@ -83,7 +85,7 @@ def get_user(
 )
 def toggle_active_user(
     user_param: int | str,
-    q: Any = Query(default='id'),
+    q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):
     user = User(db).toggle_active(user_param, q)
