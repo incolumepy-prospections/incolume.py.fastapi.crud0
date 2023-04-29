@@ -10,18 +10,24 @@ from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserLogin
 
 
-router = APIRouter(prefix='')
+router = APIRouter(prefix="")
 
 
-@router.get('/favicon')
+@router.get("/favicon")
 async def get_favicon():
-    image: Path = Path(__file__).parents[5].joinpath('static', 'img', 'favicon.png')
+    image: Path = (
+        Path(__file__).parents[5].joinpath("static", "img", "favicon.png")
+    )
     logging.debug(f"{image=}")
-    return FileResponse(image.as_posix(), media_type='image/png')
+    return FileResponse(image.as_posix(), media_type="image/png")
 
 
-@router.post('/login')
-def user_login(username: str = Form(...), password: str = Form(...), db_session: Session = Depends(get_db_session)):
+@router.post("/login")
+def user_login(
+    username: str = Form(...),
+    password: str = Form(...),
+    db_session: Session = Depends(get_db_session),
+):
     user_in = UserLogin(username=username, password=password)
     user_auth = AuthOTP(db_session).login(user_in)
     return user_auth
