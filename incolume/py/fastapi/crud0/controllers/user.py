@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi import status
 from fastapi.exceptions import HTTPException
+from fastapi.responses import UJSONResponse
 
 from incolume.py.fastapi.crud0.models import UserModel
 from incolume.py.fastapi.crud0.schemas import UserIn, UserInDB
@@ -127,12 +128,14 @@ class User:
 
     def delete(self, user_id: int) -> UserModel:
         user = self.db_session.query(UserModel).where(UserModel.id == user_id)
+        user_db = user.first()
+        print(user_db)
         logging.debug(f"{user=}")
-        if not user:
+        if not user_db:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
             )
 
         user.delete()
         self.db_session.commit()
-        return user
+        return user_db

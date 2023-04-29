@@ -2,13 +2,13 @@
 ALGORITHM='HS512'
 API_TITLE='PROTOTIPO'
 API_DESCRIPTION='Protótipo de API Restfull com Python FastAPI, incluindo autenticação, credenciamento e Token de sessão.'
-API_DOCS_URL='/docs'   
+API_DOCS_URL='/docs'
 API_REDOC_URL='/redoc'
 API_CONTACT={name='JEDI', email='contato@incolume.com.br'}
 API_LICENSE={name="Unlicensed", url="https://github.com/incolumepy-prospections/incolume.py.fastapi.crud0/blob/a2057271bf10a59d9a65b01866f243f20d612d5b/LICENSE"}
 LOG_FORMAT='%(asctime)s; %(levelname)-8s; %(name)s; %(module)s; %(funcName)s; %(threadName)s; %(thread)d; %(message)s'
 MSG='Ambiente default'
-REGEX_USERNAME='^(?=.{8}$)(?=.*\d.*\d)[a-z_\d]+$'
+REGEX_USERNAME='^[a-z_\d]{3,}$'
 # https://regex101.com/r/lvGxeH/1
 REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!%*?&]){2})[A-Za-z\d@$!%*?&]{8,}$'
 # openssl rand -hex 64
