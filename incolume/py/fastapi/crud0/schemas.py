@@ -80,3 +80,11 @@ class UserInDB(UserBase):
 
     class Config:
         allow_population_by_field_name = True
+
+
+class UserUpdate(UserBase):
+    username: str = ''
+    email: EmailStr = ''
+    roles: list[Role] = Field(default_factory=list)
+    is_active: bool = Field(default=True)
+    is_admin: bool = Field(default=False)
