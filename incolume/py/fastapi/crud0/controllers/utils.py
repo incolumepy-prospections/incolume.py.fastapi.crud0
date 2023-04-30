@@ -10,9 +10,9 @@ class Role(Flag):
 
 
 class QueryUser(Enum):
-    EMAIL = 'email'
-    ID = 'id'
-    NAME = 'username'
-    USERNAME = 'username'
-    USER_EMAIL = 'email'
-    USER_ID = 'id'
+    EMAIL = "email"
+    ID = "id"
+    NAME = "username"
+    USERNAME = "username"
+    USER_EMAIL = "email"
+    USER_ID = "id"

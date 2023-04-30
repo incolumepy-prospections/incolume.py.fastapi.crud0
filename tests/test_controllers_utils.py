@@ -13,8 +13,21 @@ class TestEnums:
             (Role.ADMINISTRATOR, 'ADMINISTRATOR'),
         ),
     )
-    def test_roles_value(self, entrance, expected):
+    def test_roles_name(self, entrance, expected):
         assert entrance.name == expected
+
+    @pytest.mark.parametrize(
+        'entrance expected'.split(),
+        (
+            (Role.USER, 0),
+            (Role.READER, 1),
+            (Role.EDITOR, 2),
+            (Role.PROOFREADER, 4),
+            (Role.ADMINISTRATOR, 7),
+        ),
+    )
+    def test_roles_value(self, entrance, expected):
+        assert entrance.value == expected
 
     @pytest.mark.parametrize(
         'entrance expected'.split(),
