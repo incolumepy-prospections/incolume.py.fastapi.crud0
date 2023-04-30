@@ -37,9 +37,6 @@ class UserBase(BaseModel):
     username: str
     email: EmailStr | None = None
     full_name: str | None = None
-    roles: list[Role] = Field(default_factory=list)
-    is_active: bool = Field(default=True)
-    is_admin: bool = Field(default=False)
 
     class Config:
         orm_mode = True
@@ -47,6 +44,12 @@ class UserBase(BaseModel):
 
 class UserLogin(UserBase):
     password: str
+
+
+class UserCreate(UserLogin):
+    roles: list[Role] = Field(default_factory=list)
+    is_active: bool = Field(default=True)
+    is_admin: bool = Field(default=False)
 
 
 class UserIn(UserLogin):

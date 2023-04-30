@@ -7,9 +7,9 @@ from passlib.context import CryptContext
 from fastapi import status
 from fastapi.exceptions import HTTPException
 
+from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.models import UserModel
-from incolume.py.fastapi.crud0.schemas import UserIn, UserInDB
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 
@@ -18,15 +18,15 @@ class User:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def __user_in_to_user_in_db(self, user: UserIn) -> UserInDB:
+    def __user_in_to_user_in_db(self, user: schemas.UserIn) -> schemas.UserInDB:
         hash = crypt_context.hash(user.password)
         del user.password
-        new_user = UserInDB(**user.dict(), pw_hash=hash)
+        new_user = schemas.UserInDB(**user.dict(), pw_hash=hash)
         logging.debug(f"{user=}>{new_user=}")
         return new_user
 
-    def create(self, user: UserIn) -> UserModel:
-        new_user: UserInDB = self.__user_in_to_user_in_db(user)
+    def create(self, user: schemas.UserCreate) -> UserModel:
+        new_user: schemas.UserInDB = self.__user_in_to_user_in_db(user)
         user_model = UserModel(**new_user.dict())
         try:
             self.db_session.add(user_model)
@@ -114,7 +114,7 @@ class User:
             )
         return user
 
-    def update(self, user_id: int, user: UserIn) -> UserModel:
+    def update(self, user_id: int, user: schemas.UserIn) -> UserModel:
         logging.debug(f"{user_id=}")
         logging.debug(f"{user=}")
         user_db = self.one(user_id)
@@ -124,7 +124,7 @@ class User:
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
             )
         # TODO: Não permitir que id seja alterado.
-        new_user: UserInDB = self.__user_in_to_user_in_db(user)
+        new_user: schemas.UserInDB = self.__user_in_to_user_in_db(user)
         stmt = (
             update(UserModel).where(user_db.id == user_id).values(**new_user)
         )
