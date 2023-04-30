@@ -1,8 +1,10 @@
+import json
 import re
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, validator, Json
 from config import settings
+from incolume.py.fastapi.crud0.controllers.utils import Role
 
 
 class AccessToken(BaseModel):
@@ -42,6 +44,12 @@ class UserBase(BaseModel):
 
 class UserLogin(UserBase):
     password: str
+
+
+class UserCreate(UserLogin):
+    roles: list[Role] = Field(default_factory=list)
+    is_active: bool = Field(default=True)
+    is_admin: bool = Field(default=False)
 
 
 class UserIn(UserLogin):

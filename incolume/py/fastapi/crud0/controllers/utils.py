@@ -1,12 +1,19 @@
-from enum import Enum, Flag, auto
+from enum import Enum, IntFlag, auto
 
 
-class Role(Flag):
-    USER = 0  # Sem previlégios apenas
-    READER = auto()  # leitor
-    EDITOR = auto()  # editor
-    PROOFREADER = auto()  # Revisor
-    ADMINISTRATOR = USER | READER | EDITOR | PROOFREADER  # Administrador
+class Role(IntFlag):
+    # Sem previlégios apenas
+    USER = 0
+    # leitor
+    READER = auto()
+    # editor
+    EDITOR = auto()
+    # Revisor
+    PROOFREADER = auto()
+    # Gestor/Gerente
+    MANAGER = auto()
+    # Administrador
+    ADMINISTRATOR = USER | READER | EDITOR | PROOFREADER | MANAGER
 
 
 class QueryUser(Enum):

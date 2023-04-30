@@ -8,7 +8,6 @@ from incolume.py.fastapi.crud0.db.connections import (
 )
 from passlib.context import CryptContext
 
-
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
@@ -32,6 +31,7 @@ def create_admin(engine: engine = engine):
             email="admin@example.com",
             full_name="Administrador do Sistema",
             is_admin=True,
+            roles=[0, 1, 2, 3],
             pw_hash=crypt_context.hash("aaQQ!!11"),
         )
         db.add(admin_user)
@@ -46,6 +46,7 @@ def populate_db(quantia: int = 10):
             username=f"user{x:04}",
             email=f"user{x:04}@example.com",
             full_name=f"string {x:04}",
+            roles=[0],
             pw_hash=crypt_context.hash("aaQQ!!11"),
         )
         for x in range(1, quantia + 1)
