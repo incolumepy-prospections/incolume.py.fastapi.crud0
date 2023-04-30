@@ -18,7 +18,9 @@ class User:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def __user_in_to_user_in_db(self, user: schemas.UserIn) -> schemas.UserInDB:
+    def __user_in_to_user_in_db(
+        self, user: schemas.UserIn
+    ) -> schemas.UserInDB:
         hash = crypt_context.hash(user.password)
         del user.password
         new_user = schemas.UserInDB(**user.dict(), pw_hash=hash)
