@@ -91,6 +91,18 @@ class TestSchema:
                     "pw_hash": "",
                 },
             ),
+            pytest.param(
+                schemas.UserCreate(username="", password=""),
+                {
+                    "username": "",
+                    "email": None,
+                    "full_name": None,
+                    "password": "",
+                    "roles": [],
+                    "is_active": True,
+                    "is_admin": False,
+                },
+            ),
         ),
     )
     def test_instancia(self, entrance, expected):
