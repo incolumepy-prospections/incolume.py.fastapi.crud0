@@ -1,5 +1,5 @@
 import logging
-
+import json
 from sqlalchemy import select, delete, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from fastapi import status
 from fastapi.exceptions import HTTPException
 
-from incolume.py.fastapi.crud0.controllers.utils import QueryUser
+from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.models import UserModel
 from incolume.py.fastapi.crud0.schemas import UserIn, UserInDB
 
@@ -150,6 +150,30 @@ class User:
     def toggle_active(self, param: int | str, q: QueryUser = None):
         user = self.one(param, q)
         user.is_active = not user.is_active
+        self.db_session.commit()
+        self.db_session.refresh(user)
+        return user
+
+    def promote_admin(self, param: int | str, q: QueryUser = None):
+        user = self.one(param, q)
+        user.is_admin = not user.is_admin
+        self.db_session.commit()
+        self.db_session.refresh(user)
+        return user
+
+    def set_role(
+        self,
+        param: int | str,
+        roles: list[Role] = None,
+        q: QueryUser = None,
+    ):
+        roles = roles or [Role.USER]
+        logging.debug(f"{param=}, {q=}, {roles=}")
+        logging.debug("--- ** ---")
+        user = self.one(param, q)
+        uroles: list = json.loads(user.roles)
+        user.roles = uroles.extend(roles)
+        logging.debug(roles)
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
