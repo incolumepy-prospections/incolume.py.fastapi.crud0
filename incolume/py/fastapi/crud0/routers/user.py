@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 
-from incolume.py.fastapi.crud0.controllers.utils import QueryUser
+from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
@@ -109,4 +109,19 @@ def update_user(user_id: int, db: Session = Depends(get_db_session)):
 )
 def delete_user(user_id: int, db: Session = Depends(get_db_session)):
     user = User(db).delete(user_id)
+    return user
+
+
+@router.post(
+    "/set-role/{user_param}",
+    summary="Toggle user status for is_active field",
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def set_role_user(
+    user_param: int | str,
+    roles: list[Role] = Query(default=[Role.USER]),
+    q: QueryUser = Query(default=QueryUser.USER_ID),
+    db: Session = Depends(get_db_session),
+):
+    user = User(db).set_role(user_param, roles=roles, q=q)
     return user
