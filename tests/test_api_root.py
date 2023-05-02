@@ -51,15 +51,26 @@ class TestAPI:
         assert response.status_code == expected
 
     @pytest.mark.parametrize(
-        ["entrance", "expected"],
-        (("/", "Ambiente de testes"),),
+        ['entrance', 'expected'],
+        (
+            pytest.param('/', {'message': 'Ambiente de testes'}),
+            pytest.param('/users', [{'username': 'admin', 'email': 'admin@example.com', 'full_name': 'Administrador do Sistema', 'is_active': True}]),
+            pytest.param('/users/1', {'email': 'admin@example.com', 'full_name': 'Administrador do Sistema', 'username': 'admin', 'is_active': True}, marks=''),
+            pytest.param('/users/admin?q=username', {'email': 'admin@example.com', 'full_name': 'Administrador do Sistema', 'username': 'admin', 'is_active': True}, marks=''),
+            pytest.param('/users/admin%40example.com?q=email', {'email': 'admin@example.com', 'full_name': 'Administrador do Sistema', 'username': 'admin', 'is_active': True}),
+            pytest.param('/users/1?q=username', {'detail': 'User not found.'}, marks=''),
+            pytest.param('/users/1?q=user', {'detail': [{'ctx': {'enum_values': ['email', 'id', 'username']}, 'loc': ['query', 'q'], 'msg': "value is not a valid enumeration member; permitted: 'email', 'id', 'username'", 'type': 'type_error.enum'}]}, marks=''),
+            pytest.param('/users/user0001', {'detail': 'User not found.'}, marks=''),
+            pytest.param('/users/user0101%40example.com?q=email', {'detail': 'User not found.'}),
+        ),
     )
     def test_get_endpoint_result(
         self, entrance, expected, client: TestClient
     ) -> None:
         response = client.get(entrance)
         body = response.json()
-        assert body["message"] == expected
+        assert body == expected 
+
 
     @pytest.mark.parametrize(
         "entrance expected".split(),
