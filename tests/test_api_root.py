@@ -21,11 +21,18 @@ class TestAPI:
                 {'username': 'user_003', 'email': 'user03@example.com', 'full_name': 'Usuário do Sistema', 'is_active': True},
                 # marks=pytest.mark.skip
             ),
-            pytest.param(
-                "/users/{username_or_email: str}?username_or_email=user0101%40example.com",
-                404,
-            ),
-            pytest.param("/", 200),
+        ),
+    )
+    def test_post_endpoint_result(self, endpoint, json_data, status, expected, client: TestClient) -> None:
+        response = client.post(endpoint, json=json_data)
+        assert response.status_code == status, response.text
+
+        result = response.json()
+        assert result == expected
+
+    @pytest.mark.parametrize(
+        ['entrance', 'expected'],
+        (
         ),
     )
     def test_get_endpoint_status_code(
