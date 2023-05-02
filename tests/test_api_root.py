@@ -123,11 +123,9 @@ class TestAPI:
             ),
         ),
     )
-    def test_put_endpoint_result(
-        self, entrance, expected, client: TestClient
-    ) -> None:
-        response = client.put(entrance)
-        assert response.status_code == 202
+    def test_delete_endpoint_result(self, entrance, expected, client: TestClient) -> None:
+        response = client.delete(entrance)
+        assert response.status_code == 204
 
         result = response.json()
-        assert result["detail"] == expected
+        assert result['detail'] == expected
