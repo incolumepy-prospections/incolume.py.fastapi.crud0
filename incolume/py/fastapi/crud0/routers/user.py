@@ -73,7 +73,7 @@ def list_users(
     summary="List an user by: id, email or username")
 def get_user(
     id_username_or_email: int|str, 
-    q:str=Query(default='id'), 
+    q:QueryUser=Query(default=QueryUser.ID), 
     db: Session = Depends(get_db_session)
 ):
     user = User(db).one(id_username_or_email, q)
