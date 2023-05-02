@@ -73,42 +73,45 @@ class TestAPI:
 
 
     @pytest.mark.parametrize(
-        "entrance expected".split(),
+        'endpoint status json_data expected'.split(),
         (
             pytest.param(
-                "/",
-                "Ambiente de testes",
-                marks=pytest.mark.skip(reason="Not implemented!"),
+                '/users/user0001', 
+                422, 
+                {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, 
+                {'detail': [{'loc': ['query', 'id_username_or_email'], 'msg': 'field required', 'type': 'value_error.missing'}]},
+                # marks=pytest.mark.skip
+            ),
+            # pytest.param('/users', 422, {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, {'detail': [{'loc': ['body', 'username'], 'msg': 'Invalide format for username', 'type': 'value_error'}, {'loc': ['body', 'password'], 'msg': 'field required', 'type': 'value_error.missing'}]}, marks=''),
+            pytest.param(
+                '/users/1?q=id', 
+                202, 
+                {"username": "user0001", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, 
+                {},
+                marks=pytest.mark.skip
+            ),
+            pytest.param(
+                '/users/admin%40example.com?q=email', 
+                202, 
+                {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, 
+                {},
+                marks=pytest.mark.skip
+            ),
+            pytest.param(
+                '/users/admin?q=username', 
+                202, 
+                {"username": "admin", "email": "admin@example.com", "full_name": "Administrador da API (Aplication Program Interface)."}, 
+                {},
+                marks=pytest.mark.skip
             ),
         ),
     )
-    def test_delete_endpoint_result(
-        self, entrance, expected, client: TestClient
-    ) -> None:
-        response = client.delete(entrance)
-        assert response.status_code == 204
+    def test_put_endpoint_result(self, endpoint, status, json_data, expected, client: TestClient) -> None:
+        response = client.put(endpoint, json=json_data)
+        assert response.status_code == status, response.text
 
         result = response.json()
-        assert result["detail"] == expected
-
-    @pytest.mark.parametrize(
-        "entrance expected".split(),
-        (
-            pytest.param(
-                "/",
-                "Ambiente de testes",
-                marks=pytest.mark.skip(reason="Not implemented!"),
-            ),
-        ),
-    )
-    def test_post_endpoint_result(
-        self, entrance, expected, client: TestClient
-    ) -> None:
-        response = client.post(entrance)
-        assert response.status_code == 202
-
-        result = response.json()
-        assert result["detail"] == expected
+        assert result == expected
 
     @pytest.mark.parametrize(
         "entrance expected".split(),
