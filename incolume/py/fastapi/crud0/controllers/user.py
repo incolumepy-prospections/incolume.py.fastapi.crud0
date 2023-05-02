@@ -68,7 +68,7 @@ class User:
                         status_code=status.HTTP_400_BAD_REQUEST,
                         detail="Query parameter not exists.",
                     )
-            logging.debug(user.__dict__)
+            logging.debug(user)
             return user
         except ValueError as e:
             logging.error(e)
@@ -87,7 +87,7 @@ class User:
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
             )
 
-        logging.debug(f"{user.__dict__=}")
+        logging.debug(f"{user=}")
         return user
 
     def by_username(self, username: str) -> UserModel:
@@ -96,7 +96,7 @@ class User:
             .filter(UserModel.username == username)
             .first()
         )
-        logging.debug(f"{user.__dict__=}")
+        logging.debug(f"{user=}")
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
@@ -109,7 +109,7 @@ class User:
             .filter(UserModel.email == email)
             .first()
         )
-        logging.debug(f"{user.__dict__=}")
+        logging.debug(f"{user=}")
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."

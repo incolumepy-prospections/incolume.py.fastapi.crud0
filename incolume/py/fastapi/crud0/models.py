@@ -33,6 +33,10 @@ class UserModel(Base):
     is_admin = Column(Boolean, default=False)
     items = relationship("ItemModel", back_populates="owner")
 
+    def __str__(self):
+        return f'UserModel {self.__dict__}'
+
+
 
 class ItemModel(Base):
     __tablename__ = "items"
