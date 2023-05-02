@@ -4,19 +4,22 @@ from fastapi.testclient import TestClient
 
 class TestAPI:
     @pytest.mark.parametrize(
-        ["entrance", "expected"],
+        'endpoint status json_data expected'.split(),
         (
-            ("/", 200),
-            ("/users", 202),
+            # pytest.param('/users', 422, {"username": "user", "email": "user@example.com", "full_name": "Administrador do Sistema"}, {'detail': [{'loc': ['body', 'username'], 'msg': 'Invalide format for username', 'type': 'value_error'}, {'loc': ['body', 'password'], 'msg': 'field required', 'type': 'value_error.missing'}]}, marks=''),
             pytest.param(
-                "/users/{username_or_email: str}?username_or_email=user0001",
-                202,
-                marks=pytest.mark.skip(reason="Error on input data .."),
+                '/users', 
+                422, 
+                {"username": "user_002", "email": "user02@example.com", "full_name": "Usuário do Sistema"},
+                {'detail': [{'loc': ['body', 'password'], 'msg': 'field required', 'type': 'value_error.missing'}]},
+                # marks=pytest.mark.skip
             ),
             pytest.param(
-                "/users/{username_or_email: str}?username_or_email=user0001%40example.com",
-                202,
-                marks=pytest.mark.skip(reason="Error on input data .."),
+                '/users', 
+                201, 
+                {"username": "user_003", 'password': 'aaQQ1!1!', "email": "user03@example.com", "full_name": "Usuário do Sistema"},
+                {'username': 'user_003', 'email': 'user03@example.com', 'full_name': 'Usuário do Sistema', 'is_active': True},
+                # marks=pytest.mark.skip
             ),
             pytest.param(
                 "/users/{username_or_email: str}?username_or_email=user0101%40example.com",
