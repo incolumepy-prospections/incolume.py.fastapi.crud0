@@ -33,13 +33,21 @@ class TestAPI:
     @pytest.mark.parametrize(
         ['entrance', 'expected'],
         (
+            pytest.param('/', 200),
+            pytest.param('/users', 202),
+            pytest.param('/users/1', 202, marks=''),
+            pytest.param('/users/admin?q=username', 202, marks=''),
+            pytest.param('/users/admin%40example.com?q=email', 202),
+            pytest.param('/users/1?q=username', 404, marks=''),
+            pytest.param('/users/1?q=user', 422, marks=''),
+            pytest.param('/users/user0001', 404, marks=''),
+            pytest.param('/users/user0101%40example.com?q=email', 404),
         ),
     )
     def test_get_endpoint_status_code(
         self, entrance, expected, client: TestClient
     ) -> None:
         response = client.get(entrance)
-        # print(entrance)
         assert response.status_code == expected
 
     @pytest.mark.parametrize(
