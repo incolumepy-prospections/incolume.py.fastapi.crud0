@@ -24,6 +24,7 @@ class TestAPI:
         ),
     )
     def test_post_endpoint_result(self, endpoint, json_data, status, expected, client: TestClient) -> None:
+        """Test for result post on endpoints."""
         response = client.post(endpoint, json=json_data)
         assert response.status_code == status, response.text
 
@@ -47,6 +48,7 @@ class TestAPI:
     def test_get_endpoint_status_code(
         self, entrance, expected, client: TestClient
     ) -> None:
+        """Test for status_code post on endpoints."""
         response = client.get(entrance)
         assert response.status_code == expected
 
@@ -77,9 +79,9 @@ class TestAPI:
         (
             pytest.param(
                 '/users/user0001', 
-                422, 
+                404, 
                 {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, 
-                {'detail': [{'loc': ['query', 'id_username_or_email'], 'msg': 'field required', 'type': 'value_error.missing'}]},
+                {"detail":"User not found."},
                 # marks=pytest.mark.skip
             ),
             # pytest.param('/users', 422, {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, {'detail': [{'loc': ['body', 'username'], 'msg': 'Invalide format for username', 'type': 'value_error'}, {'loc': ['body', 'password'], 'msg': 'field required', 'type': 'value_error.missing'}]}, marks=''),

@@ -67,17 +67,17 @@ def list_users(
 
 
 @router.get(
-    "/{id_username_or_email}",
-    summary="List an user by: id, email or username",
-    status_code=status.HTTP_202_ACCEPTED,
-    response_model=schemas.UserOut,
-)
+    '/{id_username_or_email}', 
+    status_code=status.HTTP_202_ACCEPTED, 
+    response_model=schemas.UserOut, 
+    summary="List an user by: id, email or username")
 def get_user(
-    id_username_or_email: str,
-    q: QueryUser = Query(default=QueryUser.USER_ID),
-    db: Session = Depends(get_db_session),
+    id_username_or_email: int|str, 
+    q:QueryUser=Query(default=QueryUser.ID), 
+    db: Session = Depends(get_db_session)
 ):
     user = User(db).one(id_username_or_email, q)
+    logging.debug(user)
     return user
 
 
@@ -96,20 +96,18 @@ def toggle_active_user(
 
 
 @router.put(
-    "/{user_id}",
+    "/{id_username_or_email}",
     status_code=status.HTTP_202_ACCEPTED,
     summary="Update data for user by id",
 )
-@router.get('/{id_username_or_email}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut, summary="List an user by: id, email or username")
-def get_user(id_username_or_email: int|str, q:str=Query(default='id'), db: Session = Depends(get_db_session)):
-    user = User(db).one(id_username_or_email, q)
-    logging.debug(user)
-    return user
-
-@router.put('/{user_id}', status_code=status.HTTP_202_ACCEPTED, summary="Update data for user by id")
-def update_user(user_id: int, db: Session = Depends(get_db_session)):
-    user = User(db).update(user_id)
-    return user
+def update_user(
+    user: schemas.UserUpdate,
+    id_username_or_email: str,
+    q: QueryUser = Query(default=QueryUser.USER_ID),
+    db: Session = Depends(get_db_session)
+):
+    user_updated = User(db).update(param=id_username_or_email, q=q, user=user)
+    return user_updated
 
 
 @router.delete(

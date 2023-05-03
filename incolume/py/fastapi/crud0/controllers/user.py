@@ -18,8 +18,8 @@ class User:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def __user_in_to_user_in_db(
-        self, user: schemas.UserIn
+    def __schema_user_to_user_in_db(
+        self, user: schemas.UserLogin
     ) -> schemas.UserInDB:
         hash = crypt_context.hash(user.password)
         del user.password
@@ -28,7 +28,7 @@ class User:
         return new_user
 
     def create(self, user: schemas.UserCreate) -> UserModel:
-        new_user: schemas.UserInDB = self.__user_in_to_user_in_db(user)
+        new_user: schemas.UserInDB = self.__schema_user_to_user_in_db(user)
         user_model = UserModel(**new_user.dict())
         try:
             self.db_session.add(user_model)
@@ -116,19 +116,30 @@ class User:
             )
         return user
 
-    def update(self, user_id: int, user: schemas.UserIn) -> UserModel:
-        logging.debug(f"{user_id=}")
-        logging.debug(f"{user=}")
-        user_db = self.one(user_id)
-        logging.debug(f"{user_db=}")
+    def update(
+        self,
+        user: schemas.UserUpdate,
+        param: int | str,
+        q: QueryUser = None
+    ) -> UserModel:
+        logging.debug('--- User.update ---')
+        q = q or QueryUser.USER_ID
+        logging.debug(f"{param=}, {q=}, {user.dict()=}")
+        user_db = self.one(param, q)
+        logging.debug(f"{user_db.__dict__=}")
         if not user_db:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
             )
         # TODO: Não permitir que id seja alterado.
-        new_user: schemas.UserInDB = self.__user_in_to_user_in_db(user)
+        # TODO: Não permitir que senha seja alterada.
+        new_user: schemas.UserInDB = schemas.UserInDB(
+            **user.dict(), pw_hash=user_db.pw_hash)
+        logging.debug(f'{new_user=}')
+
         stmt = (
-            update(UserModel).where(user_db.id == user_id).values(**new_user)
+            update(UserModel).where(
+                user_db.username == user.username).values(**new_user)
         )
         self.db_session.execute(stmt)
         self.db_session.commit()
