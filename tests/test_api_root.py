@@ -215,20 +215,54 @@ class TestAPI:
         assert result == expected
 
     @pytest.mark.parametrize(
-        "entrance expected".split(),
+        "entrance status expected".split(),
         (
             pytest.param(
-                "/",
-                "Ambiente de testes",
-                marks=pytest.mark.skip(reason="Not implemented!"),
+                "/users/xpto?q=username",
+                404,
+                {'detail': 'User not found.'},
+                # marks=pytest.mark.skip(reason="Not implemented!"),
+            ),
+            pytest.param(
+                "/users/xpto?q=id",
+                404,
+                {'detail': 'User not found.'},
+                # marks=pytest.mark.skip(reason="Not implemented!"),
+            ),
+            pytest.param(
+                "/users/xpto?q=email",
+                404,
+                {'detail': 'User not found.'},
+                # marks=pytest.mark.skip(reason="Not implemented!"),
+            ),
+            pytest.param(
+                "/users/xpto@example.com?q=username",
+                404,
+                {'detail': 'User not found.'},
+                # marks=pytest.mark.skip(reason="Not implemented!"),
+            ),
+            pytest.param(
+                "/users/1",
+                202,
+                {
+                    'username': 'admin', 
+                    'roles': 15, 
+                    'email': 'admin@example.com', 
+                    'id': 1, 
+                    'full_name': 'Administrador do Sistema', 
+                    'is_active': True
+                },
+                # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
         ),
     )
     def test_delete_endpoint_result(
-        self, entrance, expected, client: TestClient
+        self, entrance, status, expected, one_user, client: TestClient,
     ) -> None:
+        """Test endpoint delete."""
+
         response = client.delete(entrance)
-        assert response.status_code == 204
+        assert response.status_code == status
 
         result = response.json()
-        assert result["detail"] == expected
+        assert expected.items() <= result.items()

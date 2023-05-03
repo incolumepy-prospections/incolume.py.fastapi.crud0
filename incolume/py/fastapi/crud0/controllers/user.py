@@ -122,11 +122,15 @@ class User:
         param: int | str,
         q: QueryUser = None
     ) -> UserModel:
+        """Update Users."""
         logging.debug('--- User.update ---')
+        
         q = q or QueryUser.USER_ID
         logging.debug(f"{param=}, {q=}, {user.dict()=}")
+
         user_db = self.one(param, q)
         logging.debug(f"{user_db.__dict__=}")
+
         if not user_db:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
@@ -146,10 +150,31 @@ class User:
         self.db_session.refresh(user_db)
         return user_db
 
-    def delete(self, user_id: int) -> UserModel:
-        user = self.db_session.query(UserModel).where(UserModel.id == user_id)
+    def delete(self, param: int|str, q: QueryUser = None) -> UserModel:
+        """Delete User."""
+        q = q or QueryUser.ID
+        try:
+            match q:
+                case QueryUser.USER_ID:
+                    user = self.db_session.query(UserModel).where(UserModel.id == int(param))
+                case QueryUser.USER_EMAIL:
+                    user = self.db_session.query(UserModel).where(UserModel.email == param)
+                case QueryUser.USERNAME:
+                    user = self.db_session.query(UserModel).where(UserModel.username == param)
+                case _:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail="Query parameter not exists.",
+                    )
+
+        except ValueError as e:
+            logging.error(e)
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
+            )
+
         user_db = user.first()
-        print(user_db)
+        logging.debug(f'{user_db=}')
         logging.debug(f"{user=}")
         if not user_db:
             raise HTTPException(

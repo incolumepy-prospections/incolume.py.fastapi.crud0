@@ -94,13 +94,12 @@ class TestSchema:
             pytest.param(
                 schemas.UserCreate(username="", password=""),
                 {
-                    "username": "",
-                    "email": None,
-                    "full_name": None,
-                    "password": "",
-                    "roles": [],
-                    "is_active": True,
-                    "is_admin": False,
+                    'username': '', 
+                    'email': None, 
+                    'full_name': None, 
+                    'password': '', 
+                    'roles': 0, 
+                    'is_active': True
                 },
             ),
         ),

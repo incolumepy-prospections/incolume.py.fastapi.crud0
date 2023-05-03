@@ -29,8 +29,7 @@ class UserModel(Base):
     email = Column("email", String, nullable=False, unique=True, index=True)
     full_name = Column("full_name", String, nullable=False)
     is_active = Column(Boolean, default=True)
-    roles = Column("roles", JSON)
-    is_admin = Column(Boolean, default=False)
+    roles = Column("roles", Integer)
     items = relationship("ItemModel", back_populates="owner")
 
     def __str__(self):
