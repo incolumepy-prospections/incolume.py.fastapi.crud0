@@ -5,6 +5,7 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field, validator, Json
 from config import settings
 from incolume.py.fastapi.crud0.controllers.utils import Role
+from typing import Optional
 
 
 class AccessToken(BaseModel):
@@ -47,9 +48,8 @@ class UserLogin(UserBase):
 
 
 class UserCreate(UserLogin):
-    roles: list[Role] = Field(default_factory=list)
+    roles: Optional[Role] = Field(default=Role.USER)
     is_active: bool = Field(default=True)
-    is_admin: bool = Field(default=False)
 
 
 class UserIn(UserLogin):
@@ -83,8 +83,7 @@ class UserInDB(UserBase):
 
 
 class UserUpdate(UserBase):
-    username: str = ""
-    email: EmailStr = ""
-    roles: list[Role] = Field(default_factory=list)
-    is_active: bool = Field(default=True)
-    is_admin: bool = Field(default=False)
+    username: Optional[str] = ''
+    email: Optional[EmailStr] = ''
+    roles: Optional[Role] = Field(default=Role.USER)
+    is_active: Optional[bool] = Field(default=True)

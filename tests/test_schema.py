@@ -100,7 +100,6 @@ class TestSchema:
                     "password": "",
                     "roles": [],
                     "is_active": True,
-                    "is_admin": False,
                 },
             ),
         ),

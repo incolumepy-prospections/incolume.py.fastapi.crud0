@@ -1,5 +1,6 @@
 from incolume.py.fastapi.crud0.models import UserModel
 from incolume.py.fastapi.crud0 import schemas
+from incolume.py.fastapi.crud0.controllers import utils
 from incolume.py.fastapi.crud0.db.connections import (
     Base,
     engine,
@@ -30,8 +31,7 @@ def create_admin(engine: engine = engine):
             username="admin",
             email="admin@example.com",
             full_name="Administrador do Sistema",
-            is_admin=True,
-            roles=[0, 1, 2, 3],
+            roles=utils.Role.ADMINISTRATOR,
             pw_hash=crypt_context.hash("aaQQ!!11"),
         )
         db.add(admin_user)
@@ -45,8 +45,8 @@ def populate_db(quantia: int = 10):
         UserModel(
             username=f"user{x:04}",
             email=f"user{x:04}@example.com",
-            full_name=f"string {x:04}",
-            roles=[0],
+            full_name=f"User{x:04} do Sistema",
+            roles=utils.Role.USER,
             pw_hash=crypt_context.hash("aaQQ!!11"),
         )
         for x in range(1, quantia + 1)
