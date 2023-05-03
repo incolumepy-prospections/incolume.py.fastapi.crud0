@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from fastapi import APIRouter, Depends, status, Query
-from fastapi import APIRouter, Depends, status, Query 
+from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.db.connections import get_db_session
@@ -67,14 +67,15 @@ def list_users(
 
 
 @router.get(
-    '/{id_username_or_email}', 
-    status_code=status.HTTP_202_ACCEPTED, 
-    response_model=schemas.UserOut, 
-    summary="List an user by: id, email or username")
+    "/{id_username_or_email}",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=schemas.UserOut,
+    summary="List an user by: id, email or username",
+)
 def get_user(
-    id_username_or_email: int|str, 
-    q:QueryUser=Query(default=QueryUser.ID), 
-    db: Session = Depends(get_db_session)
+    id_username_or_email: int | str,
+    q: QueryUser = Query(default=QueryUser.ID),
+    db: Session = Depends(get_db_session),
 ):
     user = User(db).one(id_username_or_email, q)
     logging.debug(user)
@@ -104,7 +105,7 @@ def update_user(
     user: schemas.UserUpdate,
     id_username_or_email: str,
     q: QueryUser = Query(default=QueryUser.USER_ID),
-    db: Session = Depends(get_db_session)
+    db: Session = Depends(get_db_session),
 ):
     user_updated = User(db).update(param=id_username_or_email, q=q, user=user)
     return user_updated
