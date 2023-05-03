@@ -4,7 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from config import settings
 
 Base = declarative_base()
-engine = create_engine(settings.db_url, pool_pre_ping=True, connect_args={"check_same_thread": False})
+engine = create_engine(
+    settings.db_url,
+    pool_pre_ping=True,
+    connect_args={"check_same_thread": False},
+)
 Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 
@@ -14,4 +18,3 @@ def get_db_session():
         yield session
     finally:
         session.close()
-

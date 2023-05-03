@@ -2,20 +2,27 @@
 ALGORITHM='HS512'
 API_TITLE='PROTOTIPO'
 API_DESCRIPTION='Protótipo de API Restfull com Python FastAPI, incluindo autenticação, credenciamento e Token de sessão.'
-API_DOCS_URL='/docs'   
+API_DOCS_URL='/docs'
 API_REDOC_URL='/redoc'
 API_CONTACT={name='JEDI', email='contato@incolume.com.br'}
+API_LICENSE={name="Unlicensed", url="https://github.com/incolumepy-prospections/incolume.py.fastapi.crud0/blob/a2057271bf10a59d9a65b01866f243f20d612d5b/LICENSE"}
 LOG_FORMAT='%(asctime)s; %(levelname)-8s; %(name)s; %(module)s; %(funcName)s; %(threadName)s; %(thread)d; %(message)s'
 MSG='Ambiente default'
-REGEX_USERNAME='^(?=.{8}$)(?=.*\d.*\d)[a-z_\d]+$'
+REGEX_USERNAME='^[a-z_\d]{3,}$'
 # https://regex101.com/r/lvGxeH/1
 REGEX_PASSWORD='^(?=(?:.*[a-z]){2})(?=(?:.*[A-Z]){2})(?=(?:.*\d){2})(?=(?:.*[@$!%*?&]){2})[A-Za-z\d@$!%*?&]{8,}$'
 # openssl rand -hex 64
 SECRET_KEY='0bc92d4f31500f1cf8fa53cf3c44dac5a804cc3a9534bf65aaf6db6ce8ba26c34d1da5c95a148b05595ef8127e78494ab2a451aefb812dd86ed5d90831d40c41'
+OTP_KEY='3F9FA81EEDCDD34036A8A8FB39DE7D2681279DCF'
+OTP_TITLE='Security Level'
 
 [[default.API_OPENAPI_TAGS]]
 name = 'Auth'
 description = 'Endpoints referentes a Autenticação.'
+
+[[default.API_OPENAPI_TAGS]]
+name = 'Auth OTP'
+description = 'Endpoints referentes a Autenticação OTP (One True Pairing).'
 
 [[default.API_OPENAPI_TAGS]]
 name = 'Users'
