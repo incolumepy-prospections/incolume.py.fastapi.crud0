@@ -112,7 +112,7 @@ def update_user(
 
 
 @router.delete(
-    "/{user_id}",
+    "/{param}",
     status_code=status.HTTP_202_ACCEPTED,
     summary="Delete an user by id",
 )
