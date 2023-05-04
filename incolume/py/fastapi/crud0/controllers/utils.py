@@ -2,7 +2,7 @@ from enum import Enum, IntFlag, auto
 
 
 class Role(IntFlag):
-    # Sem previlégios apenas
+    # Sem previlégios pública
     USER = 0
     # leitor
     READER = auto()
@@ -13,7 +13,8 @@ class Role(IntFlag):
     # Gestor/Gerente
     MANAGER = auto()
     # Administrador
-    ADMINISTRATOR = USER | READER | EDITOR | PROOFREADER | MANAGER
+    # ADMINISTRATOR = USER | READER | EDITOR | PROOFREADER | MANAGER
+    ADMINISTRATOR = auto()
 
 
 class QueryUser(Enum):

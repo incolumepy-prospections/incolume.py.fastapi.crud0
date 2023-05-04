@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi import status
 from fastapi.exceptions import HTTPException
+from inspect import stack
 
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
@@ -216,16 +217,16 @@ class User:
     def set_role(
         self,
         param: int | str,
-        roles: list[Role] = None,
         q: QueryUser = None,
+        roles: Role = None,
     ):
-        roles = roles or [Role.USER]
+        logging.debug(f"--- {stack()[0][3]} ---")
+        roles = roles or Role.USER
+        q = q or QueryUser.ID
         logging.debug(f"{param=}, {q=}, {roles=}")
-        logging.debug("--- ** ---")
         user = self.one(param, q)
-        uroles: list = json.loads(user.roles)
-        user.roles = uroles.extend(roles)
-        logging.debug(roles)
+        user.roles = Role(roles)
+        logging.debug(f'{roles=} > {user.roles=}')
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
