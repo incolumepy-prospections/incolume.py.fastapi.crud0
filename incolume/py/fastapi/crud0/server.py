@@ -56,7 +56,7 @@ async def redirect_pydantic():
     include_in_schema=False,
 )
 async def redirect_pydantic():
-    return "/img/favicon.png"
+    return "/static/img/favicon.png"
 
 
 app.include_router(

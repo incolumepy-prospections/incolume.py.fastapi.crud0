@@ -68,7 +68,6 @@ class UserIn(UserLogin):
 
 class UserOut(UserBase):
     is_active: bool = Field(default=True)
-    pass
 
 
 class UserInDB(UserBase):

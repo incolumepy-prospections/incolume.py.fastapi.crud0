@@ -124,7 +124,7 @@ class User:
     ) -> UserModel:
         """Update Users."""
         logging.debug('--- User.update ---')
-        
+
         q = q or QueryUser.USER_ID
         logging.debug(f"{param=}, {q=}, {user.dict()=}")
 
@@ -137,30 +137,44 @@ class User:
             )
         # TODO: Não permitir que id seja alterado.
         # TODO: Não permitir que senha seja alterada.
-        new_user: schemas.UserInDB = schemas.UserInDB(
-            **user.dict(), pw_hash=user_db.pw_hash)
-        logging.debug(f'{new_user=}')
-
-        stmt = (
-            update(UserModel).where(
-                user_db.username == user.username).values(**new_user)
-        )
-        self.db_session.execute(stmt)
-        self.db_session.commit()
-        self.db_session.refresh(user_db)
+        # new_user: schemas.UserInDB = schemas.UserInDB(
+        #     **user.dict(), pw_hash=user_db.pw_hash)
+        # logging.debug(f'{new_user=}')
+        try:
+            stmt = (
+                update(UserModel).where(
+                    UserModel.username == user.username
+                ).values(
+                    username=user.username,
+                    full_name=user.full_name,
+                    email=user.email,
+                )
+            )
+            self.db_session.execute(stmt)
+            self.db_session.commit()
+            self.db_session.refresh(user_db)
+        except IntegrityError:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"'{user.username}' "
+                       f"or '{user.email}' already registered.",
+            )
         return user_db
 
-    def delete(self, param: int|str, q: QueryUser = None) -> UserModel:
+    def delete(self, param: int | str, q: QueryUser = None) -> UserModel:
         """Delete User."""
         q = q or QueryUser.ID
         try:
             match q:
                 case QueryUser.USER_ID:
-                    user = self.db_session.query(UserModel).where(UserModel.id == int(param))
+                    user = self.db_session.query(UserModel).where(
+                        UserModel.id == int(param))
                 case QueryUser.USER_EMAIL:
-                    user = self.db_session.query(UserModel).where(UserModel.email == param)
+                    user = self.db_session.query(UserModel).where(
+                        UserModel.email == param)
                 case QueryUser.USERNAME:
-                    user = self.db_session.query(UserModel).where(UserModel.username == param)
+                    user = self.db_session.query(UserModel).where(
+                        UserModel.username == param)
                 case _:
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,

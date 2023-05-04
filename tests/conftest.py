@@ -21,7 +21,7 @@ def client() -> Generator:
 
         recreate_db()
         create_admin()
-        # populate_db(30)
+        populate_db(3)
         with TestClient(app) as cliente:
             yield cliente
 
@@ -29,17 +29,3 @@ def client() -> Generator:
 @pytest.fixture(scope="module")
 def db_session() -> Session:
     return get_db_session()
-
-@pytest.fixture(scope="function")
-def one_user() -> None:
-    with Session() as db:
-        db.add(
-            UserModel(
-                username="user",
-                email="user@example.com",
-                full_name="Usuário do Sistema",
-                roles=utils.Role.USER,
-                pw_hash=crypt_context.hash("aaQQ!!11"),
-            )
-        )
-        db.commit()
