@@ -22,7 +22,7 @@ router = APIRouter()
     response_model=schemas.UserOut,
     summary="Create an User",
 )
-def signin(
+def create_user(
     user: schemas.UserCreate, session: Session = Depends(get_db_session)
 ):
     new_user: UserModel = User(session).create(user)
