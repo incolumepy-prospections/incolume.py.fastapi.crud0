@@ -25,7 +25,7 @@ class TestEnums:
             (Role.EDITOR, 2),
             (Role.PROOFREADER, 4),
             (Role.MANAGER, 8),
-            (Role.ADMINISTRATOR, 15),
+            (Role.ADMINISTRATOR, 16),
         ),
     )
     def test_roles_value(self, entrance, expected):

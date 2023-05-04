@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, status, Query
 from fastapi.responses import Response, UJSONResponse
@@ -10,6 +10,8 @@ from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
 from incolume.py.fastapi.crud0.models import UserModel
 from functools import singledispatch
+from inspect import stack
+
 
 router = APIRouter()
 
@@ -125,14 +127,15 @@ def delete_user(param: str, q: QueryUser = QueryUser.ID,
 
 @router.post(
     "/set-role/{user_param}",
-    summary="Toggle user status for is_active field",
+    summary="Toggle role for actived users.",
     status_code=status.HTTP_202_ACCEPTED,
 )
 def set_role_user(
     user_param: int | str,
-    roles: Role = Query(default=[Role.USER]),
-    q: QueryUser = Query(default=QueryUser.USER_ID),
+    q: QueryUser = Query(title='Query type', description='Query type for user_param', default=QueryUser.USER_ID),
+    roles: Role = Query(default=Role.USER, description=f'Avaliables: {list(Role)}'),
     db: Session = Depends(get_db_session),
 ):
+    logging.debug(f'{stack()[0][3]}')
     user = User(db).set_role(user_param, roles=roles, q=q)
     return user

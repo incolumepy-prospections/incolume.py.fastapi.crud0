@@ -269,7 +269,7 @@ class TestAPI:
                 202,
                 {
                     'username': 'admin',
-                    'roles': 15,
+                    'roles': 16,
                     'email': 'admin@example.com',
                     'id': 1,
                     'full_name': 'Administrador do Sistema',
