@@ -124,7 +124,7 @@ class User:
     ) -> UserModel:
         """Update Users."""
         logging.debug('--- User.update ---')
-        
+
         q = q or QueryUser.USER_ID
         logging.debug(f"{param=}, {q=}, {user.dict()=}")
 
@@ -137,13 +137,18 @@ class User:
             )
         # TODO: Não permitir que id seja alterado.
         # TODO: Não permitir que senha seja alterada.
-        new_user: schemas.UserInDB = schemas.UserInDB(
-            **user.dict(), pw_hash=user_db.pw_hash)
-        logging.debug(f'{new_user=}')
+        # new_user: schemas.UserInDB = schemas.UserInDB(
+        #     **user.dict(), pw_hash=user_db.pw_hash)
+        # logging.debug(f'{new_user=}')
 
         stmt = (
             update(UserModel).where(
-                user_db.username == user.username).values(**new_user)
+                user_db.username == user.username
+            ).values(
+                username=user.username,
+                full_name=user.full_name,
+                email=user.email,
+            )
         )
         self.db_session.execute(stmt)
         self.db_session.commit()

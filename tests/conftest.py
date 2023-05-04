@@ -21,7 +21,7 @@ def client() -> Generator:
 
         recreate_db()
         create_admin()
-        # populate_db(30)
+        populate_db()
         with TestClient(app) as cliente:
             yield cliente
 
@@ -29,6 +29,7 @@ def client() -> Generator:
 @pytest.fixture(scope="module")
 def db_session() -> Session:
     return get_db_session()
+
 
 @pytest.fixture(scope="function")
 def one_user() -> None:

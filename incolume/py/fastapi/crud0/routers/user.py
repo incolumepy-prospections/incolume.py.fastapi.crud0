@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from fastapi import APIRouter, Depends, status, Query
-from fastapi import APIRouter, Depends, status, Query
+from fastapi.responses import Response, UJSONResponse
 from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.db.connections import get_db_session
@@ -99,6 +99,7 @@ def toggle_active_user(
 @router.put(
     "/{id_username_or_email}",
     status_code=status.HTTP_202_ACCEPTED,
+    response_model=schemas.UserOut,
     summary="Update data for user by id",
 )
 def update_user(
@@ -116,7 +117,8 @@ def update_user(
     status_code=status.HTTP_202_ACCEPTED,
     summary="Delete an user by id",
 )
-def delete_user(param: str, q: QueryUser = QueryUser.ID, db: Session = Depends(get_db_session)):
+def delete_user(param: str, q: QueryUser = QueryUser.ID,
+                db: Session = Depends(get_db_session)):
     user = User(db).delete(param=param, q=q)
     return user
 
@@ -128,7 +130,7 @@ def delete_user(param: str, q: QueryUser = QueryUser.ID, db: Session = Depends(g
 )
 def set_role_user(
     user_param: int | str,
-    roles: list[Role] = Query(default=[Role.USER]),
+    roles: Role = Query(default=[Role.USER]),
     q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):

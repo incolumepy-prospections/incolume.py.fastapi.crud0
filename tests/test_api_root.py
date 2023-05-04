@@ -159,6 +159,22 @@ class TestAPI:
         "endpoint status json_data expected".split(),
         (
             pytest.param(
+                '/users/user0001?q=username',
+                202,
+                {
+                    "username": "fulano",
+                    "email": "fulano@example.com",
+                    "full_name": "Fulano da Silva"
+                },
+                {
+                    'username': 'fulano',
+                    'email': 'fulano@example.com',
+                    'full_name': 'Fulano da Silva',
+                    'is_active': True
+                },
+                marks=pytest.mark.skip
+            ),
+            pytest.param(
                 "/users/user0001",
                 404,
                 {
@@ -169,7 +185,6 @@ class TestAPI:
                 {"detail": "User not found."},
                 # marks=pytest.mark.skip
             ),
-            # pytest.param('/users', 422, {"username": "admin", "email": "admin@example.com", "full_name": "Administrador do Sistema"}, {'detail': [{'loc': ['body', 'username'], 'msg': 'Invalide format for username', 'type': 'value_error'}, {'loc': ['body', 'password'], 'msg': 'field required', 'type': 'value_error.missing'}]}, marks=''),
             pytest.param(
                 "/users/1?q=id",
                 202,
@@ -179,15 +194,15 @@ class TestAPI:
                     "full_name": "Administrador do Sistema",
                 },
                 {},
-                marks=pytest.mark.skip,
+                # marks=pytest.mark.skip,
             ),
             pytest.param(
-                "/users/admin%40example.com?q=email",
+                "/users/user0010%40example.com?q=email",
                 202,
                 {
-                    "username": "admin",
-                    "email": "admin@example.com",
-                    "full_name": "Administrador do Sistema",
+                    "username": "usernew",
+                    "email": "usernew@example.com",
+                    "full_name": "usernew@example.com",
                 },
                 {},
                 marks=pytest.mark.skip,
@@ -208,6 +223,7 @@ class TestAPI:
     def test_put_endpoint_result(
         self, endpoint, status, json_data, expected, client: TestClient
     ) -> None:
+        print(client.get('/users').json())
         response = client.put(endpoint, json=json_data)
         assert response.status_code == status, response.text
 
@@ -245,11 +261,11 @@ class TestAPI:
                 "/users/1",
                 202,
                 {
-                    'username': 'admin', 
-                    'roles': 15, 
-                    'email': 'admin@example.com', 
-                    'id': 1, 
-                    'full_name': 'Administrador do Sistema', 
+                    'username': 'admin',
+                    'roles': 15,
+                    'email': 'admin@example.com',
+                    'id': 1,
+                    'full_name': 'Administrador do Sistema',
                     'is_active': True
                 },
                 # marks=pytest.mark.skip(reason="Not implemented!"),
