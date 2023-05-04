@@ -119,8 +119,11 @@ def update_user(
     status_code=status.HTTP_202_ACCEPTED,
     summary="Delete an user by id",
 )
-def delete_user(param: str, q: QueryUser = QueryUser.ID,
-                db: Session = Depends(get_db_session)):
+def delete_user(
+    param: str,
+    q: QueryUser = QueryUser.ID,
+    db: Session = Depends(get_db_session),
+):
     user = User(db).delete(param=param, q=q)
     return user
 
@@ -132,10 +135,16 @@ def delete_user(param: str, q: QueryUser = QueryUser.ID,
 )
 def set_role_user(
     user_param: int | str,
-    q: QueryUser = Query(title='Query type', description='Query type for user_param', default=QueryUser.USER_ID),
-    roles: Role = Query(default=Role.USER, description=f'Avaliables: {list(Role)}'),
+    q: QueryUser = Query(
+        title="Query type",
+        description="Query type for user_param",
+        default=QueryUser.USER_ID,
+    ),
+    roles: Role = Query(
+        default=Role.USER, description=f"Avaliables: {list(Role)}"
+    ),
     db: Session = Depends(get_db_session),
 ):
-    logging.debug(f'{stack()[0][3]}')
+    logging.debug(f"{stack()[0][3]}")
     user = User(db).set_role(user_param, roles=roles, q=q)
     return user

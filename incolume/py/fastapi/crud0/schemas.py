@@ -82,7 +82,7 @@ class UserInDB(UserBase):
 
 
 class UserUpdate(UserBase):
-    username: Optional[str] = ''
-    email: Optional[EmailStr] = ''
+    username: Optional[str] = ""
+    email: Optional[EmailStr] = ""
     roles: Optional[Role] = Field(default=Role.USER)
     is_active: Optional[bool] = Field(default=True)

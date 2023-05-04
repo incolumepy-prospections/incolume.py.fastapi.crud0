@@ -82,14 +82,32 @@ class TestAPI:
             pytest.param("/", {"message": "Ambiente de testes"}),
             pytest.param(
                 "/users",
-                [{'username': 'admin', 'email': 'admin@example.com',
-                  'full_name': 'Administrador do Sistema', 'is_active': True},
-                 {'username': 'user0001', 'email': 'user0001@example.com',
-                  'full_name': 'User0001 do Sistema', 'is_active': True},
-                 {'username': 'user0002', 'email': 'user0002@example.com',
-                  'full_name': 'User0002 do Sistema', 'is_active': True},
-                 {'username': 'user0003', 'email': 'user0003@example.com',
-                  'full_name': 'User0003 do Sistema', 'is_active': True}],
+                [
+                    {
+                        "username": "admin",
+                        "email": "admin@example.com",
+                        "full_name": "Administrador do Sistema",
+                        "is_active": True,
+                    },
+                    {
+                        "username": "user0001",
+                        "email": "user0001@example.com",
+                        "full_name": "User0001 do Sistema",
+                        "is_active": True,
+                    },
+                    {
+                        "username": "user0002",
+                        "email": "user0002@example.com",
+                        "full_name": "User0002 do Sistema",
+                        "is_active": True,
+                    },
+                    {
+                        "username": "user0003",
+                        "email": "user0003@example.com",
+                        "full_name": "User0003 do Sistema",
+                        "is_active": True,
+                    },
+                ],
             ),
             pytest.param(
                 "/users/1",
@@ -177,7 +195,9 @@ class TestAPI:
                     "email": "admin@example.com",
                     "full_name": "Administrador do Sistema",
                 },
-                {"detail":"'user0001' or 'admin@example.com' already registered."},
+                {
+                    "detail": "'user0001' or 'admin@example.com' already registered."
+                },
                 # marks=pytest.mark.skip,
             ),
             pytest.param(
@@ -189,10 +209,10 @@ class TestAPI:
                     "full_name": "fake@example.com",
                 },
                 {
-                    'username': 'user0001',
-                    'email': 'fake@example.com',
-                    'full_name': 'fake@example.com',
-                    'is_active': True
+                    "username": "user0001",
+                    "email": "fake@example.com",
+                    "full_name": "fake@example.com",
+                    "is_active": True,
                 },
                 # marks=pytest.mark.skip,
             ),
@@ -204,9 +224,12 @@ class TestAPI:
                     "email": "admin@acme.com",
                     "full_name": "Administrador da API (Aplication Program Interface).",
                 },
-                {'username': 'admin', 'email': 'admin@acme.com',
-                 'full_name': 'Administrador da API (Aplication Program Interface).',
-                 'is_active': True},
+                {
+                    "username": "admin",
+                    "email": "admin@acme.com",
+                    "full_name": "Administrador da API (Aplication Program Interface).",
+                    "is_active": True,
+                },
                 # marks=pytest.mark.skip,
             ),
             pytest.param(
@@ -218,10 +241,10 @@ class TestAPI:
                     "full_name": "fake@example.com",
                 },
                 {
-                    'username': 'user0001',
-                    'email': 'fake@example.com',
-                    'full_name': 'fake@example.com',
-                    'is_active': True
+                    "username": "user0001",
+                    "email": "fake@example.com",
+                    "full_name": "fake@example.com",
+                    "is_active": True,
                 },
                 # marks=pytest.mark.skip,
             ),
@@ -243,44 +266,48 @@ class TestAPI:
             pytest.param(
                 "/users/xpto?q=username",
                 404,
-                {'detail': 'User not found.'},
+                {"detail": "User not found."},
                 # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
             pytest.param(
                 "/users/xpto?q=id",
                 404,
-                {'detail': 'User not found.'},
+                {"detail": "User not found."},
                 # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
             pytest.param(
                 "/users/xpto?q=email",
                 404,
-                {'detail': 'User not found.'},
+                {"detail": "User not found."},
                 # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
             pytest.param(
                 "/users/xpto@example.com?q=username",
                 404,
-                {'detail': 'User not found.'},
+                {"detail": "User not found."},
                 # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
             pytest.param(
                 "/users/1",
                 202,
                 {
-                    'username': 'admin',
-                    'roles': 16,
-                    'email': 'admin@example.com',
-                    'id': 1,
-                    'full_name': 'Administrador do Sistema',
-                    'is_active': True
+                    "username": "admin",
+                    "roles": 16,
+                    "email": "admin@example.com",
+                    "id": 1,
+                    "full_name": "Administrador do Sistema",
+                    "is_active": True,
                 },
                 # marks=pytest.mark.skip(reason="Not implemented!"),
             ),
         ),
     )
     def test_delete_endpoint_result(
-        self, entrance, status, expected, client: TestClient,
+        self,
+        entrance,
+        status,
+        expected,
+        client: TestClient,
     ) -> None:
         """Test endpoint delete."""
 
