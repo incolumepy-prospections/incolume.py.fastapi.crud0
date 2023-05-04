@@ -55,8 +55,14 @@ class TestSchema:
                 marks=pytest.mark.skip,
             ),
             pytest.param(
-                schemas.UserBase(username="", password=""),
-                {"username": "", "email": None, "full_name": None},
+                schemas.UserBase(username="aaa", password=""),
+                {
+                    "username": "aaa",
+                    "email": None,
+                    "full_name": None,
+                    "roles": 0,
+                    "is_active": True,
+                },
             ),
             pytest.param(
                 schemas.UserIn(username="user_001", password="AaQq!1!1"),
@@ -64,6 +70,8 @@ class TestSchema:
                     "username": "user_001",
                     "email": None,
                     "full_name": None,
+                    "roles": 0,
+                    "is_active": True,
                     "password": "AaQq!1!1",
                 },
             ),
@@ -71,35 +79,38 @@ class TestSchema:
                 schemas.UserOut(
                     username="aaa",
                     password="aaa",
-                    full_name="aaa",
+                    full_name="AAAA AA AAAAAA",
                     pw_hash="aaa",
                 ),
                 {
                     "username": "aaa",
                     "email": "aaa",
+                    "roles": 0,
                     "full_name": "aaa",
                     "pw_hash": "aaa",
                 },
                 marks=pytest.mark.skip(reason="Error several"),
             ),
             pytest.param(
-                schemas.UserInDB(username="", password=""),
+                schemas.UserInDB(username="aaa", password="aaQQ!!11"),
                 {
-                    "username": "",
+                    "username": "aaa",
                     "email": None,
                     "full_name": None,
-                    "pw_hash": "",
+                    "pw_hash": "aaQQ!!11",
+                    "roles": 0,
+                    "is_active": True,
                 },
             ),
             pytest.param(
-                schemas.UserCreate(username="", password=""),
+                schemas.UserCreate(username="aaa", password="aaQQ!!11"),
                 {
-                    'username': '', 
-                    'email': None, 
-                    'full_name': None, 
-                    'password': '', 
-                    'roles': 0, 
-                    'is_active': True
+                    "username": "aaa",
+                    "email": None,
+                    "full_name": None,
+                    "password": "aaQQ!!11",
+                    "roles": 0,
+                    "is_active": True,
                 },
             ),
         ),
@@ -147,7 +158,9 @@ class TestSchema:
                 {"username": "user_001", "password": "AaQabc"},
                 ValueError,
                 re.escape(
-                    "1 validation error for UserIn\npassword\n  Invalide format for password (type=value_error)"
+                    "1 validation error for UserIn\npassword\n  ensure this "
+                    "value has at least 8 characters (type=value_error."
+                    "any_str.min_length; limit_value=8)"
                 ),
             ),
             pytest.param(
@@ -155,7 +168,10 @@ class TestSchema:
                 {"username": "User_01", "password": "AaQabc"},
                 ValueError,
                 re.escape(
-                    "2 validation errors for UserIn\nusername\n  Invalide format for username (type=value_error)\npassword\n  Invalide format for password (type=value_error)"
+                    "2 validation errors for UserIn\nusername\n  Invalide"
+                    " format for username (type=value_error)\npassword\n  "
+                    "ensure this value has at least 8 characters (type=value_"
+                    "error.any_str.min_length; limit_value=8)"
                 ),
             ),
         ),

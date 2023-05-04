@@ -33,7 +33,7 @@ class UserModel(Base):
     items = relationship("ItemModel", back_populates="owner")
 
     def __str__(self):
-        return f"UserModel {self.__dict__}"
+        return f"UserModel(id={self.id}, username={self.username}, email={self.email}, is_active={self.is_active}, roles={self.roles})"
 
 
 class ItemModel(Base):
