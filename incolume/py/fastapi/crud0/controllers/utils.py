@@ -1,4 +1,4 @@
-from enum import Enum, IntFlag, auto
+from enum import Enum, IntEnum, IntFlag, auto
 
 
 class Role(IntFlag):

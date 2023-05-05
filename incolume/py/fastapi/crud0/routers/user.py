@@ -113,14 +113,26 @@ def set_role_user(
         description="Query type for user_param",
         default=QueryUser.USER_ID,
     ),
+    roles: Role = Query(description=f"Availables: {list(Role)}", default=Role.USER),
+    # roles: Role = Role.USER,
     # roles: Role = Query(default=Role.USER,
     # description=f"Avaliables: {list(Role)}"),
     # roles: Query(int, title='Role',
     # description=f"{{k: v for k, v in Role.items()}}") = Role.USER,
     # roles: Role = Role.USER,
-    roles=0,
     db: Session = Depends(get_db_session),
 ):
     logging.debug(f"{--- stack()[0][3]} ---")
     user = User(db).set_role(param=user_param, roles=roles, q=q)
+    return user
+
+
+@router.post(
+    "/test-role/{user_param}",
+    summary="Toggle role for actived users.",
+    status_code=status.HTTP_202_ACCEPTED,
+    # response_model=None,
+)
+def test_role_user(user_param: str, q: QueryUser = QueryUser.ID, roles: Role = Role.USER, db:Session = Depends(get_db_session)):
+    user = User(db).one(user_param, q)
     return user
