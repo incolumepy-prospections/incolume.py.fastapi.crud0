@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, status, Query, Request
 from fastapi.responses import Response, UJSONResponse
 from sqlalchemy.orm import Session
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
@@ -136,3 +136,7 @@ def set_role_user(
 def test_role_user(user_param: str, q: QueryUser = QueryUser.ID, roles: Role = Role.USER, db:Session = Depends(get_db_session)):
     user = User(db).one(user_param, q)
     return user
+
+@router.post('/classify', response_model=Role)
+def classify(request: Request):
+    return
