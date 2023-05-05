@@ -1,10 +1,12 @@
-import pytest
 from typing import Generator
+
+import pytest
 from fastapi.testclient import TestClient
+
 from config import settings
-from incolume.py.fastapi.crud0.db.connections import get_db_session, Session
-from incolume.py.fastapi.crud0.db.persistence import crypt_context
 from incolume.py.fastapi.crud0.controllers import utils
+from incolume.py.fastapi.crud0.db.connections import Session, get_db_session
+from incolume.py.fastapi.crud0.db.persistence import crypt_context
 from incolume.py.fastapi.crud0.models import UserModel
 
 
@@ -12,12 +14,10 @@ from incolume.py.fastapi.crud0.models import UserModel
 def client() -> Generator:
     settings.setenv("testing")
     with settings.using_env("testing"):
+        from incolume.py.fastapi.crud0.db.persistence import (create_admin,
+                                                              populate_db,
+                                                              recreate_db)
         from incolume.py.fastapi.crud0.server import app
-        from incolume.py.fastapi.crud0.db.persistence import (
-            populate_db,
-            recreate_db,
-            create_admin,
-        )
 
         recreate_db()
         create_admin()

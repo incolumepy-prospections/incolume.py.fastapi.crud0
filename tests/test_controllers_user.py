@@ -1,6 +1,7 @@
 import pytest
-from incolume.py.fastapi.crud0.db.connections import Session
+
 from incolume.py.fastapi.crud0.controllers.user import User
+from incolume.py.fastapi.crud0.db.connections import Session
 from incolume.py.fastapi.crud0.models import UserModel
 from incolume.py.fastapi.crud0.schemas import UserIn
 

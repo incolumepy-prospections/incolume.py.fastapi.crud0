@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
-from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role,
+from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Rule,
                                                          ToggleBool)
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
@@ -115,8 +115,9 @@ def set_role_user(
         description="Query type for user_param",
         default=QueryUser.USER_ID,
     ),
-    roles: Role = Query(description=f"Availables: {list(Role)}",
-                        default=Role.USER),
+    roles: Role = Query(
+        description=f"Availables: {list(Role)}", default=Role.USER
+    ),
     # roles: Role = Role.USER,
     # roles: Role = Query(default=Role.USER,
     # description=f"Avaliables: {list(Role)}"),
@@ -136,15 +137,18 @@ def set_role_user(
     status_code=status.HTTP_202_ACCEPTED,
     # response_model=None,
 )
-def test_role_user(user_param: str, q: QueryUser = QueryUser.ID,
-                   roles: Any = Role.USER,
-                   db: Session = Depends(get_db_session)):
+def test_role_user(
+    user_param: str,
+    q: QueryUser = QueryUser.ID,
+    roles: Any = Role.USER,
+    db: Session = Depends(get_db_session),
+):
     user = User(db).one(user_param, q)
     return user, Role(int(roles))
 
 
-@router.post('/classify', response_model=None)
+@router.post("/classify", response_model=None)
 def classify(b: Rule = Rule.USER):
-    logging.debug(f'{b}')
-    logging.debug(f'{Role[b.upper()]}')
+    logging.debug(f"{b}")
+    logging.debug(f"{Role[b.upper()]}")
     return b, Role[b.upper()]
