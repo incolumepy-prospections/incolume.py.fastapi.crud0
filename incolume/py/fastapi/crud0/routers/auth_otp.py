@@ -1,14 +1,14 @@
 import logging
-from fastapi import APIRouter, Depends, Form, status
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.responses import FileResponse
-from sqlalchemy.orm import Session
 from pathlib import Path
+
+from fastapi import APIRouter, Depends, Form, status
+from fastapi.responses import FileResponse
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0.controllers.auth import AuthOTP
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserLogin
-
 
 router = APIRouter(prefix="")
 

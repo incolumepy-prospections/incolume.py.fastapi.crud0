@@ -1,21 +1,22 @@
 import logging
+from datetime import datetime, timedelta
+from pathlib import Path
+from tempfile import NamedTemporaryFile
+
 import pyotp
 import qrcode
-from datetime import datetime, timedelta
-from fastapi import status, Depends
+from fastapi import Depends, status
 from fastapi.exceptions import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pathlib import Path
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from tempfile import NamedTemporaryFile
 
 from config import settings
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
-from incolume.py.fastapi.crud0.schemas import UserLogin, AccessToken
+from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 oauth = OAuth2PasswordBearer(tokenUrl="/auth/login")

@@ -10,9 +10,11 @@ class Role(IntFlag):
     EDITOR = auto()
     # Revisor - poderá ler/atualizar items
     PROOFREADER = auto()
-    # Gestor/Gerente - poderá gerenciar/conceder privilégios dos perfis e todas as permissões anteriores 
+    # Gestor/Gerente - poderá gerenciar/conceder privilégios
+    # dos perfis e todas as permissões anteriores
     MANAGER = auto()
-    # Administrador - poderá gerenciar/conceder privilégios dos perfis e todas as permissões anteriores 
+    # Administrador - poderá gerenciar/conceder privilégios
+    # dos perfis e todas as permissões anteriores
     # ADMINISTRATOR = USER | READER | EDITOR | PROOFREADER | MANAGER
     ADMINISTRATOR = auto()
 
@@ -24,3 +26,16 @@ class QueryUser(Enum):
     USERNAME = "username"
     USER_EMAIL = "email"
     USER_ID = "id"
+
+
+class ToggleBool(Enum):
+    ON = True
+    OFF = False
+
+
+class Sort(Enum):
+    ASCENDING = 0
+    DESCENDING = 1
+
+    def __call__(self, values):
+        return sorted(values, reverse=self is Sort.DESCENDING)
