@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
-from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Rule,
+from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Roles,
                                                          ToggleBool)
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
@@ -140,15 +140,15 @@ def set_role_user(
 def test_role_user(
     user_param: str,
     q: QueryUser = QueryUser.ID,
-    roles: Any = Role.USER,
+    roles: Roles = Roles.USER,
     db: Session = Depends(get_db_session),
 ):
     user = User(db).one(user_param, q)
-    return user, Role(int(roles))
+    return user, Role[roles.upper()]
 
 
 @router.post("/classify", response_model=None)
-def classify(b: Rule = Rule.USER):
+def classify(b: Roles = Roles.USER):
     logging.debug(f"{b}")
     logging.debug(f"{Role[b.upper()]}")
     return b, Role[b.upper()]
