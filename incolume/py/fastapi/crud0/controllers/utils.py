@@ -19,6 +19,23 @@ class Role(IntFlag):
     ADMINISTRATOR = auto()
 
 
+class Roles(str, Enum):
+    # Sem previlégios - status de criação default (somente acesso público)
+    USER = 'user'
+    # leitor - poderá ler versões anteriores dos itens
+    READER = 'reader'
+    # editor - poderá ler/editar versões anteriores dos itens
+    EDITOR = 'editor'
+    # Revisor - poderá ler/atualizar items
+    PROOFREADER = 'proofreader'
+    # Gestor/Gerente - poderá gerenciar/conceder privilégios
+    # dos perfis e todas as permissões anteriores
+    MANAGER = 'manager'
+    # Administrador - poderá gerenciar/conceder privilégios
+    # dos perfis e todas as permissões anteriores
+    ADMINISTRATOR = 'administrator'
+
+
 class QueryUser(Enum):
     EMAIL = "email"
     ID = "id"

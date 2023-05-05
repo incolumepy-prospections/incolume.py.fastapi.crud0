@@ -137,12 +137,14 @@ def set_role_user(
     # response_model=None,
 )
 def test_role_user(user_param: str, q: QueryUser = QueryUser.ID,
-                   roles: Role = Role.USER,
+                   roles: Any = Role.USER,
                    db: Session = Depends(get_db_session)):
     user = User(db).one(user_param, q)
-    return user
+    return user, Role(int(roles))
 
 
-@router.post('/classify', response_model=ToggleBool)
-def classify(b: ToggleBool = ToggleBool.OFF):
-    return b
+@router.post('/classify', response_model=None)
+def classify(b: Rule = Rule.USER):
+    logging.debug(f'{b}')
+    logging.debug(f'{Role[b.upper()]}')
+    return b, Role[b.upper()]
