@@ -225,7 +225,7 @@ class User:
         q = q or QueryUser.ID
         logging.debug(f"{param=}, {q=}, {roles=}")
         user = self.one(param, q)
-        user.roles = Role(roles)
+        user.roles = roles
         logging.debug(f'{roles=} > {user.roles=}')
         self.db_session.commit()
         self.db_session.refresh(user)
