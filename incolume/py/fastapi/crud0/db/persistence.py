@@ -1,13 +1,10 @@
-from incolume.py.fastapi.crud0.models import UserModel
+from passlib.context import CryptContext
+
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers import utils
-from incolume.py.fastapi.crud0.db.connections import (
-    Base,
-    engine,
-    Session,
-    get_db_session,
-)
-from passlib.context import CryptContext
+from incolume.py.fastapi.crud0.db.connections import (Base, Session, engine,
+                                                      get_db_session)
+from incolume.py.fastapi.crud0.models import UserModel
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 

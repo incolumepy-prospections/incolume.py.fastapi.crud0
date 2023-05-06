@@ -1,16 +1,18 @@
 import logging
-from typing import Annotated, Any
-
-from fastapi import APIRouter, Depends, status, Query, Request
-from fastapi.responses import Response, UJSONResponse
-from sqlalchemy.orm import Session
-from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
-from incolume.py.fastapi.crud0.db.connections import get_db_session
-from incolume.py.fastapi.crud0 import schemas
-from incolume.py.fastapi.crud0.controllers.user import User
-from incolume.py.fastapi.crud0.models import UserModel
 from functools import singledispatch
 from inspect import stack
+from typing import Annotated, Any
+
+from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi.responses import Response, UJSONResponse
+from sqlalchemy.orm import Session
+
+from incolume.py.fastapi.crud0 import schemas
+from incolume.py.fastapi.crud0.controllers.user import User
+from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Roles,
+                                                         ToggleBool)
+from incolume.py.fastapi.crud0.db.connections import get_db_session
+from incolume.py.fastapi.crud0.models import UserModel
 
 router = APIRouter()
 
@@ -101,29 +103,23 @@ def delete_user(
 
 
 @router.post(
-    "/set-role/{user_param}",
+    "/set-role/{param}",
     summary="Toggle role for actived users.",
     status_code=status.HTTP_202_ACCEPTED,
     response_model=None,
 )
 def set_role_user(
-    user_param: int | str,
+    param: int | str,
     q: QueryUser = Query(
         title="Query type",
-        description="Query type for user_param",
+        description="Query type for param of user",
         default=QueryUser.USER_ID,
     ),
-    roles: Role = Query(description=f"Availables: {list(Role)}", default=Role.USER),
-    # roles: Role = Role.USER,
-    # roles: Role = Query(default=Role.USER,
-    # description=f"Avaliables: {list(Role)}"),
-    # roles: Query(int, title='Role',
-    # description=f"{{k: v for k, v in Role.items()}}") = Role.USER,
-    # roles: Role = Role.USER,
+    roles: Roles = Roles.USER,
     db: Session = Depends(get_db_session),
 ):
-    logging.debug(f"{--- stack()[0][3]} ---")
-    user = User(db).set_role(param=user_param, roles=roles, q=q)
+    logging.debug(f"--- {stack()[0][3]} ---")
+    user = User(db).set_role(param=param, roles=Role[roles], q=q)
     return user
 
 
@@ -133,10 +129,18 @@ def set_role_user(
     status_code=status.HTTP_202_ACCEPTED,
     # response_model=None,
 )
-def test_role_user(user_param: str, q: QueryUser = QueryUser.ID, roles: Role = Role.USER, db:Session = Depends(get_db_session)):
+def test_role_user(
+    user_param: str,
+    q: QueryUser = QueryUser.ID,
+    roles: Roles = Roles.USER,
+    db: Session = Depends(get_db_session),
+):
     user = User(db).one(user_param, q)
-    return user
+    return user, Role[roles]
 
-@router.post('/classify', response_model=Role)
-def classify(request: Request):
-    return
+
+@router.post("/classify", response_model=None)
+def classify(b: Roles = Roles.USER):
+    logging.debug(f"{b}")
+    logging.debug(f"{Role[b.upper()]}")
+    return b, Role[b.upper()]

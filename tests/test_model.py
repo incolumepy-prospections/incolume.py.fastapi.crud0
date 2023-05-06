@@ -1,6 +1,6 @@
 import pytest
-from incolume.py.fastapi.crud0 import models
 
+from incolume.py.fastapi.crud0 import models
 
 __author__ = "@britodfbr"  # pragma: no cover
 

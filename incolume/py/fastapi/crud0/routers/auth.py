@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
-
 from sqlalchemy.orm import Session
 
-from incolume.py.fastapi.crud0.controllers.user import User
 from incolume.py.fastapi.crud0.controllers.auth import Auth, token_verifier
+from incolume.py.fastapi.crud0.controllers.user import User
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserLogin, UserOut
-
 
 router = APIRouter(prefix="")
 

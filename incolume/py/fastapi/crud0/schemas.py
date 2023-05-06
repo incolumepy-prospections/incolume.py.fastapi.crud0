@@ -2,10 +2,12 @@ import json
 import re
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field, validator, Json
+from typing import Optional
+
+from pydantic import BaseModel, EmailStr, Field, Json, validator
+
 from config import settings
 from incolume.py.fastapi.crud0.controllers.utils import Role
-from typing import Optional
 
 
 class AccessToken(BaseModel):
