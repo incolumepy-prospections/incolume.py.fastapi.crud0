@@ -21,19 +21,19 @@ class Role(IntFlag):
 
 class Roles(str, Enum):
     # Sem previlégios - status de criação default (somente acesso público)
-    USER = "user"
+    USER = "USER"
     # leitor - poderá ler versões anteriores dos itens
-    READER = "reader"
+    READER = "READER"
     # editor - poderá ler/editar versões anteriores dos itens
-    EDITOR = "editor"
+    EDITOR = "EDITOR"
     # Revisor - poderá ler/atualizar items
-    PROOFREADER = "proofreader"
+    PROOFREADER = "PROOFREADER"
     # Gestor/Gerente - poderá gerenciar/conceder privilégios
     # dos perfis e todas as permissões anteriores
-    MANAGER = "manager"
+    MANAGER = "MANAGER"
     # Administrador - poderá gerenciar/conceder privilégios
     # dos perfis e todas as permissões anteriores
-    ADMINISTRATOR = "administrator"
+    ADMINISTRATOR = "ADMINISTRATOR"
 
 
 class QueryUser(Enum):
