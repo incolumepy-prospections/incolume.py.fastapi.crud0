@@ -39,7 +39,7 @@ class User:
         except IntegrityError:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="User already exists.",
+                detail=f"User already exists. E-mail:'{new_user.email}' and/or username: '{new_user.username}' already registered.",
             )
         return user_model
 
