@@ -58,6 +58,19 @@ def get_user(
     return user
 
 
+@router.get(
+    "/{whoami}",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=schemas.UserOut,
+    summary="Show corrent user logged.",
+)
+def whoami(db: Session = Depends(get_db_session),
+):
+    user = User(db).one(1)
+    logging.debug(user)
+    return user
+
+
 @router.post(
     "/toggle_active/{user_param}",
     summary="Toggle user status for is_active field",
