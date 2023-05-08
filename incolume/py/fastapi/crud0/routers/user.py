@@ -128,6 +128,7 @@ def set_role_user(
     summary="Toggle role for actived users.",
     status_code=status.HTTP_202_ACCEPTED,
     # response_model=None,
+    include_in_schema=False
 )
 def test_role_user(
     user_param: str,
