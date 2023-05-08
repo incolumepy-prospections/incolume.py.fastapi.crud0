@@ -140,7 +140,7 @@ def test_role_user(
     return user, Role[roles]
 
 
-@router.post("/classify", response_model=None)
+@router.post("/classify", response_model=None, include_in_schema=False)
 def classify(b: Roles = Roles.USER):
     logging.debug(f"{b}")
     logging.debug(f"{Role[b.upper()]}")
