@@ -44,6 +44,27 @@ class TestAPI:
                 },
                 # marks=pytest.mark.skip
             ),
+            pytest.param(
+                '/users', 
+                201, 
+                {"username": "user", "email": "user@example.com", "password": "aaQQ1!1!", "full_name": "Usuário do Sistema"}, 
+                {'username': 'user', 'email': 'user@example.com', 'full_name': 'Usuário do Sistema', 'roles': 0, 'is_active': True},
+                # marks=pytest.mark.skip
+            ),
+            pytest.param(
+                '/users', 
+                409, 
+                {"username": "user0001", "email": "xpto@example.com", "password": "aaQQ1!1!", "full_name": "Usuário do Sistema"}, 
+                {"detail":"User already exists. E-mail:'xpto@example.com' and/or username: 'user0001' already registered."},
+                # marks=pytest.mark.skip
+            ),
+            pytest.param(
+                '/users', 
+                409, 
+                {"username": "xpto", "email": "user0001@example.com", "password": "aaQQ1!1!", "full_name": "Usuário do Sistema"}, 
+                {"detail":"User already exists. E-mail:'user0001@example.com' and/or username: 'xpto' already registered."},
+                # marks=pytest.mark.skip
+            ),
         ),
     )
     def test_post_endpoint_result(
@@ -60,6 +81,8 @@ class TestAPI:
         ["entrance", "expected"],
         (
             pytest.param("/", 200),
+            pytest.param("/doc", 200),
+            pytest.param("/favicon.ico", 200),
             pytest.param("/users", 202),
             pytest.param("/users/1", 202, marks=""),
             pytest.param("/users/admin?q=username", 202, marks=""),

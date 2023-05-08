@@ -176,6 +176,40 @@ class TestSchema:
                     "error.any_str.min_length; limit_value=8)"
                 ),
             ),
+            pytest.param(
+                schemas.UserLogin,
+                {"username": "user", "password": ""},
+                ValueError,
+                re.escape(
+                    "1 validation error for UserLogin\npassword\n  ensure this value has at least 8 characters (type=value_error.any_str.min_length; limit_value=8)"
+                ),
+            ),
+            pytest.param(
+                schemas.UserLogin,
+                {"username": "user", "password": "12345678"},
+                ValueError,
+                re.escape(
+                    "1 validation error for UserLogin\npassword\n  Invalide format for password (type=value_error)"
+                ),
+            ),
+            pytest.param(
+                schemas.UserLogin,
+                {"username": "user", "password": "Abcdefgh"},
+                ValueError,
+                re.escape(
+                    "1 validation error for UserLogin\npassword\n  Invalide format for password (type=value_error)"
+                ),
+                # marks=pytest.mark.skip
+            ),
+            pytest.param(
+                schemas.UserCreate,
+                {"username": "user", "password": "Abcdefgh"},
+                ValueError,
+                re.escape(
+                    "1 validation error for UserCreate\npassword\n  Invalide format for password (type=value_error)"
+                ),
+                # marks=pytest.mark.skip
+            ),
         ),
     )
     def test_exceptions(self, schema, entrance, exc, match):

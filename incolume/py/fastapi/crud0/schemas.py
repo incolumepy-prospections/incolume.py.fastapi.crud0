@@ -54,13 +54,7 @@ class UserBase(BaseModel):
 
 class UserLogin(UserBase):
     password: str = Field(min_length=8)
-
-
-class UserCreate(UserLogin):
-    pass
-
-
-class UserIn(UserLogin):
+    
     @validator("username")
     def check_username(cls, value):
         if not re.match(settings.REGEX_USERNAME, value):
@@ -73,6 +67,13 @@ class UserIn(UserLogin):
             raise ValueError("Invalide format for password")
         return value
 
+
+class UserCreate(UserLogin):
+    pass
+
+
+class UserIn(UserLogin):
+    pass
 
 class UserOut(UserBase):
     is_active: bool = Field(default=True)
