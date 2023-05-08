@@ -81,6 +81,8 @@ class TestAPI:
         ["entrance", "expected"],
         (
             pytest.param("/", 200),
+            pytest.param("/doc", 200),
+            pytest.param("/favicon.ico", 200),
             pytest.param("/users", 202),
             pytest.param("/users/1", 202, marks=""),
             pytest.param("/users/admin?q=username", 202, marks=""),
