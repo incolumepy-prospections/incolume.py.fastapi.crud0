@@ -13,7 +13,7 @@ from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
 from incolume.py.fastapi.crud0.models import UserModel
 
-crypt_context = CryptContext(schemes=["sha256_crypt"])
+crypt_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 
 class User:

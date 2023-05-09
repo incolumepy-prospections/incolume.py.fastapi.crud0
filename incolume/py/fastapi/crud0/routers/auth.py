@@ -10,6 +10,19 @@ from incolume.py.fastapi.crud0.schemas import UserLogin, UserOut
 router = APIRouter(prefix="")
 
 
+@router.get(
+    "/{whoami}",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=UserOut,
+    summary="Show corrent user logged.",
+)
+def whoami(db: Session = Depends(get_db_session),
+):
+    user = User(db).one(1)
+    logging.debug(user)
+    return user
+
+
 @router.post("/login")
 def user_login(
     login_request_form: OAuth2PasswordRequestForm = Depends(),
