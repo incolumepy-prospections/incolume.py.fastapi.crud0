@@ -22,6 +22,30 @@ crypt_context = CryptContext(schemes=["sha256_crypt"])
 oauth = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
+def obter_usuario_logado(token: str = Depends(oauth),
+                         session: Session = Depends(get_db_session())):
+    """Get user logged."""
+    # exception = HTTPException(
+    #     status_code=status.HTTP_401_UNAUTHORIZED, detail='Token inválido')
+    #
+    # try:
+    #     telefone = token_provider.verificar_access_token(token)
+    # except JWTError:
+    #     raise exception
+    #
+    # if not telefone:
+    #     raise exception
+    #
+    # usuario = RepositorioUsuario(session).obter_por_telefone(telefone)
+    #
+    # if not usuario:
+    #     raise exception
+    #
+    # return usuario
+
+    pass
+
+
 def token_verifier(
     db: Session = Depends(get_db_session), token=Depends(oauth)
 ):
