@@ -3,11 +3,14 @@ import re
 import uuid
 from datetime import datetime
 from typing import Optional
-
+from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr, Field, Json, validator
 
 from config import settings
 from incolume.py.fastapi.crud0.controllers.utils import Role
+
+
+oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 class AccessToken(BaseModel):

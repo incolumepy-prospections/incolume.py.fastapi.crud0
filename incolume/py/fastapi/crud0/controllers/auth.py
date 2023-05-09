@@ -7,7 +7,6 @@ import pyotp
 import qrcode
 from fastapi import Depends, status
 from fastapi.exceptions import HTTPException
-from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
@@ -16,13 +15,12 @@ from sqlalchemy.orm import Session
 from config import settings
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
-from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin
+from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin, oauth2
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
-oauth = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
-def obter_usuario_logado(token: str = Depends(oauth),
+def obter_usuario_logado(token: str = Depends(oauth2),
                          session: Session = Depends(get_db_session())):
     """Get user logged."""
     # exception = HTTPException(
@@ -47,7 +45,7 @@ def obter_usuario_logado(token: str = Depends(oauth),
 
 
 def token_verifier(
-    db: Session = Depends(get_db_session), token=Depends(oauth)
+    db: Session = Depends(get_db_session), token=Depends(oauth2)
 ):
     Auth(db).is_valid_token(access_token=token)
 
