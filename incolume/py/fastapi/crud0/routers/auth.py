@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -16,7 +18,8 @@ router = APIRouter(prefix="")
     response_model=UserOut,
     summary="Show corrent user logged.",
 )
-def whoami(db: Session = Depends(get_db_session),
+def whoami(
+    db: Session = Depends(get_db_session),
 ):
     user = User(db).one(1)
     logging.debug(user)
@@ -37,7 +40,7 @@ def user_login(
     return user_auth
 
 
-@router.get("/check")
+@router.get("/check", status_code=202)
 def check_token(token_verified=Depends(token_verifier)):
     return {"details": True}
 
