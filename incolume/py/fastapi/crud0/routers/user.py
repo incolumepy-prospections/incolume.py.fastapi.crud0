@@ -9,8 +9,12 @@ from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
-from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Roles,
-                                                         ToggleBool)
+from incolume.py.fastapi.crud0.controllers.utils import (
+    QueryUser,
+    Role,
+    Roles,
+    ToggleBool,
+)
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
 
@@ -128,7 +132,7 @@ def set_role_user(
     summary="Toggle role for actived users.",
     status_code=status.HTTP_202_ACCEPTED,
     # response_model=None,
-    include_in_schema=False
+    include_in_schema=False,
 )
 def test_role_user(
     user_param: str,

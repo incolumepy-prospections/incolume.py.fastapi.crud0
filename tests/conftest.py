@@ -14,9 +14,11 @@ from incolume.py.fastapi.crud0.models import UserModel
 def client() -> Generator:
     settings.setenv("testing")
     with settings.using_env("testing"):
-        from incolume.py.fastapi.crud0.db.persistence import (create_admin,
-                                                              populate_db,
-                                                              recreate_db)
+        from incolume.py.fastapi.crud0.db.persistence import (
+            create_admin,
+            populate_db,
+            recreate_db,
+        )
         from incolume.py.fastapi.crud0.server import app
 
         recreate_db()

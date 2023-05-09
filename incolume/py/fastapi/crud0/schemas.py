@@ -2,15 +2,15 @@ import json
 import re
 import uuid
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
+
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr, Field, Json, validator
 
 from config import settings
 from incolume.py.fastapi.crud0.controllers.utils import Role
 
-
-oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2: Any = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 class AccessToken(BaseModel):
@@ -57,7 +57,7 @@ class UserBase(BaseModel):
 
 class UserLogin(UserBase):
     password: str = Field(min_length=8)
-    
+
     @validator("username")
     def check_username(cls, value):
         if not re.match(settings.REGEX_USERNAME, value):
@@ -77,6 +77,7 @@ class UserCreate(UserLogin):
 
 class UserIn(UserLogin):
     pass
+
 
 class UserOut(UserBase):
     is_active: bool = Field(default=True)

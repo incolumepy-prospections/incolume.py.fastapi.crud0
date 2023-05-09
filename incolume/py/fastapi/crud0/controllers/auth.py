@@ -5,7 +5,7 @@ from tempfile import NamedTemporaryFile
 
 import pyotp
 import qrcode
-from fastapi import Depends, status
+from fastapi import Depends, Response, status
 from fastapi.exceptions import HTTPException
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -20,8 +20,9 @@ from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin, oauth2
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
-def obter_usuario_logado(token: str = Depends(oauth2),
-                         session: Session = Depends(get_db_session())):
+def obter_usuario_logado(
+    token: str = Depends(oauth2), session: Session = Depends(get_db_session())
+):
     """Get user logged."""
     # exception = HTTPException(
     #     status_code=status.HTTP_401_UNAUTHORIZED, detail='Token inválido')
@@ -90,6 +91,8 @@ class Auth:
         return access_token
 
     def is_valid_token(self, access_token: str):
+        """Verify is valid token."""
+        logging.debug(f"{access_token}")
         try:
             data = jwt.decode(
                 access_token,

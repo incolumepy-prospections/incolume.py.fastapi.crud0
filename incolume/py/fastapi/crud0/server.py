@@ -7,8 +7,12 @@ from fastapi.staticfiles import StaticFiles
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
 from incolume.py.fastapi.crud0.controllers.auth import token_verifier
-from incolume.py.fastapi.crud0.db.persistence import (create_admin, create_db,
-                                                      populate_db, recreate_db)
+from incolume.py.fastapi.crud0.db.persistence import (
+    create_admin,
+    create_db,
+    populate_db,
+    recreate_db,
+)
 from incolume.py.fastapi.crud0.routers import auth, auth_otp, items, user
 
 recreate_db()
