@@ -5,7 +5,7 @@ description = ""
 authors = ["britodfbr <britodfbr@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
-packages = [{include = "incolume"}]
+packages = [{include = "incolume"}, {include="examples"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
