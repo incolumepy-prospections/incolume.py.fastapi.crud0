@@ -5,13 +5,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext
 from jose import jwt, JWTError
-from decouple import config
-from app.db.models import UserModel
-from app.schemas import User
+from .db.models import UserModel
+from .schemas import User
+from config import settings
 
-
-SECRET_KEY = config('SECRET_KEY')
-ALGORITHM = config('ALGORITHM')
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 
 crypt_context = CryptContext(schemes=['sha256_crypt'])
 
@@ -19,7 +18,6 @@ crypt_context = CryptContext(schemes=['sha256_crypt'])
 class UserUseCases:
     def __init__(self, db_session: Session):
         self.db_session = db_session
-
 
     def user_register(self, user: User):
         user_model = UserModel(
@@ -36,20 +34,21 @@ class UserUseCases:
             )
 
     def user_login(self, user: User, expires_in: int = 30):
-        user_on_db = self.db_session.query(UserModel).filter_by(username=user.username).first()
+        user_on_db = self.db_session.query(UserModel).filter_by(
+            username=user.username).first()
 
         if user_on_db is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail='Invalid username or password'
             )
-        
+
         if not crypt_context.verify(user.password, user_on_db.password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail='Invalid username or password'
             )
-        
+
         exp = datetime.utcnow() + timedelta(minutes=expires_in)
 
         payload = {
@@ -72,8 +71,9 @@ class UserUseCases:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail='Invalid access token'
             )
-        
-        user_on_db = self.db_session.query(UserModel).filter_by(username=data['sub']).first()
+
+        user_on_db = self.db_session.query(UserModel).filter_by(
+            username=data['sub']).first()
 
         if user_on_db is None:
             raise HTTPException(

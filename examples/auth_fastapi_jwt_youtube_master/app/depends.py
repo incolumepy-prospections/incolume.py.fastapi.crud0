@@ -1,16 +1,16 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from app.db.connection import Session
-from app.auth_user import UserUseCases
+from .db.connection import Session
+from .auth_user import UserUseCases
 
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl='/user/login')
 
 
 def get_db_session():
+    session: Session = Session()
     try:
-        session = Session()
         yield session
     finally:
         session.close()
