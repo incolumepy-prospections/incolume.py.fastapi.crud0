@@ -10,8 +10,8 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import relationship
-
-from incolume.py.fastapi.crud0.db.connections import Base
+from .controllers.utils import Role
+from .db.connections import Base
 
 
 class UserModel(Base):
