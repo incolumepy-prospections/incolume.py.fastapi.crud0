@@ -48,7 +48,6 @@ class UserBase(BaseModel):
         # regex=r'^[A-ZÃÉÇÍÁ]{3,}((\s[A-Z]{2})?'
         #       r'\s[A-ZÃÉÇÍÁ]{3,}(\s[EVDI]+)?){1,}$'
     )
-    roles: Role = Field(default=Role.USER)
     is_active: bool = Field(default=True)
 
     class Config:
@@ -80,6 +79,7 @@ class UserIn(UserLogin):
 
 
 class UserOut(UserBase):
+    roles: Role = Field(default=Role.USER)
     is_active: bool = Field(default=True)
 
 
