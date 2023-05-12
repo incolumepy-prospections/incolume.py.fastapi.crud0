@@ -10,8 +10,8 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import relationship
-
-from incolume.py.fastapi.crud0.db.connections import Base
+from .controllers.utils import Role
+from .db.connections import Base
 
 
 class UserModel(Base):
@@ -31,7 +31,7 @@ class UserModel(Base):
     email = Column("email", String, nullable=False, unique=True, index=True)
     full_name = Column("full_name", String, nullable=False)
     is_active = Column(Boolean, default=True)
-    roles = Column("roles", Integer)
+    roles = Column("roles", Integer, default=Role.USER)
     items = relationship("ItemModel", back_populates="owner")
 
     def __str__(self):
