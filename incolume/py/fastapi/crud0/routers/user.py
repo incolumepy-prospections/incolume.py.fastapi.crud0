@@ -9,8 +9,12 @@ from sqlalchemy.orm import Session
 
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
-from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role,
-                                                         Roles, ToggleBool)
+from incolume.py.fastapi.crud0.controllers.utils import (
+    QueryUser,
+    Role,
+    Roles,
+    ToggleBool,
+)
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
 

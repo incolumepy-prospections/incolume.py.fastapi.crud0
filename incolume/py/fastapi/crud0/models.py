@@ -1,7 +1,16 @@
+"""Module models."""
+
 import datetime as dt
 
-from sqlalchemy import (JSON, Boolean, Column, DateTime, ForeignKey, Integer,
-                        String)
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.orm import relationship
 
 from .controllers.utils import Role
@@ -9,6 +18,8 @@ from .db.connections import Base
 
 
 class UserModel(Base):
+    """Data model user."""
+
     __tablename__ = "users"
     id = Column(
         "id",
@@ -31,10 +42,13 @@ class UserModel(Base):
     items = relationship("ItemModel", back_populates="owner")
 
     def __str__(self):
+        """Over writing __str__."""
         return f"UserModel(id={self.id}, username={self.username}, email={self.email}, is_active={self.is_active}, roles={self.roles})"
 
 
 class ItemModel(Base):
+    """Data model Item."""
+
     __tablename__ = "items"
 
     id = Column("id", String, primary_key=True, index=True)

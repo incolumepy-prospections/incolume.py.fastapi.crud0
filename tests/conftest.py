@@ -1,3 +1,5 @@
+"""Module for configuration switch tests."""
+
 from typing import Generator
 
 import pytest
@@ -12,11 +14,14 @@ from incolume.py.fastapi.crud0.models import UserModel
 
 @pytest.fixture(scope="function")
 def client() -> Generator:
+    """Client generator."""
     settings.setenv("testing")
     with settings.using_env("testing"):
-        from incolume.py.fastapi.crud0.db.persistence import (create_admin,
-                                                              populate_db,
-                                                              recreate_db)
+        from incolume.py.fastapi.crud0.db.persistence import (
+            create_admin,
+            populate_db,
+            recreate_db,
+        )
         from incolume.py.fastapi.crud0.server import app
 
         recreate_db()
@@ -28,4 +33,5 @@ def client() -> Generator:
 
 @pytest.fixture(scope="module")
 def db_session() -> Session:
+    """DB generator."""
     return get_db_session()
