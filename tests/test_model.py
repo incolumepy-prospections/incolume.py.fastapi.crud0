@@ -35,7 +35,8 @@ class TestModels:
                     email="user@email.com",
                     full_name="user@example.com",
                 ),
-                "UserModel(id=None, username=user@example.com, email=user@email.com, is_active=None, roles=None)",
+                "UserModel(id=None, username=user@example.com, "
+                "email=user@email.com, is_active=None, roles=None)",
             ),
             pytest.param(
                 models.ItemModel(title="abc", description="abc"),

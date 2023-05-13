@@ -94,13 +94,9 @@ class UserLogin(UserBase):
 class UserCreate(UserLogin):
     """schema for user creation."""
 
-    pass
-
 
 class UserIn(UserLogin):
     """schema for user in."""
-
-    pass
 
 
 class UserOut(UserBase):

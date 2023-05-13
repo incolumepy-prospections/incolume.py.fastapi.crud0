@@ -33,7 +33,7 @@ def recreate_db(engine: engine = engine):
 
 def create_admin(engine: engine = engine):
     """Create admin user."""
-    with Session() as db:
+    with Session() as db_session:
         admin_user = UserModel(
             username="admin",
             email="admin@example.com",
@@ -41,14 +41,14 @@ def create_admin(engine: engine = engine):
             roles=utils.Role.ADMINISTRATOR,
             pw_hash=crypt_context.hash("aaQQ!!11"),
         )
-        db.add(admin_user)
-        db.commit()
+        db_session.add(admin_user)
+        db_session.commit()
     return True
 
 
 def populate_db(quantia: int = 10):
     """Populate database with fake users."""
-    db = Session()
+    db_session = Session()
     fake_user_list = [
         UserModel(
             username=f"user{x:04}",
@@ -60,9 +60,9 @@ def populate_db(quantia: int = 10):
         for x in range(1, quantia + 1)
     ]
 
-    db.add_all(fake_user_list)
-    db.commit()
-    db.close()
+    db_session.add_all(fake_user_list)
+    db_session.commit()
+    db_session.close()
 
 
 if __name__ == "__main__":
