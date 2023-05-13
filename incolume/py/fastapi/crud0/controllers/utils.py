@@ -1,7 +1,11 @@
+"""Module utils."""
+
 from enum import Enum, IntEnum, IntFlag, auto
 
 
 class Role(IntFlag):
+    """Schema for Role."""
+
     # Sem previlégios - status de criação default (somente acesso público)
     USER = 0
     # leitor - poderá ler versões anteriores dos itens
@@ -20,6 +24,8 @@ class Role(IntFlag):
 
 
 class Roles(str, Enum):
+    """Schema for Roles."""
+
     # Sem previlégios - status de criação default (somente acesso público)
     USER = "USER"
     # leitor - poderá ler versões anteriores dos itens
@@ -37,6 +43,8 @@ class Roles(str, Enum):
 
 
 class QueryUser(Enum):
+    """Schema for QueryUser."""
+
     EMAIL = "email"
     ID = "id"
     NAME = "username"
@@ -46,13 +54,18 @@ class QueryUser(Enum):
 
 
 class ToggleBool(Enum):
+    """Schema for ToggleBool."""
+
     ON = True
     OFF = False
 
 
 class Sort(Enum):
+    """Schema for Sort."""
+
     ASCENDING = 0
     DESCENDING = 1
 
     def __call__(self, values):
+        """Call this class."""
         return sorted(values, reverse=self is Sort.DESCENDING)

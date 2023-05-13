@@ -1,3 +1,4 @@
+"""Module controllers.item"""
 import logging
 
 from fastapi import status
@@ -10,6 +11,7 @@ from incolume.py.fastapi.crud0.schemas import Item, ItemCreate
 
 
 class Item:
+    """Class Item."""
     def __init__(self, db_session: Session) -> None:
         self.db_session = db_session
 
