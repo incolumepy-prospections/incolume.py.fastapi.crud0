@@ -21,7 +21,7 @@ router = APIRouter(prefix="")
 def whoami(
     db: Session = Depends(get_db_session),
 ):
-    user = User(db).one(1)
+    user = User(db).one(10)
     logging.debug(user)
     return user
 

@@ -1,13 +1,14 @@
 from fastapi import FastAPI
-from .routes import user_router, test_router
+
 from config import settings
 
+from .routes import test_router, user_router
 
 settings.setenv("dev0")
 app = FastAPI()
 
 
-@app.get('/')
+@app.get("/")
 def health_check():
     return "Ok, it's working"
 

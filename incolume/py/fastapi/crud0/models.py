@@ -1,15 +1,9 @@
 import datetime as dt
 
-from sqlalchemy import (
-    JSON,
-    Boolean,
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    String,
-)
+from sqlalchemy import (JSON, Boolean, Column, DateTime, ForeignKey, Integer,
+                        String)
 from sqlalchemy.orm import relationship
+
 from .controllers.utils import Role
 from .db.connections import Base
 
