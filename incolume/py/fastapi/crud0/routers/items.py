@@ -1,3 +1,4 @@
+"""Router items."""
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
@@ -17,5 +18,6 @@ router = APIRouter()
     summary="Create an Item",
 )
 def create_item(item: schemas.Item, session=Depends(get_db_session)):
+    """Create items."""
     new_item: ItemModel = Item(session).create(item=item)
     return new_item

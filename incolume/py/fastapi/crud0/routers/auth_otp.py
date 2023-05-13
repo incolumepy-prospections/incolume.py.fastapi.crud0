@@ -1,3 +1,4 @@
+"""Router Auth OTP."""
 import logging
 from pathlib import Path
 
@@ -15,6 +16,7 @@ router = APIRouter(prefix="")
 
 @router.get("/favicon")
 async def get_favicon():
+    """Favicon route."""
     image: Path = (
         Path(__file__).parents[5].joinpath("static", "img", "favicon.png")
     )
@@ -28,6 +30,7 @@ def user_login(
     password: str = Form(...),
     db_session: Session = Depends(get_db_session),
 ):
+    """Login route."""
     user_in = UserLogin(username=username, password=password)
     user_auth = AuthOTP(db_session).login(user_in)
     return user_auth
@@ -35,4 +38,5 @@ def user_login(
 
 # @router.get('/check')
 # def check_token(token_verified = Depends(token_verifier)):
+#     """Checking."""
 #     return {'details': True}
