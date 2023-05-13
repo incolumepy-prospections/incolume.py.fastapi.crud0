@@ -1,3 +1,5 @@
+"""Module server."""
+
 from pathlib import Path
 
 from fastapi import Depends, FastAPI
@@ -37,6 +39,7 @@ app.mount("/static", StaticFiles(directory=static), name="static")
 
 @app.get("/", include_in_schema=False)
 async def root():
+    """Endpoint for home."""
     return {"message": settings.msg}
 
 
@@ -47,6 +50,7 @@ async def root():
     include_in_schema=False,
 )
 async def redirect_pydantic():
+    """Endpoint redirect for doc."""
     return "/docs"
 
 
@@ -57,6 +61,7 @@ async def redirect_pydantic():
     include_in_schema=False,
 )
 async def redirect_pydantic():
+    """Endpoint redirect for favicon."""
     return "/static/img/favicon.png"
 
 
