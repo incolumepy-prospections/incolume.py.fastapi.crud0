@@ -1,4 +1,5 @@
-import json
+"""Module User."""
+import inspect
 import logging
 from inspect import stack
 
@@ -17,12 +18,16 @@ crypt_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 
 class User:
+    """Class User."""
+
     def __init__(self, db_session: Session):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         self.db_session = db_session
 
     def __schema_user_to_user_in_db(
         self, user: schemas.UserLogin
     ) -> schemas.UserInDB:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         hash = crypt_context.hash(user.password)
         del user.password
         new_user = schemas.UserInDB(**user.dict(), pw_hash=hash)
@@ -30,6 +35,7 @@ class User:
         return new_user
 
     def create(self, user: schemas.UserCreate) -> UserModel:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         new_user: schemas.UserInDB = self.__schema_user_to_user_in_db(user)
         user_model = UserModel(**new_user.dict())
         try:
@@ -44,6 +50,7 @@ class User:
         return user_model
 
     def all(self, skip: int = 0, limit: int = 100) -> list[UserModel]:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         users = (
             self.db_session.query(UserModel).offset(skip).limit(limit).all()
         )
@@ -52,6 +59,7 @@ class User:
     def one(
         self, id_username_or_email: int | str, q: QueryUser = None
     ) -> UserModel:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         q = q or QueryUser.ID
         logging.debug(f"{id_username_or_email=}, {q=}")
         try:
@@ -79,6 +87,7 @@ class User:
             )
 
     def by_id(self, user_id: int) -> UserModel:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = (
             self.db_session.query(UserModel)
             .filter(UserModel.id == user_id)
@@ -93,6 +102,7 @@ class User:
         return user
 
     def by_username(self, username: str) -> UserModel:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = (
             self.db_session.query(UserModel)
             .filter(UserModel.username == username)
@@ -106,6 +116,7 @@ class User:
         return user
 
     def by_email(self, email: str) -> UserModel:
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = (
             self.db_session.query(UserModel)
             .filter(UserModel.email == email)
@@ -202,6 +213,7 @@ class User:
         return user_db
 
     def toggle_active(self, param: int | str, q: QueryUser = None):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = self.one(param, q)
         user.is_active = not user.is_active
         self.db_session.commit()
@@ -209,6 +221,7 @@ class User:
         return user
 
     def promote_admin(self, param: int | str, q: QueryUser = None):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = self.one(param, q)
         user.is_admin = not user.is_admin
         self.db_session.commit()
@@ -221,6 +234,7 @@ class User:
         q: QueryUser = None,
         roles: Role = None,
     ):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         logging.debug(f"--- {stack()[0][3]} ---")
         roles = roles or Role.USER
         q = q or QueryUser.ID

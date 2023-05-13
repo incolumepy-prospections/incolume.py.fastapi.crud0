@@ -58,10 +58,10 @@ def list_users(
 def get_user(
     id_username_or_email: int | str,
     q: QueryUser = Query(default=QueryUser.ID),
-    db: Session = Depends(get_db_session),
+    db_session: Session = Depends(get_db_session),
 ):
     """Get a user by parameter."""
-    user = User(db).one(id_username_or_email, q)
+    user = User(db_session).one(id_username_or_email, q)
     logging.debug(user)
     return user
 
@@ -74,10 +74,10 @@ def get_user(
 def toggle_active_user(
     user_param: int | str,
     q: QueryUser = Query(default=QueryUser.USER_ID),
-    db: Session = Depends(get_db_session),
+    db_session: Session = Depends(get_db_session),
 ):
     """Active or Inactive a user."""
-    user = User(db).toggle_active(user_param, q)
+    user = User(db_session).toggle_active(user_param, q)
     return user
 
 
@@ -106,10 +106,10 @@ def update_user(
 def delete_user(
     param: str,
     q: QueryUser = QueryUser.ID,
-    db: Session = Depends(get_db_session),
+    db_session: Session = Depends(get_db_session),
 ):
     """Delete a User."""
-    user = User(db).delete(param=param, q=q)
+    user = User(db_session).delete(param=param, q=q)
     return user
 
 
@@ -127,11 +127,11 @@ def set_role_user(
         default=QueryUser.USER_ID,
     ),
     roles: Roles = Roles.USER,
-    db: Session = Depends(get_db_session),
+    db_session: Session = Depends(get_db_session),
 ):
     """Set roles for a user."""
     logging.debug(f"--- {stack()[0][3]} ---")
-    user = User(db).set_role(param=param, roles=Role[roles], q=q)
+    user = User(db_session).set_role(param=param, roles=Role[roles], q=q)
     return user
 
 
