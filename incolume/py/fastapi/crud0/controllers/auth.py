@@ -122,8 +122,9 @@ class Auth:
     def logout(self):
         pass
 
+    @staticmethod
     def generate_token(
-        self, user, seconds=30, minutes=0, hours=0, days=0, weeks=0
+        user, seconds=30, minutes=0, hours=0, days=0, weeks=0
     ):
         exp = datetime.utcnow() + timedelta(
             seconds=seconds,
