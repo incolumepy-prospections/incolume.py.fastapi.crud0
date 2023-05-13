@@ -1,3 +1,5 @@
+"""Module persistence."""
+
 from passlib.context import CryptContext
 
 from incolume.py.fastapi.crud0 import schemas
@@ -14,19 +16,23 @@ crypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
 def create_db(engine: engine = engine):
+    """Create database."""
     Base.metadata.create_all(bind=engine)
 
 
 def drop_db(engine: engine = engine):
+    """Drop database."""
     Base.metadata.drop_all(bind=engine)
 
 
 def recreate_db(engine: engine = engine):
+    """Recreate database."""
     drop_db(engine)
     create_db(engine)
 
 
 def create_admin(engine: engine = engine):
+    """Create admin user."""
     with Session() as db:
         admin_user = UserModel(
             username="admin",
@@ -41,6 +47,7 @@ def create_admin(engine: engine = engine):
 
 
 def populate_db(quantia: int = 10):
+    """Populate database with fake users."""
     db = Session()
     fake_user_list = [
         UserModel(

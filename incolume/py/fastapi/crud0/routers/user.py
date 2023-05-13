@@ -1,3 +1,4 @@
+"""Module endpoint for route user."""
 import logging
 from functools import singledispatch
 from inspect import stack
@@ -30,6 +31,7 @@ router = APIRouter()
 def create_user(
     user: schemas.UserCreate, session: Session = Depends(get_db_session)
 ):
+    """Create a new user."""
     new_user: UserModel = User(session).create(user)
     return new_user
 
@@ -43,6 +45,7 @@ def create_user(
 def list_users(
     skip: int = 0, limit=10, session: Session = Depends(get_db_session)
 ):
+    """List all users."""
     return User(session).all(skip=skip, limit=limit)
 
 
@@ -57,6 +60,7 @@ def get_user(
     q: QueryUser = Query(default=QueryUser.ID),
     db: Session = Depends(get_db_session),
 ):
+    """Get a user by parameter."""
     user = User(db).one(id_username_or_email, q)
     logging.debug(user)
     return user
@@ -72,6 +76,7 @@ def toggle_active_user(
     q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):
+    """Active or Inactive a user."""
     user = User(db).toggle_active(user_param, q)
     return user
 
@@ -88,6 +93,7 @@ def update_user(
     q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):
+    """Update a user."""
     user_updated = User(db).update(param=id_username_or_email, q=q, user=user)
     return user_updated
 
@@ -102,6 +108,7 @@ def delete_user(
     q: QueryUser = QueryUser.ID,
     db: Session = Depends(get_db_session),
 ):
+    """Delete a User."""
     user = User(db).delete(param=param, q=q)
     return user
 
@@ -122,6 +129,7 @@ def set_role_user(
     roles: Roles = Roles.USER,
     db: Session = Depends(get_db_session),
 ):
+    """Set roles for a user."""
     logging.debug(f"--- {stack()[0][3]} ---")
     user = User(db).set_role(param=param, roles=Role[roles], q=q)
     return user
@@ -140,12 +148,14 @@ def test_role_user(
     roles: Roles = Roles.USER,
     db: Session = Depends(get_db_session),
 ):
+    """Return a user and roles."""
     user = User(db).one(user_param, q)
     return user, Role[roles]
 
 
 @router.post("/classify", response_model=None, include_in_schema=False)
 def classify(b: Roles = Roles.USER):
+    """Return roles selected."""
     logging.debug(f"{b}")
     logging.debug(f"{Role[b.upper()]}")
     return b, Role[b.upper()]

@@ -1,3 +1,5 @@
+"""Module connections."""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
@@ -13,8 +15,9 @@ Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 
 def get_db_session():
+    """Database session generate."""
+    session = Session()
     try:
-        session = Session()
         yield session
     finally:
         session.close()
