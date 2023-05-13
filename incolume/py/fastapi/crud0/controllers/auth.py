@@ -123,9 +123,7 @@ class Auth:
         pass
 
     @staticmethod
-    def generate_token(
-        user, seconds=30, minutes=0, hours=0, days=0, weeks=0
-    ):
+    def generate_token(user, seconds=30, minutes=0, hours=0, days=0, weeks=0):
         exp = datetime.utcnow() + timedelta(
             seconds=seconds,
             minutes=minutes,

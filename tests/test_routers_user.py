@@ -105,32 +105,34 @@ class TestRouterUser:
         assert result == expected
 
     @pytest.mark.parametrize(
-        ["endpoint", 'status_code', "expected"],
+        ["endpoint", "status_code", "expected"],
         (
             pytest.param(
                 "/users/toggle_active/user0001?q=username",
                 202,
                 {
-                    'id': 2,
-                    'email': 'user0001@example.com',
-                    'is_active': False,
-                    'username': 'user0001',
-                    'full_name': 'User0001 do Sistema',
-                    'roles': 0
+                    "id": 2,
+                    "email": "user0001@example.com",
+                    "is_active": False,
+                    "username": "user0001",
+                    "full_name": "User0001 do Sistema",
+                    "roles": 0,
                 },
                 # marks=pytest.mark.skip
             ),
         ),
     )
-    def test_post_endpoint_toggle_active(self, endpoint, status_code, expected, client: TestClient):
+    def test_post_endpoint_toggle_active(
+        self, endpoint, status_code, expected, client: TestClient
+    ):
         """Test for endpoints toggle_active."""
         response = client.post(endpoint)
         assert response.status_code == status_code, response.text
 
         result = response.json()
-        del result['create_at']
-        del result['update_at']
-        del result['pw_hash']
+        del result["create_at"]
+        del result["update_at"]
+        del result["pw_hash"]
         assert result == expected
 
     @pytest.mark.parametrize(
