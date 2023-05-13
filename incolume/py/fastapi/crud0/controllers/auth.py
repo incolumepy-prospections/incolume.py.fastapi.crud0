@@ -1,4 +1,7 @@
+"""Module auth."""
+
 import logging
+import inspect
 from datetime import datetime, timedelta
 from pathlib import Path
 from tempfile import NamedTemporaryFile
@@ -48,11 +51,15 @@ def obter_usuario_logado(
 def token_verifier(
     db: Session = Depends(get_db_session), token=Depends(oauth2)
 ):
+    """Token verifier."""
     Auth(db).is_valid_token(access_token=token)
 
 
 class Auth:
+    """Class Auth."""
+
     def __init__(self, db_session: Session) -> None:
+        """Class init."""
         self.db_session = db_session
 
     def login(
@@ -64,6 +71,7 @@ class Auth:
         days: int = 0,
         weeks: int = 0,
     ):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         logging.debug(
             f"{user=}, {seconds=}, {minutes=}, {hours=}, {days=}, {weeks=}"
         )
@@ -120,10 +128,12 @@ class Auth:
         return True
 
     def logout(self):
-        pass
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
+        raise NotImplementedError(f'Ops: {inspect.stack()[0][3]} not yet.')
 
     @staticmethod
     def generate_token(user, seconds=30, minutes=0, hours=0, days=0, weeks=0):
+        """Generate JWT token."""
         exp = datetime.utcnow() + timedelta(
             seconds=seconds,
             minutes=minutes,
@@ -149,12 +159,16 @@ class Auth:
 
 
 class AuthOTP:
+    """Class Auth OTP."""
+
     def __init__(self, db_session: Session) -> None:
+        """Class init."""
         self.db_session = db_session
         self.totp = pyotp.TOTP(settings.otp_key)
         self.otp_title = settings.otp_title
 
     def login(self, user_in: UserLogin):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user_login = (
             self.db_session.query(UserModel)
             .filter_by(username=user_in.username)
@@ -168,17 +182,21 @@ class AuthOTP:
         return user_login
 
     def get_pw_otp(self):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         return self.totp.now()
 
     def _is_valid_otp(self, pw_otp):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         return self.totp.verify(pw_otp)
 
     def _generate_uri(self, user: UserLogin, title: str = ""):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         return self.totp.provisioning_uri(
             name=user.email, issuer_name=title or settings.otp_title
         )
 
     def get_qr_otp_file(self, user: UserModel):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         qr = qrcode.make(self._generate_uri(user))
         fout = Path(NamedTemporaryFile(prefix="qr_", suffix=".png").name)
         qr.save(fout.as_posix())
