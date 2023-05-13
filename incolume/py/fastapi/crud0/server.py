@@ -1,18 +1,21 @@
+"""Module server."""
+
 from pathlib import Path
-from fastapi import FastAPI, Depends
-from fastapi.staticfiles import StaticFiles
+
+from fastapi import Depends, FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
+
 from config import settings
 from incolume.py.fastapi.crud0 import __version__
 from incolume.py.fastapi.crud0.controllers.auth import token_verifier
 from incolume.py.fastapi.crud0.db.persistence import (
-    create_db,
-    recreate_db,
-    populate_db,
     create_admin,
+    create_db,
+    populate_db,
+    recreate_db,
 )
-from incolume.py.fastapi.crud0.routers import auth, user, auth_otp, items
-
+from incolume.py.fastapi.crud0.routers import auth, auth_otp, items, user
 
 recreate_db()
 create_admin()
@@ -36,6 +39,7 @@ app.mount("/static", StaticFiles(directory=static), name="static")
 
 @app.get("/", include_in_schema=False)
 async def root():
+    """Endpoint for home."""
     return {"message": settings.msg}
 
 
@@ -46,6 +50,7 @@ async def root():
     include_in_schema=False,
 )
 async def redirect_pydantic():
+    """Endpoint redirect for doc."""
     return "/docs"
 
 
@@ -56,7 +61,8 @@ async def redirect_pydantic():
     include_in_schema=False,
 )
 async def redirect_pydantic():
-    return "/img/favicon.png"
+    """Endpoint redirect for favicon."""
+    return "/static/img/favicon.png"
 
 
 app.include_router(

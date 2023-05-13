@@ -1,28 +1,52 @@
 import logging
+from datetime import datetime, timedelta
+from pathlib import Path
+from tempfile import NamedTemporaryFile
+
 import pyotp
 import qrcode
-from datetime import datetime, timedelta
-from fastapi import status, Depends
+from fastapi import Depends, Response, status
 from fastapi.exceptions import HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pathlib import Path
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from tempfile import NamedTemporaryFile
 
 from config import settings
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
-from incolume.py.fastapi.crud0.schemas import UserLogin, AccessToken
+from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin, oauth2
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
-oauth = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+
+def obter_usuario_logado(
+    token: str = Depends(oauth2), session: Session = Depends(get_db_session())
+):
+    """Get user logged."""
+    # exception = HTTPException(
+    #     status_code=status.HTTP_401_UNAUTHORIZED, detail='Token inválido')
+    #
+    # try:
+    #     telefone = token_provider.verificar_access_token(token)
+    # except JWTError:
+    #     raise exception
+    #
+    # if not telefone:
+    #     raise exception
+    #
+    # usuario = RepositorioUsuario(session).obter_por_telefone(telefone)
+    #
+    # if not usuario:
+    #     raise exception
+    #
+    # return usuario
+
+    pass
 
 
 def token_verifier(
-    db: Session = Depends(get_db_session), token=Depends(oauth)
+    db: Session = Depends(get_db_session), token=Depends(oauth2)
 ):
     Auth(db).is_valid_token(access_token=token)
 
@@ -67,6 +91,8 @@ class Auth:
         return access_token
 
     def is_valid_token(self, access_token: str):
+        """Verify is valid token."""
+        logging.debug(f"{access_token}")
         try:
             data = jwt.decode(
                 access_token,
@@ -96,9 +122,8 @@ class Auth:
     def logout(self):
         pass
 
-    def generate_token(
-        self, user, seconds=30, minutes=0, hours=0, days=0, weeks=0
-    ):
+    @staticmethod
+    def generate_token(user, seconds=30, minutes=0, hours=0, days=0, weeks=0):
         exp = datetime.utcnow() + timedelta(
             seconds=seconds,
             minutes=minutes,

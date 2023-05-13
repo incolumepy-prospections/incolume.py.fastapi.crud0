@@ -1,13 +1,17 @@
+"""Module controllers.item"""
 import logging
-from sqlalchemy.exc import IntegrityError
+
 from fastapi import status
 from fastapi.exceptions import HTTPException
-from incolume.py.fastapi.crud0.schemas import Item, ItemCreate
+from sqlalchemy.exc import IntegrityError
+
 from incolume.py.fastapi.crud0.db.connections import Session
 from incolume.py.fastapi.crud0.models import ItemModel
+from incolume.py.fastapi.crud0.schemas import Item, ItemCreate
 
 
 class Item:
+    """Class Item."""
     def __init__(self, db_session: Session) -> None:
         self.db_session = db_session
 

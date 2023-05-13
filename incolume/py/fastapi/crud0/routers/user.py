@@ -1,15 +1,23 @@
+"""Module endpoint for route user."""
 import logging
-from typing import Any
+from functools import singledispatch
+from inspect import stack
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, status, Query
-from fastapi import APIRouter, Depends, status, Query 
+from fastapi import APIRouter, Depends, Query, Request, status
+from fastapi.responses import Response, UJSONResponse
 from sqlalchemy.orm import Session
-from incolume.py.fastapi.crud0.controllers.utils import QueryUser, Role
-from incolume.py.fastapi.crud0.db.connections import get_db_session
+
 from incolume.py.fastapi.crud0 import schemas
 from incolume.py.fastapi.crud0.controllers.user import User
+from incolume.py.fastapi.crud0.controllers.utils import (
+    QueryUser,
+    Role,
+    Roles,
+    ToggleBool,
+)
+from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
-from functools import singledispatch
 
 router = APIRouter()
 
@@ -20,9 +28,10 @@ router = APIRouter()
     response_model=schemas.UserOut,
     summary="Create an User",
 )
-def signin(
+def create_user(
     user: schemas.UserCreate, session: Session = Depends(get_db_session)
 ):
+    """Create a new user."""
     new_user: UserModel = User(session).create(user)
     return new_user
 
@@ -36,46 +45,22 @@ def signin(
 def list_users(
     skip: int = 0, limit=10, session: Session = Depends(get_db_session)
 ):
+    """List all users."""
     return User(session).all(skip=skip, limit=limit)
 
 
-# @router.get('/{user_id: int}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut, summary="List an user by id")
-# def get_user(user_id: int, db: Session = Depends(get_db_session)):
-#     user = User(db).one(user_id)
-#     return user
-
-# @router.get('/{username_or_email: str}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.UserOut, summary="List an user by username or email")
-# def get_user_by_username_or_email(username_or_email: str, db: Session = Depends(get_db_session)):
-#     user = User(db).by_email(username_or_email) or User(db).by_username(username_or_email)
-#     return user
-
-
-# @router.get('/{id_username_or_email}', status_code=status.HTTP_202_ACCEPTED)
-# def get_user(id_username_or_email, db: Session = Depends(get_db_session)):
-#     print(f'value: {id_username_or_email}, type: {type(id_username_or_email)}')
-#
-#     if isinstance(id_username_or_email, str):
-#         try:
-#             user = User(db).by_username(id_username_or_email)
-#         except Exception as e:
-#             print(e)
-#             user = User(db).by_email(id_username_or_email)
-#     else:
-#         user = User(db).one(id_username_or_email)
-#
-#     return user
-
-
 @router.get(
-    '/{id_username_or_email}', 
-    status_code=status.HTTP_202_ACCEPTED, 
-    response_model=schemas.UserOut, 
-    summary="List an user by: id, email or username")
+    "/{id_username_or_email}",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=schemas.UserOut,
+    summary="List an user by: id, email or username",
+)
 def get_user(
-    id_username_or_email: int|str, 
-    q:QueryUser=Query(default=QueryUser.ID), 
-    db: Session = Depends(get_db_session)
+    id_username_or_email: int | str,
+    q: QueryUser = Query(default=QueryUser.ID),
+    db: Session = Depends(get_db_session),
 ):
+    """Get a user by parameter."""
     user = User(db).one(id_username_or_email, q)
     logging.debug(user)
     return user
@@ -91,6 +76,7 @@ def toggle_active_user(
     q: QueryUser = Query(default=QueryUser.USER_ID),
     db: Session = Depends(get_db_session),
 ):
+    """Active or Inactive a user."""
     user = User(db).toggle_active(user_param, q)
     return user
 
@@ -98,38 +84,78 @@ def toggle_active_user(
 @router.put(
     "/{id_username_or_email}",
     status_code=status.HTTP_202_ACCEPTED,
+    response_model=schemas.UserOut,
     summary="Update data for user by id",
 )
 def update_user(
     user: schemas.UserUpdate,
     id_username_or_email: str,
     q: QueryUser = Query(default=QueryUser.USER_ID),
-    db: Session = Depends(get_db_session)
+    db: Session = Depends(get_db_session),
 ):
+    """Update a user."""
     user_updated = User(db).update(param=id_username_or_email, q=q, user=user)
     return user_updated
 
 
 @router.delete(
-    "/{user_id}",
+    "/{param}",
     status_code=status.HTTP_202_ACCEPTED,
     summary="Delete an user by id",
 )
-def delete_user(user_id: int, db: Session = Depends(get_db_session)):
-    user = User(db).delete(user_id)
+def delete_user(
+    param: str,
+    q: QueryUser = QueryUser.ID,
+    db: Session = Depends(get_db_session),
+):
+    """Delete a User."""
+    user = User(db).delete(param=param, q=q)
     return user
 
 
 @router.post(
-    "/set-role/{user_param}",
-    summary="Toggle user status for is_active field",
+    "/set-role/{param}",
+    summary="Toggle role for actived users.",
     status_code=status.HTTP_202_ACCEPTED,
+    response_model=None,
 )
 def set_role_user(
-    user_param: int | str,
-    roles: list[Role] = Query(default=[Role.USER]),
-    q: QueryUser = Query(default=QueryUser.USER_ID),
+    param: int | str,
+    q: QueryUser = Query(
+        title="Query type",
+        description="Query type for param of user",
+        default=QueryUser.USER_ID,
+    ),
+    roles: Roles = Roles.USER,
     db: Session = Depends(get_db_session),
 ):
-    user = User(db).set_role(user_param, roles=roles, q=q)
+    """Set roles for a user."""
+    logging.debug(f"--- {stack()[0][3]} ---")
+    user = User(db).set_role(param=param, roles=Role[roles], q=q)
     return user
+
+
+@router.post(
+    "/test-role/{user_param}",
+    summary="Toggle role for actived users.",
+    status_code=status.HTTP_202_ACCEPTED,
+    # response_model=None,
+    include_in_schema=False,
+)
+def test_role_user(
+    user_param: str,
+    q: QueryUser = QueryUser.ID,
+    roles: Roles = Roles.USER,
+    db: Session = Depends(get_db_session),
+):
+    """Return a user and roles."""
+    user = User(db).one(user_param, q)
+    return user, Role[roles]
+
+
+@router.post("/classify", response_model=None, include_in_schema=False)
+def classify(b: Roles = Roles.USER):
+    """Return roles selected."""
+    logging.debug(f"{b}")
+    logging.debug(f"{Role[b.upper()]}")
+    return b, Role[b.upper()]

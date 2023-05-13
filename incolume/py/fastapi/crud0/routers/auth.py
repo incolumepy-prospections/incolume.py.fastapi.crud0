@@ -1,15 +1,29 @@
+import logging
+
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
-
 from sqlalchemy.orm import Session
 
-from incolume.py.fastapi.crud0.controllers.user import User
 from incolume.py.fastapi.crud0.controllers.auth import Auth, token_verifier
+from incolume.py.fastapi.crud0.controllers.user import User
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.schemas import UserLogin, UserOut
 
-
 router = APIRouter(prefix="")
+
+
+@router.get(
+    "/{whoami}",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=UserOut,
+    summary="Show corrent user logged.",
+)
+def whoami(
+    db: Session = Depends(get_db_session),
+):
+    user = User(db).one(10)
+    logging.debug(user)
+    return user
 
 
 @router.post("/login")
@@ -26,7 +40,7 @@ def user_login(
     return user_auth
 
 
-@router.get("/check")
+@router.get("/check", status_code=202)
 def check_token(token_verified=Depends(token_verifier)):
     return {"details": True}
 

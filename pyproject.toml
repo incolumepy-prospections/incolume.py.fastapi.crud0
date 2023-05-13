@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "incolume-py-fastapi-crud0"
-version = "0.10.0"
+version = "0.11.0"
 description = ""
 authors = ["britodfbr <britodfbr@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
-packages = [{include = "incolume"}]
+packages = [{include = "incolume"}, {include="examples"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -27,7 +27,16 @@ pytest = "^7.3.0"
 pytest-cov = "^4.0.0"
 taskipy = "^1.10.4"
 alembic = "^1.10.3"
-black = "^23.3.0"
+black = "<23.3.0"
+isort = "^5.12.0"
+pydocstyle = "^6.3.0"
+pylint = "^2.17.3"
+flake8 = "^6.0.0"
+tox = "<4.5.1"
+mypy = "^1.2.0"
+mypy-extensions = "^1.0.0"
+safety = "^2.3.5"
+deepdiff = "^6.3.0"
 
 
 [tool.poetry.group.docs.dependencies]
@@ -111,7 +120,16 @@ exclude = '''
 '''
 
 [tool.taskipy.tasks]
+lint_black={help='Checking with black', cmd='poetry run black --check --diff incolume tests'}
+lint_flake8={help='Checking with flake8', cmd='poetry run flake8 --config pyproject.toml incolume/ tests/'}
+lint_isort={help='Checking with isort', cmd='poetry run isort --check --atomic --py all incolume/ tests/'}
+lint_mypy={help='Checking with mypy', cmd='poetry run mypy --check incolume tests'}
+lint_pydocstyle={help='Checking with pydocstyle', cmd='poetry run pydocstyle incolume/ tests/'}
+lint_pylint={help='Checking with pylint', cmd=' poetry run pylint incolume/ tests/'}
+pre_lint="task lint_black && task lint_isort && task lint_flake8 && task lint_mypy && task lint_pydocstyle && task lint_pylint"
+lint={help='Checking all linters configurated', cmd=''}
 prerelease={cmd='v=$(poetry version prerelease) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version prerelease'}
+# pre_patch="poetry run task lint"
 patch={cmd='v=$(poetry version patch) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version patch'}
 preminor={cmd='v=$(poetry version preminor) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version preminor'}
 premajor={cmd='v=$(poetry version premajor) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version premajor'}

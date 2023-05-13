@@ -1,4 +1,5 @@
 import pytest
+
 from incolume.py.fastapi.crud0.controllers.auth import Auth, AuthOTP
 
 

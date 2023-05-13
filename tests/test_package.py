@@ -1,13 +1,13 @@
 import re
 
 import pytest
-from incolume.py.fastapi.crud0 import (
-    load,
-    configfile,
-    versionfile,
-    __version__,
-)
 
+from incolume.py.fastapi.crud0 import (
+    __version__,
+    configfile,
+    load,
+    versionfile,
+)
 
 __author__ = "@britodfbr"  # pragma: no cover
 

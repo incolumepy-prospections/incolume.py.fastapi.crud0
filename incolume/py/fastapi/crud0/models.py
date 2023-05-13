@@ -1,18 +1,25 @@
+"""Module models."""
+
 import datetime as dt
+
 from sqlalchemy import (
-    Column,
-    String,
-    Integer,
-    Boolean,
-    ForeignKey,
-    DateTime,
     JSON,
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
 )
 from sqlalchemy.orm import relationship
-from incolume.py.fastapi.crud0.db.connections import Base
+
+from .controllers.utils import Role
+from .db.connections import Base
 
 
 class UserModel(Base):
+    """Data model user."""
+
     __tablename__ = "users"
     id = Column(
         "id",
@@ -29,16 +36,19 @@ class UserModel(Base):
     email = Column("email", String, nullable=False, unique=True, index=True)
     full_name = Column("full_name", String, nullable=False)
     is_active = Column(Boolean, default=True)
-    roles = Column("roles", JSON)
-    is_admin = Column(Boolean, default=False)
+    create_at = Column(DateTime, default=dt.datetime.utcnow)
+    update_at = Column(DateTime, default=dt.datetime.utcnow)
+    roles = Column("roles", Integer, default=Role.USER)
     items = relationship("ItemModel", back_populates="owner")
 
     def __str__(self):
-        return f'UserModel {self.__dict__}'
-
+        """Over writing __str__."""
+        return f"UserModel(id={self.id}, username={self.username}, email={self.email}, is_active={self.is_active}, roles={self.roles})"
 
 
 class ItemModel(Base):
+    """Data model Item."""
+
     __tablename__ = "items"
 
     id = Column("id", String, primary_key=True, index=True)
