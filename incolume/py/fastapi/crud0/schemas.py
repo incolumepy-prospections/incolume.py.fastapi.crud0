@@ -60,8 +60,7 @@ class UserBase(BaseModel):
     full_name: str | None = Field(
         min_length=3,
         max_length=255,
-        # regex=r'^[A-ZÃÉÇÍÁ]{3,}((\s[A-Z]{2})?'
-        #       r'\s[A-ZÃÉÇÍÁ]{3,}(\s[EVDI]+)?){1,}$'
+        # regex=settings.regex_fullname
     )
     is_active: bool = Field(default=True)
 
