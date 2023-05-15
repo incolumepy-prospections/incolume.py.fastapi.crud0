@@ -60,8 +60,7 @@ class UserBase(BaseModel):
     full_name: str | None = Field(
         min_length=3,
         max_length=255,
-        # regex=r'^[A-ZÃÉÇÍÁ]{3,}((\s[A-Z]{2})?'
-        #       r'\s[A-ZÃÉÇÍÁ]{3,}(\s[EVDI]+)?){1,}$'
+        # regex=settings.regex_fullname
     )
     is_active: bool = Field(default=True)
 
@@ -93,6 +92,19 @@ class UserLogin(UserBase):
 
 class UserCreate(UserLogin):
     """schema for user creation."""
+
+    class Config:
+        """Config for UserCreate."""
+
+        schema_extra = {
+            "example": {
+                "username": "user",
+                "email": "user@example.com",
+                "full_name": "Full Name for User of System",
+                "is_active": True,
+                "password": "aaQQ!!11"
+            }
+        }
 
 
 class UserIn(UserLogin):
