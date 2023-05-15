@@ -93,6 +93,19 @@ class UserLogin(UserBase):
 class UserCreate(UserLogin):
     """schema for user creation."""
 
+    class Config:
+        """Config for UserCreate."""
+
+        schema_extra = {
+            "example": {
+                "username": "user",
+                "email": "user@example.com",
+                "full_name": "Full Name for User of System",
+                "is_active": True,
+                "password": "aaQQ!!11"
+            }
+        }
+
 
 class UserIn(UserLogin):
     """schema for user in."""
