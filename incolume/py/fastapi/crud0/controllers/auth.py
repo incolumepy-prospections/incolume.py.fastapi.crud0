@@ -1,7 +1,7 @@
 """Module auth."""
 
-import logging
 import inspect
+import logging
 from datetime import datetime, timedelta
 from pathlib import Path
 from tempfile import NamedTemporaryFile

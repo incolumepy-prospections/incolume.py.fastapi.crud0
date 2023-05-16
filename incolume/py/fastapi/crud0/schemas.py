@@ -3,8 +3,9 @@ import json
 import re
 import uuid
 from datetime import datetime
-from typing import Any, Optional
 from inspect import stack
+from typing import Any, Optional
+
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr, Field, Json, validator
 

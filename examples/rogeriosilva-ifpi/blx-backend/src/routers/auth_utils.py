@@ -1,14 +1,14 @@
-from src.infra.sqlalchemy.repositorios.repositorio_usuario import (
-    RepositorioUsuario,
-)
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-from starlette import status
-from src.infra.sqlalchemy.config.database import get_db
-from src.infra.providers import token_provider
 from jose import JWTError
+from sqlalchemy.orm import Session
+from src.infra.providers import token_provider
+from src.infra.sqlalchemy.config.database import get_db
+from src.infra.sqlalchemy.repositorios.repositorio_usuario import (
+    RepositorioUsuario,
+)
+from starlette import status
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="token")
 

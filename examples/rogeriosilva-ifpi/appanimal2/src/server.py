@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Path
-from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
-from pydantic import BaseModel
 from uuid import uuid4
 
+from fastapi import FastAPI, Path
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 

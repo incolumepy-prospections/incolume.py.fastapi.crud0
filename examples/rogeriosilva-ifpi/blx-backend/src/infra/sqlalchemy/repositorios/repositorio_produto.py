@@ -1,9 +1,9 @@
-from sqlalchemy import update, delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.orm import Session
+from src.infra.sqlalchemy.models import models
 
 # from sqlalchemy.sql.expression import select
 from src.schemas import schemas
-from src.infra.sqlalchemy.models import models
 
 
 class RepositorioProduto:

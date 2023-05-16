@@ -1,8 +1,9 @@
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends
+
 from .infra.sqlalchemy.config.database import criar_bd, get_db
-from .schemas import schemas
 from .infra.sqlalchemy.repositorios.series import RepositorioSerie
+from .schemas import schemas
 
 # Criar a base de dados
 criar_bd()

@@ -2,11 +2,11 @@
 # Instagram: Bek Brace
 
 import uvicorn
-from fastapi import FastAPI, Body, Depends
+from fastapi import Body, Depends, FastAPI
 
-from .app.model import PostSchema, UserSchema, UserLoginSchema
 from .app.auth.auth_bearer import JWTBearer
 from .app.auth.auth_handler import signJWT
+from .app.model import PostSchema, UserLoginSchema, UserSchema
 
 posts = [
     {

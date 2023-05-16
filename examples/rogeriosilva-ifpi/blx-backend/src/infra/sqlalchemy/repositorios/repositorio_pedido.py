@@ -1,10 +1,10 @@
-from sqlalchemy.orm import Session
 from typing import List
 
+from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import select
 from sqlalchemy.sql.functions import mode
-from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
+from src.schemas import schemas
 
 
 class RepositorioPedido:

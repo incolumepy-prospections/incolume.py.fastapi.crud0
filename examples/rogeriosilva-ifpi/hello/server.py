@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
 from typing import List, Optional
 from uuid import uuid4
 
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 

@@ -3,6 +3,7 @@ import time
 from typing import Dict
 
 from jose import JWTError, jwt
+
 from config import settings
 
 JWT_SECRET = settings.secret_key

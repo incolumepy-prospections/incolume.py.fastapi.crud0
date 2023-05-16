@@ -1,18 +1,19 @@
-from fastapi import APIRouter, status, Depends, HTTPException
 from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from src.schemas.schemas import (
-    LoginSucesso,
-    Usuario,
-    UsuarioSimples,
-    LoginData,
-)
+from src.infra.providers import hash_provider, token_provider
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import (
     RepositorioUsuario,
 )
-from src.infra.providers import hash_provider, token_provider
 from src.routers.auth_utils import obter_usuario_logado
+from src.schemas.schemas import (
+    LoginData,
+    LoginSucesso,
+    Usuario,
+    UsuarioSimples,
+)
 
 router = APIRouter()
 

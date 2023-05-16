@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import BackgroundTasks, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from src.routers import rotas_produtos, rotas_auth, rotas_pedidos
 from src.jobs.write_notification import write_notification
+from src.routers import rotas_auth, rotas_pedidos, rotas_produtos
 
 app = FastAPI()
 # uvicorn src.server:app --reload --reload-dir=src
