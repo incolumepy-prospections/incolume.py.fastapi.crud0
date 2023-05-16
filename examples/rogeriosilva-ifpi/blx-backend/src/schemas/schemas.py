@@ -1,5 +1,6 @@
+from typing import List, Optional
+
 from pydantic import BaseModel
-from typing import Optional, List
 
 
 class ProdutoSimples(BaseModel):
@@ -60,7 +61,7 @@ class Pedido(BaseModel):
     quantidade: int
     local_entrega: Optional[str]
     tipo_entrega: str
-    observacao: Optional[str] = 'Sem observações'
+    observacao: Optional[str] = "Sem observações"
 
     usuario_id: Optional[int]
     produto_id: Optional[int]

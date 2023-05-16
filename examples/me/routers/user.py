@@ -3,7 +3,6 @@ import logging
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
-
 from incolume.py.fastapi.crud2.data_base.connections import db
 from incolume.py.fastapi.crud2.schemas import UpdateUser, User
 

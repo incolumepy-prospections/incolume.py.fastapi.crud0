@@ -1,6 +1,7 @@
 import pytest
-from fastapi.testclient import TestClient
 from deepdiff import DeepDiff
+from fastapi.testclient import TestClient
+
 from incolume.py.fastapi.crud0.routers.user import router
 
 

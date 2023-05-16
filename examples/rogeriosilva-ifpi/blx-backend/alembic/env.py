@@ -1,11 +1,9 @@
-from src.infra.sqlalchemy.config.database import Base
-from src.infra.sqlalchemy.models.models import *
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
+from src.infra.sqlalchemy.config.database import Base
+from src.infra.sqlalchemy.models.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -69,7 +67,7 @@ def run_migrations_online():
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            render_as_batch=True
+            render_as_batch=True,
         )
 
         with context.begin_transaction():
