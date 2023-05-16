@@ -47,6 +47,52 @@ mkdocs = "^1.4.2"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.bandit]
+exclude_dirs = ["tests", "examples", "coverage_report"]
+tests = ["B201", "B301"]
+skips = ["B101", "B601"]
+
+[tool.bandit.any_other_function_with_shell_equals_true]
+no_shell = [
+  "os.execl",
+  "os.execle",
+  "os.execlp",
+  "os.execlpe",
+  "os.execv",
+  "os.execve",
+  "os.execvp",
+  "os.execvpe",
+  "os.spawnl",
+  "os.spawnle",
+  "os.spawnlp",
+  "os.spawnlpe",
+  "os.spawnv",
+  "os.spawnve",
+  "os.spawnvp",
+  "os.spawnvpe",
+  "os.startfile"
+]
+shell = [
+  "os.system",
+  "os.popen",
+  "os.popen2",
+  "os.popen3",
+  "os.popen4",
+  "popen2.popen2",
+  "popen2.popen3",
+  "popen2.popen4",
+  "popen2.Popen3",
+  "popen2.Popen4",
+  "commands.getoutput",
+  "commands.getstatusoutput"
+]
+subprocess = [
+  "subprocess.Popen",
+  "subprocess.call",
+  "subprocess.check_call",
+  "subprocess.check_output"
+]
+
 [tool.pytest.ini_options]
 #log_format = '%(asctime)s %(levelname)s %(message)s'
 log_format = '%(asctime)s; %(levelname)-8s; %(name)s; %(module)s; %(funcName)s; %(message)s'
@@ -121,6 +167,7 @@ exclude = '''
 '''
 
 [tool.taskipy.tasks]
+bandit={help='', cmd='poetry run bandit -c pyproject.toml -r .'}
 lint_black={help='Checking with black', cmd='poetry run black --check --diff incolume tests'}
 lint_flake8={help='Checking with flake8', cmd='poetry run flake8 --config pyproject.toml incolume/ tests/'}
 lint_isort={help='Checking with isort', cmd='poetry run isort --check --atomic --py all incolume/ tests/'}
@@ -130,7 +177,7 @@ lint_pylint={help='Checking with pylint', cmd=' poetry run pylint incolume/ test
 pre_lint="task lint_black && task lint_isort && task lint_flake8 && task lint_mypy && task lint_pydocstyle && task lint_pylint"
 lint={help='Checking all linters configurated', cmd=''}
 prerelease={cmd='v=$(poetry version prerelease) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version prerelease'}
-# pre_patch="poetry run task lint"
+# pre_patch="poetry run task bandit && poetry run task lint"
 patch={cmd='v=$(poetry version patch) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version patch'}
 preminor={cmd='v=$(poetry version preminor) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version preminor'}
 premajor={cmd='v=$(poetry version premajor) && poetry run pytest && git ci -m "$v" pyproject.toml coverage_report $(find incolume* -name version.txt)', help='poetry version premajor'}
