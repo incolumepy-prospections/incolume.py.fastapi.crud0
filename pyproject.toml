@@ -37,6 +37,7 @@ mypy = "^1.2.0"
 mypy-extensions = "^1.0.0"
 safety = "^2.3.5"
 deepdiff = "^6.3.0"
+bandit = {extras = ["toml"], version = "^1.7.5"}
 
 
 [tool.poetry.group.docs.dependencies]
