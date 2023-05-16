@@ -43,9 +43,11 @@ class UserModel(Base):
 
     def __str__(self):
         """Over writing __str__."""
-        return f"UserModel(id={self.id}, username={self.username}, " \
-               f"email={self.email}, is_active={self.is_active}, " \
-               f"roles={self.roles})"
+        return (
+            f"UserModel(id={self.id}, username={self.username}, "
+            f"email={self.email}, is_active={self.is_active}, "
+            f"roles={self.roles})"
+        )
 
 
 class ItemModel(Base):

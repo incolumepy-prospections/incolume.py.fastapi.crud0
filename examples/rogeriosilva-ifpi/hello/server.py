@@ -19,19 +19,19 @@ class Produto(BaseModel):
 bd_produtos: List[Produto] = []
 
 
-@app.post('/produtos')
+@app.post("/produtos")
 def cadastrar_produto(produto: Produto):
     produto.id = str(uuid4())
     bd_produtos.append(produto)
     return produto
 
 
-@app.get('/produtos')
+@app.get("/produtos")
 def listar_produtos():
     return bd_produtos
 
 
-@app.delete('/produtos/{id}')
+@app.delete("/produtos/{id}")
 def remover_produtos(id: str):
     # procurar produto pelo id
     indice_produto = -1
@@ -44,32 +44,32 @@ def remover_produtos(id: str):
     # usar pop para remover o produto
     if indice_produto != -1:
         bd_produtos.pop(indice_produto)
-        return {'mensagem': f'Produto {produto.nome} removido com sucesso!'}
+        return {"mensagem": f"Produto {produto.nome} removido com sucesso!"}
     else:
-        return {'erro': f'Não foi localizado o produto com id {id}'}
+        return {"erro": f"Não foi localizado o produto com id {id}"}
 
 
-@app.get('/saudacao/{nome}')
+@app.get("/saudacao/{nome}")
 def saudacao(nome: str):
-    texto = f'Olá {nome}, tudo em paz?!'
+    texto = f"Olá {nome}, tudo em paz?!"
     return {"mensagem": texto}
 
 
-@app.get('/quadrado/{numero}')
+@app.get("/quadrado/{numero}")
 def quadrado(numero: int):
     resultado = numero * numero
-    texto = f'O quadrado de {numero} é {resultado}'
+    texto = f"O quadrado de {numero} é {resultado}"
 
     return {"mensagem": texto}
 
 
-@app.get('/dobro')
+@app.get("/dobro")
 def dobro(valor: int):
     resultado = 2 * valor
-    return {"resultado": f'O dobro de {valor} é {resultado}'}
+    return {"resultado": f"O dobro de {valor} é {resultado}"}
 
 
-@app.get('/area-retangulo')  # ?nome=valor
+@app.get("/area-retangulo")  # ?nome=valor
 def area_retangulo(largura: int, altura: int = 2):
     area = largura * altura
-    return {'area': area}
+    return {"area": area}

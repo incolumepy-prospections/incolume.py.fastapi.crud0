@@ -4,16 +4,17 @@ from src.infra.sqlalchemy.models import models
 from src.schemas import schemas
 
 
-class RepositorioSerie():
-
+class RepositorioSerie:
     def __init__(self, db: Session):
         self.db = db
 
     def criar(self, serie: schemas.Serie):
-        db_serie = models.Serie(titulo=serie.titulo,
-                                ano=serie.ano,
-                                genero=serie.genero,
-                                qtd_temporadas=serie.qtd_temporadas)
+        db_serie = models.Serie(
+            titulo=serie.titulo,
+            ano=serie.ano,
+            genero=serie.genero,
+            qtd_temporadas=serie.qtd_temporadas,
+        )
         self.db.add(db_serie)
         self.db.commit()
         self.db.refresh(db_serie)

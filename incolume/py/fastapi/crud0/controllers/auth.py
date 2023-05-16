@@ -129,7 +129,7 @@ class Auth:
 
     def logout(self):
         """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
-        raise NotImplementedError(f'Ops: {inspect.stack()[0][3]} not yet.')
+        raise NotImplementedError(f"Ops: {inspect.stack()[0][3]} not yet.")
 
     @staticmethod
     def generate_token(user, seconds=30, minutes=0, hours=0, days=0, weeks=0):

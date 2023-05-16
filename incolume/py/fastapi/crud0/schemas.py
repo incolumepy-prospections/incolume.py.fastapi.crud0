@@ -102,7 +102,7 @@ class UserCreate(UserLogin):
                 "email": "user@example.com",
                 "full_name": "Full Name for User of System",
                 "is_active": True,
-                "password": "aaQQ!!11"
+                "password": "aaQQ!!11",
             }
         }
 
