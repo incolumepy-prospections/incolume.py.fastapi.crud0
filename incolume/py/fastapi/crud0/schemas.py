@@ -138,7 +138,17 @@ class UserInDB(UserBase):
 class UserUpdate(UserBase):
     """schema for user updating."""
 
+    full_name: Optional[str] = ""
     username: Optional[str] = ""
     email: Optional[EmailStr] = ""
-    roles: Optional[Role] = Field(default=Role.USER)
-    is_active: Optional[bool] = Field(default=True)
+
+    class Config:
+        """configuration for superclass."""
+
+        schema_extra = {
+            'example': {
+                "username": "user",
+                "email": "user@example.com",
+                "full_name": "Full Name for User of System",
+            }
+        }
