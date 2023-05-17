@@ -139,6 +139,12 @@ exclude_lines = [
   "class IElements"
 ]
 
+[tool.isort]
+profile = "black"
+skip = [".gitignore", ".dockerignore"]
+skip_glob = ["example/*"]
+multi_line_output = 3
+
 [tool.black]
 line-length = 79
 target-version = ['py38', 'py39', 'py310', 'py311']
