@@ -141,6 +141,7 @@ exclude_lines = [
 
 [tool.isort]
 profile = "black"
+known_first_party = "poetry"
 skip = [".gitignore", ".dockerignore"]
 skip_glob = ["example/*"]
 multi_line_output = 3
