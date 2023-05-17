@@ -3,9 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.infra.sqlalchemy.config.database import get_db
-from src.infra.sqlalchemy.repositorios.repositorio_produto import (
-    RepositorioProduto,
-)
+from src.infra.sqlalchemy.repositorios.repositorio_produto import RepositorioProduto
 from src.schemas.schemas import Produto, ProdutoSimples
 
 router = APIRouter()

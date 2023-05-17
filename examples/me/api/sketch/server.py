@@ -1,8 +1,7 @@
 """Server module."""
 from fastapi import FastAPI
 
-
-app = FastAPI(title='sketch')
+app = FastAPI(title="sketch")
 
 
 @app.get("/")

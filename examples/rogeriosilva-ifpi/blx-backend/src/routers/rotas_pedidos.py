@@ -3,9 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.infra.sqlalchemy.config.database import get_db
-from src.infra.sqlalchemy.repositorios.repositorio_pedido import (
-    RepositorioPedido,
-)
+from src.infra.sqlalchemy.repositorios.repositorio_pedido import RepositorioPedido
 from src.routers.auth_utils import obter_usuario_logado
 from src.schemas.schemas import Pedido, Usuario
 

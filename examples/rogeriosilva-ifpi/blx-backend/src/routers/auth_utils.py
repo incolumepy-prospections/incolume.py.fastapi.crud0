@@ -5,9 +5,7 @@ from jose import JWTError
 from sqlalchemy.orm import Session
 from src.infra.providers import token_provider
 from src.infra.sqlalchemy.config.database import get_db
-from src.infra.sqlalchemy.repositorios.repositorio_usuario import (
-    RepositorioUsuario,
-)
+from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
 from starlette import status
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="token")
