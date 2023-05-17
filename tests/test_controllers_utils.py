@@ -1,7 +1,11 @@
 import pytest
 
-from incolume.py.fastapi.crud0.controllers.utils import (QueryUser, Role, Sort,
-                                                         ToggleBool)
+from incolume.py.fastapi.crud0.controllers.utils import (
+    QueryUser,
+    Role,
+    Sort,
+    ToggleBool,
+)
 
 
 class TestEnumRole:

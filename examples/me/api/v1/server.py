@@ -14,4 +14,4 @@ async def root(msg: str = ""):
     return {"greeting": msg}
 
 
-app.include_router(user.router, prefix="/api/v2")
+app.include_router(user.router, prefix="/api/v1")

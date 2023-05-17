@@ -146,7 +146,7 @@ class UserUpdate(UserBase):
         """configuration for superclass."""
 
         schema_extra = {
-            'example': {
+            "example": {
                 "username": "user",
                 "email": "user@example.com",
                 "full_name": "Full Name for User of System",
