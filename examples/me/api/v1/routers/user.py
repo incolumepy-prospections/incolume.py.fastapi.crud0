@@ -3,6 +3,7 @@ import logging
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
+
 from ..data_base.connections import db
 from ..schemas import UpdateUser, User
 
