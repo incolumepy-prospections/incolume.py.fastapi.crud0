@@ -1,9 +1,10 @@
+import logging
 import pyotp
-import time
 import qrcode
-from tempfile import gettempdir, NamedTemporaryFile
-from pathlib import Path
+import time
 from io import BytesIO, StringIO
+from pathlib import Path
+from tempfile import gettempdir, NamedTemporaryFile
 
 secrets_keys = [pyotp.random_base32(), pyotp.random_hex()]
 
