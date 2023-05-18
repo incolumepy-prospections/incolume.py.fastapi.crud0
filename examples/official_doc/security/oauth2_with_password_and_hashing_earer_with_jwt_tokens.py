@@ -27,7 +27,7 @@ fake_users_db = {
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
+    token_type: str = 'Bearer'
 
 
 class TokenData(BaseModel):
@@ -95,13 +95,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        if username is None:
+        if not username:
             raise credentials_exception
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
     user = get_user(fake_users_db, username=token_data.username)
-    if user is None:
+    if not user:
         raise credentials_exception
     return user
 
@@ -110,7 +110,9 @@ async def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
     if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Inactive user")
     return current_user
 
 
