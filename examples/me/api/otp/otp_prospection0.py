@@ -1,4 +1,6 @@
 import logging
+from typing import Any
+
 import pyotp
 import qrcode
 import time
@@ -14,64 +16,80 @@ SECRET_KEY = 'JBSWY3DPEHPK3PXP'
 
 totp = pyotp.totp.TOTP(SECRET_KEY)
 
+
+def show(*args, **kwargs):
+    print(*args, *kwargs.values(), sep='\n')
+
+
 def new_totp():
     pw = totp.now()
     logging.debug(f'{pw}')
     return pw
 
-def get_otp_uri(name: str='', title: str=''):
-    name = name or 'OPS@EXAMPLE.COM'
+
+def get_otp_uri(name: str = '', title: str = ''):
+    name = name or 'OTP@EXAMPLE.COM'
     title = title or 'Secure App'
-    uri = pyotp.totp.TOTP(SECRET_KEY).PROVISIONING_URI(NAME=name,
-                                                     issuer_name=title),
-    logging.debug(uri)
+    logging.debug(f'{name=}, {title=}')
+    logging.debug(
+        uri := (
+            pyotp.totp.TOTP(SECRET_KEY)
+            .provisioning_uri(name=name, issuer_name=title)
+        )
+    )
     return uri
 
 
+def tratativa0(qr_code: Any) -> Any:
+    """Tratativa em manipular o qr resultante."""
+    # Fail
+    stream0 = BytesIO(qr_code.print_ascii())
+    logging.debug(stream0)
+    return stream0
 
-def show0():
+
+def tratativa1(qr_code: Any) -> Any:
+    """Tratativa em manipular o qr resultante."""
+    output = Path(NamedTemporaryFile(suffix='.png', prefix='qr_').name)
+    qr_code.save(output.as_posix())
+    with output.open('rb') as f:
+        stream1 = BytesIO(f.read())
+    logging.debug(stream1)
+    return stream1
+
+
+def tratativa2(uri: str = '') -> Any:
+    """Tratativa em manipular o qr resultante."""
+    qr_code = qrcode.QRCode()
+    qr_code.add_data(uri)
+
+    with StringIO() as file:
+        qr_code.print_ascii(out=file)
+        file.seek(0)
+        stream = file.read()
+    logging.debug(type(stream))
+    return stream
+
+
+def run():
     # OTP verified for current time
-    print(
+    show(
         pw := new_totp(),
         totp.verify(pw),  # => True
         time.sleep(30),
         totp.verify(pw),  # => False
-        get_otp_uri(),
-        sep='\n')
+        get_otp_uri()
+    )
 
-# qr = qrcode.make(uri)
-# # stream0 = BytesIO(qr.get_image())
-# 
-# output = Path(NamedTemporaryFile(suffix='.png', prefix='qr_').name)
-# 
-# qr.save(output.as_posix())
-# 
-# with output.open('rb') as f:
-#     stream1 = BytesIO(f.read())
-# 
-# qr2 = qrcode.QRCode()
-# qr2.add_data(uri)
-# 
-# with StringIO() as f:
-#     qr2.print_ascii(out=f)
-#     f.seek(0)
-#     stream2 = f.read()
-# 
-# print(
-#     # f'{type(stream0)}: {stream0}',
-#     f'{type(qr)}: {qr}',
-#     f'{output.exists()}: {output.as_posix()}',
-#     f'{qr.get_image()=}',
-#     f'{type(stream1)}: {stream1}',
-#     dir(qr.get_image()),
-#     f'{type(stream2)}: {stream2=}',
-#     sep='\n' * 2)
-#
-# 
-def run():
-    show0()
+    qr = qrcode.make(get_otp_uri())
+    show(
+        # tratativa0(qr),
+        '---',
+        tratativa1(qr),
+        '---',
+        tratativa2(get_otp_uri())
+    )
 
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
     run()
-    
