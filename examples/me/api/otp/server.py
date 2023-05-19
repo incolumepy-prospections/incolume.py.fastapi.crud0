@@ -76,10 +76,16 @@ def get_user(db, username: str):
 
 def authenticate_user(fake_db, username: str, password: str):
     user = get_user(fake_db, username)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
+    if not user or not verify_password(password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='User or Password invalid.'
+        )
+    if user.disabled:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='User disabled.'
+        )
     return user
 
 
@@ -128,7 +134,8 @@ async def get_current_active_user(
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = authenticate_user(fake_users_db, form_data.username,
+                             form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
