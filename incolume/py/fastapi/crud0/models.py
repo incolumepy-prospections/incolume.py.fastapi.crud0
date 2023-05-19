@@ -1,12 +1,13 @@
 """Module models."""
 
 import datetime as dt
-
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
+# from sqlalchemy.dialects.postgresql import UUID
+# from fastapi_utils.guid_type import GUID, GUID_SERVER_DEFAULT_POSTGRESQL
 from .controllers.utils import Role
 from .db.connections import Base
+from uuid import UUID, uuid4
 
 
 class UserModel(Base):
@@ -15,11 +16,11 @@ class UserModel(Base):
     __tablename__ = "users"
     id = Column(
         "id",
-        Integer,
+        UUID,
         primary_key=True,
         nullable=False,
-        autoincrement=True,
         index=True,
+        server_default=uuid4,
     )
     username = Column(
         "username", String, nullable=False, unique=True, index=True
@@ -48,7 +49,7 @@ class ItemModel(Base):
 
     __tablename__ = "items"
 
-    id = Column("id", String, primary_key=True, index=True)
+    id = Column("id", UUID, primary_key=True, index=True)
     title = Column("title", String, index=True)
     description = Column("description", String, index=True)
     created = Column(

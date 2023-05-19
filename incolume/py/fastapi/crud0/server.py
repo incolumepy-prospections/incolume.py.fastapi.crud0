@@ -58,7 +58,7 @@ async def redirect_pydantic():
     "/favicon.ico",
     response_class=RedirectResponse,
     status_code=307,
-    include_in_schema=False,
+    # include_in_schema=False,
 )
 async def redirect_pydantic():
     """Endpoint redirect for favicon."""
