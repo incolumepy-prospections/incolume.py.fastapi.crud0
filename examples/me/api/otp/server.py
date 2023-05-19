@@ -26,8 +26,9 @@ fake_users_db = {
         "username": "johndoe",
         "full_name": "John Doe",
         "email": "johndoe@example.com",
+        # johndoe
         "hashed_password": "$2b$12$kuafMW7qRHxaw2aSA4HV2uwt8ZJ/0JT.xz7aVLOS0Xyxi2oLZgyCy",
-        "disabled": False,
+        "disabled": True,
     }
 }
 
