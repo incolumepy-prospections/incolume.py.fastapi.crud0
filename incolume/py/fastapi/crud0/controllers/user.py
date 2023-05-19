@@ -2,7 +2,7 @@
 import inspect
 import logging
 from inspect import stack
-
+from datetime import datetime
 from fastapi import status
 from fastapi.exceptions import HTTPException
 from passlib.context import CryptContext
@@ -161,6 +161,7 @@ class User:
                     username=user.username,
                     full_name=user.full_name,
                     email=user.email,
+                    update_at=datetime.utcnow(),
                 )
             )
             self.db_session.execute(stmt)
@@ -216,6 +217,7 @@ class User:
         """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = self.one(param, q)
         user.is_active = not user.is_active
+        user.update_at = datetime.utcnow()
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
@@ -223,7 +225,7 @@ class User:
     def promote_admin(self, param: int | str, q: QueryUser = None):
         """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
         user = self.one(param, q)
-        user.is_admin = not user.is_admin
+        user.update_at = datetime.utcnow()
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
