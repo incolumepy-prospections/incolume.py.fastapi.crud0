@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Header
+from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -76,15 +77,14 @@ def get_user(db, username: str):
 
 def authenticate_user(fake_db, username: str, password: str):
     user = get_user(fake_db, username)
-    if not user or not verify_password(password, user.hashed_password):
+    if (
+        not user
+        or user.disabled
+        or not verify_password(password, user.hashed_password)
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='User or Password invalid.'
-        )
-    if user.disabled:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='User disabled.'
+            detail='User disabled, or user invalid or password invalid.'
         )
     return user
 
@@ -146,7 +146,10 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return Response(
+        {"access_token": access_token, "token_type": "bearer"},
+        headers={'Authorization': f'Bearer {access_token}'}
+    )
 
 
 @app.get("/users/me/", response_model=User)
