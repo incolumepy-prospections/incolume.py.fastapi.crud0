@@ -46,7 +46,7 @@ class User(BaseModel):
     username: str
     email: EmailStr | None = None
     full_name: str | None = None
-    disabled: bool | None = None
+    disabled: bool | None = False
 
 
 class UserInDB(User):
