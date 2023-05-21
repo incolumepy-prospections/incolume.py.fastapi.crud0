@@ -132,7 +132,8 @@ async def get_current_active_user(
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    response: Response
 ):
     user = authenticate_user(fake_users_db, form_data.username,
                              form_data.password)
@@ -146,11 +147,8 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return  {"access_token": access_token, "token_type": "bearer"}
-    # return Response(
-    #     {"access_token": access_token, "token_type": "bearer"},
-    #     headers={'Authorization': f'Bearer {access_token}'}
-    # )
+    response.headers['Authorization'] = f'Bearer {access_token}'
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @app.get("/users/me/", response_model=User)
