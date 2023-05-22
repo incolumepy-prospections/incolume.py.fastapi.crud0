@@ -15,23 +15,23 @@ from incolume.py.fastapi.crud0.models import UserModel
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
-def create_db(engine: engine = engine):
+def create_db(instance_engine: engine = engine):
     """Create database."""
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=instance_engine)
 
 
-def drop_db(engine: engine = engine):
+def drop_db(instance_engine: engine = engine):
     """Drop database."""
-    Base.metadata.drop_all(bind=engine)
+    Base.metadata.drop_all(bind=instance_engine)
 
 
-def recreate_db(engine: engine = engine):
+def recreate_db(instance_engine: engine = engine):
     """Recreate database."""
-    drop_db(engine)
-    create_db(engine)
+    drop_db(instance_engine)
+    create_db(instance_engine)
 
 
-def create_admin(engine: engine = engine):
+def create_admin(instance_engine: engine = engine):
     """Create admin user."""
     with Session() as db_session:
         admin_user = UserModel(

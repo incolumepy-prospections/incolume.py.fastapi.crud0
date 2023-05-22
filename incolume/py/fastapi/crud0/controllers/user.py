@@ -1,8 +1,9 @@
 """Module User."""
 import inspect
 import logging
-from inspect import stack
 from datetime import datetime
+from inspect import stack
+
 from fastapi import status
 from fastapi.exceptions import HTTPException
 from passlib.context import CryptContext

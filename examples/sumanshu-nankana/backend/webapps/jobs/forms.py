@@ -1,5 +1,5 @@
-from typing import List
-from typing import Optional
+from typing import List, Optional
+
 from fastapi import Request
 
 
@@ -25,7 +25,9 @@ class JobCreateForm:
         if not self.title or not len(self.title) >= 4:
             self.errors.append("A valid title is required")
         if not self.company_url or not (self.company_url.__contains__("http")):
-            self.errors.append("Valid Url is required e.g. https://example.com")
+            self.errors.append(
+                "Valid Url is required e.g. https://example.com"
+            )
         if not self.company or not len(self.company) >= 1:
             self.errors.append("A valid company is required")
         if not self.description or not len(self.description) >= 20:

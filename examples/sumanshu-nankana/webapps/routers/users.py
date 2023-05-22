@@ -1,18 +1,22 @@
-from fastapi import APIRouter, Request, Depends, responses, status
+from fastapi import APIRouter, Depends, Request, responses, status
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
-from database import get_db
-from models import User
-from hashing import Hasher
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from ...database import get_db
+from ...hashing import Hasher
+from ...models import User
+from .. import templates_dir
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 
 @router.get("/register")
 def registration(request: Request):
-    return templates.TemplateResponse("user_register.html", {"request": request})
+    return templates.TemplateResponse(
+        "user_register.html", {"request": request}
+    )
 
 
 @router.post("/register")

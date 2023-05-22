@@ -1,7 +1,7 @@
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy.orm import Session
-from schemas.jobs import JobCreate
 from db.models.jobs import Job
+from fastapi.encoders import jsonable_encoder
+from schemas.jobs import JobCreate
+from sqlalchemy.orm import Session
 
 
 def create_new_job(job: JobCreate, db: Session, owner_id: int):

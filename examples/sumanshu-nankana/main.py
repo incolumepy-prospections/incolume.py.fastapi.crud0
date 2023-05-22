@@ -1,17 +1,15 @@
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, Depends
-from .database import engine, get_db
-from .models import Base, User
-from .schemas import UserCreate
-from .hashing import Hasher
-from .routers import users, items, login
-from .webapps.routers import items as web_items
-from .webapps.routers import users as web_users
-from .webapps.routers import auth as web_auth
+
 from config import settings
 
+from .routers import items, login, users
+from .webapps import static_dir
+from .webapps.routers import auth as web_auth
+from .webapps.routers import items as web_items
+from .webapps.routers import users as web_users
 
+__version__ = "0.99.0"
 desc = """
 This is project description
 """
@@ -25,15 +23,15 @@ tags_metadata = [
 # Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title=settings.PROJECT_TITLE,
-    version=settings.PROJECT_VERSION,
+    title=settings.API_TITLE,
+    version=__version__,
     description=desc,
     openapi_tags=tags_metadata,
     contact={"name": "Sumanshu Nankana", "email": "sumanshunankana@gmail.com"},
     redoc_url=None,
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # we can pass the prefix argument as well
 app.include_router(users.router)

@@ -6,11 +6,11 @@ from fastapi.responses import RedirectResponse
 app = FastAPI()
 
 
-@app.get('/')
+@app.get("/")
 async def root(q: bool = False):
     if q:
-        return RedirectResponse(url='/docs')
-    return {'message': 'Running..'}
+        return RedirectResponse(url="/docs")
+    return {"message": "Running.."}
 
 
 @app.get("/items/")

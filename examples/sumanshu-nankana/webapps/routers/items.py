@@ -1,19 +1,25 @@
-from fastapi import APIRouter, Request, Depends, responses, status
-from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
-from jose import jwt
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Request, responses, status
+from fastapi.templating import Jinja2Templates
+from jose import jwt
+from sqlalchemy.orm import Session
+
 from config import settings
-from ..models import Items, User
-from database import get_db
+
+from ...database import get_db
+from ...models import Items, User
+from .. import templates_dir
 
 router = APIRouter(include_in_schema=False)
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 
 @router.get("/", tags=["HomePage"])
-def home_page(request: Request, db: Session = Depends(get_db), msg: str = None):
+def home_page(
+    request: Request, db: Session = Depends(get_db), msg: str = None
+):
     items = db.query(Items).all()
     return templates.TemplateResponse(
         "item_homepage.html", {"request": request, "items": items, "msg": msg}
@@ -64,7 +70,9 @@ async def create_an_item(request: Request, db: Session = Depends(get_db)):
                 "create_item.html", {"request": request, "errors": errors}
             )
         scheme, _, param = token.partition(" ")
-        payload = jwt.decode(param, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
+        payload = jwt.decode(
+            param, settings.SECRET_KEY, algorithms=settings.ALGORITHM
+        )
         email = payload.get("sub")
         if email is None:
             errors.append("Kindly login first, you are not authenticated")
@@ -107,7 +115,8 @@ def show_items_to_delete(request: Request, db: Session = Depends(get_db)):
     if token is None:
         errors.append("Kindly Login/Authenticate")
         return templates.TemplateResponse(
-            "show_items_to_update_delete.html", {"request": request, "errors": errors}
+            "show_items_to_update_delete.html",
+            {"request": request, "errors": errors},
         )
     else:
         try:
@@ -119,11 +128,14 @@ def show_items_to_delete(request: Request, db: Session = Depends(get_db)):
             user = db.query(User).filter(User.email == email).first()
             items = db.query(Items).filter(Items.owner_id == user.id).all()
             return templates.TemplateResponse(
-                "show_items_to_update_delete.html", {"request": request, "items": items}
+                "show_items_to_update_delete.html",
+                {"request": request, "items": items},
             )
         except Exception as e:
             print(e)
-            errors.append("Something is wrong!!, May be you are not Authenticated")
+            errors.append(
+                "Something is wrong!!, May be you are not Authenticated"
+            )
             return templates.TemplateResponse(
                 "show_items_to_update_delete.html",
                 {"request": request, "errors": errors},
@@ -131,7 +143,9 @@ def show_items_to_delete(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/search")
-def search_jobs(request: Request, query: Optional[str], db: Session = Depends(get_db)):
+def search_jobs(
+    request: Request, query: Optional[str], db: Session = Depends(get_db)
+):
     items = db.query(Items).filter(Items.title.contains(query)).all()
     return templates.TemplateResponse(
         "item_homepage.html", {"request": request, "items": items}

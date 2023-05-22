@@ -5,9 +5,8 @@ Revises:
 Create Date: 2021-09-03 10:42:56.245147
 
 """
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "3da1df7e42b1"
@@ -35,7 +34,10 @@ def upgrade():
         sa.Column("description", sa.String(), nullable=True),
         sa.Column("date_posted", sa.Date(), nullable=True),
         sa.Column("owner_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(["owner_id"], ["users.id"],),
+        sa.ForeignKeyConstraint(
+            ["owner_id"],
+            ["users.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_items_id"), "items", ["id"], unique=False)

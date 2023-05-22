@@ -1,5 +1,6 @@
-from fastapi import Request
 from typing import List
+
+from fastapi import Request
 
 
 class LoginForm:

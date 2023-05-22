@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from config import settings
 from database import engine
+from fastapi import FastAPI
 from models import Base
 
+from config import settings
 
 desc = """
 This is project description

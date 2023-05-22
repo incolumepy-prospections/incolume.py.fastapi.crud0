@@ -65,10 +65,10 @@ async def redirect_pydantic():
     return "/static/img/favicon.png"
 
 
-@app.get('/get-env-vars', tags=['Config'])
+@app.get("/get-env-vars", tags=["Config"])
 async def get_env_vars():
     """Show envvars."""
-    return {'database': settings.DB_URL}
+    return {"database": settings.DB_URL}
 
 
 app.include_router(

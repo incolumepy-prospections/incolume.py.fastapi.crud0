@@ -1,7 +1,7 @@
 from fastapi import APIRouter
+from webapps.auth import route_login
 from webapps.jobs import route_jobs
 from webapps.users import route_users
-from webapps.auth import route_login
 
 api_router = APIRouter(include_in_schema=False)
 

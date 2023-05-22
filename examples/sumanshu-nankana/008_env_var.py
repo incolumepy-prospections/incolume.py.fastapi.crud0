@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from config import setting
 
 tags_metadata = [

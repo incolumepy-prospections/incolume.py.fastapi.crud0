@@ -1,20 +1,20 @@
-import pytest
-from typing import Generator, Any
-from fastapi import FastAPI
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from fastapi.testclient import TestClient
-
-
-import sys
 import os
+import sys
+from typing import Any, Generator
+
+import pytest
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from db.base import Base
-from db.session import get_db
 from apis.base import api_router
 from core.config import settings
+from db.base import Base
+from db.session import get_db
+
 from tests.utils.user import authentication_token_from_email
 
 

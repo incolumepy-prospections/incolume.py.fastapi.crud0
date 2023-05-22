@@ -1,6 +1,7 @@
-from sqlalchemy.orm import Session
 from db.repository.jobs import create_new_job, retrieve_job
 from schemas.jobs import JobCreate
+from sqlalchemy.orm import Session
+
 from tests.utils.user import create_random_owner
 
 

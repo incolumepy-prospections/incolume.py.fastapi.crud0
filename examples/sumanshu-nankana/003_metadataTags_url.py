@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-
 # we can create a tags for different routes
 # Create metadata for your tags and pass it to the openapi_tags parameter
 tags_metadata = [
@@ -18,7 +17,10 @@ app = FastAPI(
     title="JobBoard",
     version="0.0.1",
     description=description,
-    contact={"name": "Sumanshu Nankana", "email": "sumanshunankana@gmail.com",},
+    contact={
+        "name": "Sumanshu Nankana",
+        "email": "sumanshunankana@gmail.com",
+    },
     openapi_tags=tags_metadata,
 )
 
