@@ -1,14 +1,15 @@
-from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
-from .routers import users, items, login
-from .webapps import static_dir
-from .webapps.routers import items as web_items
-from .webapps.routers import users as web_users
-from .webapps.routers import auth as web_auth
+from fastapi.staticfiles import StaticFiles
+
 from config import settings
 
+from .routers import items, login, users
+from .webapps import static_dir
+from .webapps.routers import auth as web_auth
+from .webapps.routers import items as web_items
+from .webapps.routers import users as web_users
 
-__version__ = '0.99.0'
+__version__ = "0.99.0"
 desc = """
 This is project description
 """

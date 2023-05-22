@@ -1,9 +1,9 @@
-from fastapi.security import OAuth2
+from typing import Dict, Optional
+
+from fastapi import HTTPException, Request, status
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
-from fastapi import Request, HTTPException, status
+from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
-from typing import Optional
-from typing import Dict
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2):
@@ -17,7 +17,9 @@ class OAuth2PasswordBearerWithCookie(OAuth2):
     ):
         if not scopes:
             scopes = {}
-        flows = OAuthFlowsModel(password={"tokenUrl": tokenUrl, "scopes": scopes})
+        flows = OAuthFlowsModel(
+            password={"tokenUrl": tokenUrl, "scopes": scopes}
+        )
         super().__init__(
             flows=flows,
             scheme_name=scheme_name,

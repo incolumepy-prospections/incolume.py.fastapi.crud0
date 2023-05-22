@@ -1,15 +1,17 @@
 from datetime import datetime
+from typing import List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy.orm import Session
 from jose import jwt
-from typing import List, Optional
+from sqlalchemy.orm import Session
+
+from config import settings
 
 from ..database import get_db
 from ..models import Items, User
 from ..routers.login import oauth2_scheme
 from ..schemas import ItemCreate, ShowItem
-from config import settings
 
 router = APIRouter()
 
@@ -39,11 +41,15 @@ def get_user_from_token(db, token):
 
 @router.post("/item", tags=["item"], response_model=ShowItem)
 def create_item(
-    item: ItemCreate, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+    item: ItemCreate,
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme),
 ):
     user = get_user_from_token(db, token)
     owner_id = user.id
-    item = Items(**item.dict(), date_posted=datetime.now().date(), owner_id=owner_id)
+    item = Items(
+        **item.dict(), date_posted=datetime.now().date(), owner_id=owner_id
+    )
     db.add(item)
     db.commit()
     db.refresh(item)

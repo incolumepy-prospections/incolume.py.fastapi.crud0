@@ -1,16 +1,15 @@
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from apis.utils import OAuth2PasswordBearerWithCookie
-from fastapi import Depends
-from fastapi import APIRouter, HTTPException, status
-from db.session import get_db
-from sqlalchemy.orm import Session
-from core.config import settings
 from datetime import timedelta
+
+from apis.utils import OAuth2PasswordBearerWithCookie
+from core.config import settings
+from core.hashing import Hasher
 from core.security import create_access_token
 from db.repository.login import get_user
-from core.hashing import Hasher
-from jose import jwt, JWTError
-from fastapi import Response
+from db.session import get_db
+from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -36,7 +35,9 @@ def login_for_access_token(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
         )
-    access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expire = timedelta(
+        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+    )
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expire
     )

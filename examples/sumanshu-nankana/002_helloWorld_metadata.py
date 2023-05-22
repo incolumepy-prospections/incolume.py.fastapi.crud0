@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-
 # we can pass the metadata information for API
 # some fields are of type string and some are of type dictionary (example - contact)
 # https://fastapi.tiangolo.com/tutorial/metadata/

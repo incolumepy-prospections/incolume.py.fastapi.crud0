@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from config import settings
 
+from config import settings
 
 # We can configure documentation user interfaces.
 

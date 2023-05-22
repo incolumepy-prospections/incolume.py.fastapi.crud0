@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Depends
-from config import settings
-from .database import engine, get_db
-from .models import Base, User
-from .schemas import UserCreate
-from .hashing import Hasher
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
-from .routers import users
 
-__version__ = '1.0.0'
+from config import settings
+
+from .database import engine, get_db
+from .hashing import Hasher
+from .models import Base, User
+from .routers import users
+from .schemas import UserCreate
+
+__version__ = "1.0.0"
 desc = f"""
 # Description for {settings.API_TITLE}
 This is **project** description

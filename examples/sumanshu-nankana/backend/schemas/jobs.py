@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from datetime import date, datetime
 from typing import Optional
-from datetime import datetime, date
+
+from pydantic import BaseModel
 
 
 class JobBase(BaseModel):

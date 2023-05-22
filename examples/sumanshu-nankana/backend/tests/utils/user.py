@@ -1,13 +1,11 @@
-from sqlalchemy.orm import Session
 import random
 import string
-from schemas.users import UserCreate
-from db.repository.users import create_new_user
 
-from db.repository.users import create_new_user
 from db.repository.login import get_user
+from db.repository.users import create_new_user
 from fastapi.testclient import TestClient
 from schemas.users import UserCreate
+from sqlalchemy.orm import Session
 
 
 def random_lower_string() -> str:
@@ -31,10 +29,16 @@ def user_authentication_headers(client: TestClient, email: str, password: str):
     return headers
 
 
-def authentication_token_from_email(client: TestClient, email: str, db: Session):
+def authentication_token_from_email(
+    client: TestClient, email: str, db: Session
+):
     password = "randomPassword"
     user = get_user(username=email, db=db)
     if not user:
-        user_in_create = UserCreate(username=email, email=email, password=password)
+        user_in_create = UserCreate(
+            username=email, email=email, password=password
+        )
         user = create_new_user(user=user_in_create, db=db)
-    return user_authentication_headers(client=client, email=email, password=password)
+    return user_authentication_headers(
+        client=client, email=email, password=password
+    )

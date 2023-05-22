@@ -30,13 +30,13 @@ fake_users_db = {
         # hash 12345678
         "hashed_password": "$2b$12$jehJEKPwGlA6X0uHsf06gO4DzZRaTe1Of.rsna/oqJhXQxOBVO49y",
         "disabled": True,
-    }
+    },
 }
 
 
 class Token(BaseModel):
     access_token: str
-    token_type: str = 'Bearer'
+    token_type: str = "Bearer"
 
 
 class TokenData(BaseModel):
@@ -120,8 +120,8 @@ async def get_current_active_user(
 ):
     if current_user.disabled:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Inactive user")
+            status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user"
+        )
     return current_user
 
 
@@ -129,7 +129,9 @@ async def get_current_active_user(
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = authenticate_user(
+        fake_users_db, form_data.username, form_data.password
+    )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

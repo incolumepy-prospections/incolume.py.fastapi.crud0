@@ -1,8 +1,8 @@
-from fastapi.testclient import TestClient
-
-import sys
-import os
 import json
+import os
+import sys
+
+from fastapi.testclient import TestClient
 
 # file = os.path.abspath(__file__)
 # print(f"The value os current file is __file__ : {file}")

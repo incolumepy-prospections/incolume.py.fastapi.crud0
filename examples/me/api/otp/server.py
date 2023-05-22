@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, status, Header
+from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -30,13 +30,13 @@ fake_users_db = {
         # johndoe
         "hashed_password": "$2b$12$kuafMW7qRHxaw2aSA4HV2uwt8ZJ/0JT.xz7aVLOS0Xyxi2oLZgyCy",
         "disabled": True,
-    }
+    },
 }
 
 
 class Token(BaseModel):
     access_token: str
-    token_type: str = 'Bearer'
+    token_type: str = "Bearer"
 
 
 class TokenData(BaseModel):
@@ -84,7 +84,7 @@ def authenticate_user(fake_db, username: str, password: str):
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='User disabled, or user invalid or password invalid.'
+            detail="User disabled, or user invalid or password invalid.",
         )
     return user
 
@@ -125,18 +125,19 @@ async def get_current_active_user(
 ):
     if current_user.disabled:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Inactive user")
+            status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user"
+        )
     return current_user
 
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    response: Response
+    response: Response,
 ):
-    user = authenticate_user(fake_users_db, form_data.username,
-                             form_data.password)
+    user = authenticate_user(
+        fake_users_db, form_data.username, form_data.password
+    )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -147,7 +148,7 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    response.headers['Authorization'] = f'Bearer {access_token}'
+    response.headers["Authorization"] = f"Bearer {access_token}"
     return {"access_token": access_token, "token_type": "bearer"}
 
 

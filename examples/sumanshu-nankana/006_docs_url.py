@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-
 # We can configure documentation user interfaces.
 
 # By default, Swagger UI served at /docs
