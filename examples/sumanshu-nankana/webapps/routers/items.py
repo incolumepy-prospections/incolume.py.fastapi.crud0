@@ -5,11 +5,12 @@ from jose import jwt
 from typing import Optional
 from datetime import datetime
 from config import settings
-from ..models import Items, User
-from database import get_db
+from ...models import Items, User
+from ...database import get_db
+from .. import templates_dir
 
 router = APIRouter(include_in_schema=False)
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 
 @router.get("/", tags=["HomePage"])

@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Request, Depends, status, Response
 from fastapi.templating import Jinja2Templates
-from models import User
+from ...models import User
 from sqlalchemy.orm import Session
-from database import get_db
-from hashing import Hasher
+from ...database import get_db
+from ...hashing import Hasher
 from jose import jwt
 from config import settings
+from .. import templates_dir
 
 router = APIRouter(include_in_schema=False)
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 
 @router.get("/login")
