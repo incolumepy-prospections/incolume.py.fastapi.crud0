@@ -67,7 +67,7 @@ def get_user(
 
 
 @router.post(
-    "/toggle_active/{user_param}",
+    "/toggle-active/{user_param}",
     summary="Toggle user status for is_active field",
     status_code=status.HTTP_202_ACCEPTED,
 )
