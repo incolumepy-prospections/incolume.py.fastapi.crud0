@@ -117,7 +117,8 @@ class UserOut(UserBase):
 
     roles: Role = Field(default=Role.USER)
     is_active: bool = Field(default=True)
-
+    is_blocked: bool = Field(default=False)
+    
 
 class UserInDB(UserBase):
     """schema for user in DB."""

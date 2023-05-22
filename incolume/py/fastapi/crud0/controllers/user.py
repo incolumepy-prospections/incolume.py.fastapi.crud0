@@ -222,6 +222,15 @@ class User:
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
+    
+    def toggle_block(self, param: int | str, q: QueryUser = None):
+        """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])
+        user = self.one(param, q)
+        user.is_blocked = not user.is_blocked
+        user.update_at = datetime.utcnow()
+        self.db_session.commit()
+        self.db_session.refresh(user)
+        return user
 
     def promote_admin(self, param: int | str, q: QueryUser = None):
         """Run {}.{}.""".format(self.__class__.__name__, inspect.stack()[0][3])

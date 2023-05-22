@@ -81,6 +81,21 @@ def toggle_active_user(
     return user
 
 
+@router.post(
+    "/toggle-block/{user_param}",
+    summary="Toggle user status for is_blocked field",
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def toggle_block_user(
+    user_param: int | str,
+    q: QueryUser = Query(default=QueryUser.USER_ID),
+    db_session: Session = Depends(get_db_session),
+):
+    """Block or Unblock a user."""
+    user = User(db_session).toggle_block(user_param, q)
+    return user
+
+
 @router.put(
     "/{id_username_or_email}",
     status_code=status.HTTP_202_ACCEPTED,
