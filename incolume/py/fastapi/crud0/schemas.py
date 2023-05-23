@@ -12,7 +12,7 @@ from pydantic import BaseModel, EmailStr, Field, Json, validator
 from config import settings
 from incolume.py.fastapi.crud0.controllers.utils import Role
 
-oauth2: Any = OAuth2PasswordBearer(tokenUrl="/auth/login")
+scheme_oauth2: Any = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 class AccessToken(BaseModel):
@@ -117,7 +117,8 @@ class UserOut(UserBase):
 
     roles: Role = Field(default=Role.USER)
     is_active: bool = Field(default=True)
-
+    is_blocked: bool = Field(default=False)
+    
 
 class UserInDB(UserBase):
     """schema for user in DB."""

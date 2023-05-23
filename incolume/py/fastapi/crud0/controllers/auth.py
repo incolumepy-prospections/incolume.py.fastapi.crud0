@@ -18,13 +18,13 @@ from sqlalchemy.orm import Session
 from config import settings
 from incolume.py.fastapi.crud0.db.connections import get_db_session
 from incolume.py.fastapi.crud0.models import UserModel
-from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin, oauth2
+from incolume.py.fastapi.crud0.schemas import AccessToken, UserLogin, scheme_oauth2
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
 def obter_usuario_logado(
-    token: str = Depends(oauth2), session: Session = Depends(get_db_session())
+    token: str = Depends(scheme_oauth2), session: Session = Depends(get_db_session())
 ):
     """Get user logged."""
     # exception = HTTPException(
@@ -49,7 +49,7 @@ def obter_usuario_logado(
 
 
 def token_verifier(
-    db: Session = Depends(get_db_session), token=Depends(oauth2)
+    db: Session = Depends(get_db_session), token=Depends(scheme_oauth2)
 ):
     """Token verifier."""
     Auth(db).is_valid_token(access_token=token)

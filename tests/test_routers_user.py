@@ -43,6 +43,7 @@ class TestRouterUser:
                     "email": "user03@example.com",
                     "full_name": "Usuário do Sistema",
                     "is_active": True,
+                    'is_blocked': False,
                     "roles": 0,
                 },
                 # marks=pytest.mark.skip
@@ -61,6 +62,7 @@ class TestRouterUser:
                     "email": "user@example.com",
                     "full_name": "Usuário do Sistema",
                     "roles": 0,
+                    'is_blocked': False,
                     "is_active": True,
                 },
                 # marks=pytest.mark.skip
@@ -109,12 +111,13 @@ class TestRouterUser:
         ["endpoint", "status_code", "expected"],
         (
             pytest.param(
-                "/users/toggle_active/user0001?q=username",
+                "/users/toggle-active/user0001?q=username",
                 202,
                 {
                     "id": 2,
                     "email": "user0001@example.com",
                     "is_active": False,
+                    "is_blocked": False,
                     "username": "user0001",
                     "full_name": "User0001 do Sistema",
                     "roles": 0,
@@ -126,7 +129,39 @@ class TestRouterUser:
     def test_post_endpoint_toggle_active(
         self, endpoint, status_code, expected, client: TestClient
     ):
-        """Test for endpoints toggle_active."""
+        """Test for endpoints toggle-active."""
+        response = client.post(endpoint)
+        assert response.status_code == status_code, response.text
+
+        result = response.json()
+        del result["create_at"]
+        del result["update_at"]
+        del result["pw_hash"]
+        assert result == expected
+    
+    @pytest.mark.parametrize(
+        ["endpoint", "status_code", "expected"],
+        (
+            pytest.param(
+                "/users/toggle-block/user0001?q=username",
+                202,
+                {
+                    "id": 2,
+                    "email": "user0001@example.com",
+                    "is_active": True,
+                    "is_blocked": True,
+                    "username": "user0001",
+                    "full_name": "User0001 do Sistema",
+                    "roles": 0,
+                },
+                # marks=pytest.mark.skip
+            ),
+        ),
+    )
+    def test_post_endpoint_toggle_block(
+        self, endpoint, status_code, expected, client: TestClient
+    ):
+        """Test for endpoints toggle-block."""
         response = client.post(endpoint)
         assert response.status_code == status_code, response.text
 
@@ -168,6 +203,7 @@ class TestRouterUser:
                         "email": "admin@example.com",
                         "full_name": "Administrador do Sistema",
                         "is_active": True,
+                        "is_blocked": False,
                         "roles": 16,
                     },
                     {
@@ -175,6 +211,7 @@ class TestRouterUser:
                         "email": "user0001@example.com",
                         "full_name": "User0001 do Sistema",
                         "is_active": True,
+                        "is_blocked": False,
                         "roles": 0,
                     },
                     {
@@ -182,6 +219,7 @@ class TestRouterUser:
                         "email": "user0002@example.com",
                         "full_name": "User0002 do Sistema",
                         "is_active": True,
+                        "is_blocked": False,
                         "roles": 0,
                     },
                     {
@@ -189,6 +227,7 @@ class TestRouterUser:
                         "email": "user0003@example.com",
                         "full_name": "User0003 do Sistema",
                         "is_active": True,
+                        "is_blocked": False,
                         "roles": 0,
                     },
                 ],
@@ -200,6 +239,7 @@ class TestRouterUser:
                     "full_name": "Administrador do Sistema",
                     "username": "admin",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 16,
                 },
                 marks="",
@@ -211,6 +251,7 @@ class TestRouterUser:
                     "full_name": "Administrador do Sistema",
                     "username": "admin",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 16,
                 },
                 marks="",
@@ -222,6 +263,7 @@ class TestRouterUser:
                     "full_name": "Administrador do Sistema",
                     "username": "admin",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 16,
                 },
             ),
@@ -300,6 +342,7 @@ class TestRouterUser:
                     "email": "fake@example.com",
                     "full_name": "fake@example.com",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 0,
                 },
                 # marks=pytest.mark.skip,
@@ -317,6 +360,7 @@ class TestRouterUser:
                     "email": "admin@acme.com",
                     "full_name": "Administrador da API (Aplication Program Interface).",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 16,
                 },
                 # marks=pytest.mark.skip,
@@ -334,6 +378,7 @@ class TestRouterUser:
                     "email": "fake@example.com",
                     "full_name": "fake@example.com",
                     "is_active": True,
+                    "is_blocked": False,
                     "roles": 0,
                 },
                 # marks=pytest.mark.skip,

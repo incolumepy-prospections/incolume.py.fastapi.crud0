@@ -28,6 +28,7 @@ class UserModel(Base):
     email = Column("email", String, nullable=False, unique=True, index=True)
     full_name = Column("full_name", String, nullable=False)
     is_active = Column(Boolean, default=True)
+    is_blocked = Column(Boolean, default=False)
     create_at = Column(DateTime, default=dt.datetime.utcnow)
     update_at = Column(DateTime, default=dt.datetime.utcnow)
     roles = Column("roles", Integer, default=Role.USER)
